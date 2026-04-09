@@ -24,7 +24,13 @@
   - [Phase 5: Code](#phase-5-code)
   - [Phase 6: Refine](#phase-6-refine)
   - [Translation Dictionary (English → JavaScript)](#translation-dictionary)
-- [Section C: All Patterns (4 Levels)](#section-c-all-patterns)
+- [Section C: Algorithms — The Procedures Inside Patterns](#section-c-algorithms)
+  - [How Patterns, Algorithms, and Data Structures Relate](#how-they-relate)
+  - [Sorting Algorithms](#sorting-algorithms)
+  - [Searching Algorithms](#searching-algorithms)
+  - [Traversal Algorithms](#traversal-algorithms)
+  - [Classic Named Algorithms](#classic-named-algorithms)
+- [Section D: All Patterns (4 Levels)](#section-d-all-patterns)
   - [Level 1 — Foundation (Solves 80%)](#level-1--foundation-solves-80-of-problems)
     - [Pattern 1: 🔍 Detective](#pattern-1--detective-boolean-validation)
     - [Pattern 2: 🪣 Bucket](#pattern-2--bucket-accumulation)
@@ -44,18 +50,18 @@
     - [Pattern 13: 🔙 Backtracking](#pattern-13--backtracking)
     - [Pattern 14: 🏃 Greedy](#pattern-14--greedy)
   - [Level 4 — Specialist (Solves remaining 1%)](#level-4--specialist-solves-remaining-1)
-- [Section D: Pattern Combos — Real Problems Use 2+ Patterns](#section-d-pattern-combos)
-- [Section E: Big-O Cheat Sheet](#section-e-big-o-cheat-sheet)
+- [Section E: Pattern Combos — Real Problems Use 2+ Patterns](#section-e-pattern-combos)
+- [Section F: Big-O Cheat Sheet](#section-f-big-o-cheat-sheet)
   - [Common Complexities Ranked](#common-complexities-ranked)
   - [Every Pattern's Complexity](#every-patterns-complexity)
   - [Data Structure Operations](#data-structure-operations)
-- [Section F: How Patterns Connect](#section-f-how-patterns-connect)
-- [Section G: Key Insights](#section-g-key-insights)
-- [Section H: 35-Day Practice Roadmap](#section-h-35-day-practice-roadmap)
+- [Section G: How Patterns Connect](#section-g-how-patterns-connect)
+- [Section H: Key Insights](#section-h-key-insights)
+- [Section I: 35-Day Practice Roadmap](#section-i-35-day-practice-roadmap)
   - [Week 1-2: Level 1](#week-1-2-level-1-patterns)
   - [Week 3-4: Level 2](#week-3-4-level-2-patterns)
   - [Week 5: Level 3](#week-5-level-3-patterns)
-- [Section I: Golden Rules](#section-i-golden-rules)
+- [Section J: Golden Rules](#section-j-golden-rules)
 
 ---
 
@@ -293,31 +299,94 @@ WHY:     Matching brackets, undo operations, expression evaluation
 HOW:     In JS, just use an array with push() and pop()
 ```
 
+```
+VISUAL:
+  push(10) → push(20) → push(30)     pop() → pop()
+
+  |  30  | ← top                      |  10  | ← top
+  |  20  |                             └──────┘
+  |  10  |
+  └──────┘
+
+  Last in (30) is first out.
+```
+
 ```javascript
+// === CREATING A STACK ===
+// In JavaScript, an array IS a stack. No special class needed.
 const stack = [];
 
-// Push (add to top)
+// === PUSH — Add to top ===
 stack.push(10);   // [10]
 stack.push(20);   // [10, 20]
-stack.push(30);   // [10, 20, 30]
+stack.push(30);   // [10, 20, 30]    ← 30 is on top
 
-// Peek (look at top without removing)
-stack[stack.length - 1];  // 30
+// === PEEK — Look at top WITHOUT removing ===
+const top = stack[stack.length - 1];  // 30 (still in stack)
 
-// Pop (remove from top)
-stack.pop();      // returns 30, stack = [10, 20]
-stack.pop();      // returns 20, stack = [10]
+// === POP — Remove from top ===
+stack.pop();      // returns 30, stack is now [10, 20]
+stack.pop();      // returns 20, stack is now [10]
+stack.pop();      // returns 10, stack is now []
 
-// Check if empty
-stack.length === 0;  // false
+// === CHECK IF EMPTY ===
+stack.length === 0;  // true (empty now)
+
+// === REAL EXAMPLE: Reverse a string using a stack ===
+function reverseString(str) {
+  const stack = [];
+
+  // Push every character onto the stack
+  for (const ch of str) {
+    stack.push(ch);
+  }
+
+  // Pop every character off (comes out in reverse order)
+  let reversed = "";
+  while (stack.length > 0) {
+    reversed += stack.pop();
+  }
+
+  return reversed;
+}
+
+reverseString("hello");  // "olleh"
+// Push: h, e, l, l, o → stack = [h, e, l, l, o]
+// Pop:  o, l, l, e, h → reversed = "olleh"
+
+// === REAL EXAMPLE: Check matching brackets ===
+function isBalanced(str) {
+  const stack = [];
+  const pairs = { ')': '(', ']': '[', '}': '{' };
+
+  for (const ch of str) {
+    if (ch === '(' || ch === '[' || ch === '{') {
+      stack.push(ch);         // opening → push
+    } else if (ch === ')' || ch === ']' || ch === '}') {
+      if (stack.pop() !== pairs[ch]) return false;  // mismatch!
+    }
+  }
+
+  return stack.length === 0;  // all matched if stack is empty
+}
+
+isBalanced("([{}])");  // true
+isBalanced("([)]");    // false
 ```
 
 ```
 KEY FACTS:
-  ✅ push():   O(1)
-  ✅ pop():    O(1)
-  ✅ peek:     O(1)
-  Think: "Last In, First Out" — like browser back button
+  ✅ push():   O(1) — instant
+  ✅ pop():    O(1) — instant
+  ✅ peek:     O(1) — instant
+  Think: "Last In, First Out" — like browser back button, undo, or call stack
+
+COMMON STACK INTERVIEW PROBLEMS:
+  - Valid Parentheses (LeetCode #20)
+  - Daily Temperatures (#739)
+  - Evaluate Reverse Polish Notation (#150)
+  - Min Stack (#155)
+  - Next Greater Element (#496)
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -330,34 +399,89 @@ KEY FACTS:
 WHAT:    First-In, First-Out (FIFO). Like a line at a shop.
          The first person in line is the first one served.
 WHY:     BFS traversal, scheduling, level-order processing
-HOW:     In JS, use array with push() and shift() (simple but shift is O(n))
+HOW:     In JS, use array with push() and shift()
+```
+
+```
+VISUAL:
+  enqueue(10) → enqueue(20) → enqueue(30)     dequeue()
+
+  FRONT → | 10 | 20 | 30 | ← BACK            FRONT → | 20 | 30 | ← BACK
+                                                (10 removed from front)
+  First in (10) is first out.
 ```
 
 ```javascript
+// === CREATING A QUEUE ===
+// Simple way: use an array with push() and shift()
 const queue = [];
 
-// Enqueue (add to back)
+// === ENQUEUE — Add to back ===
 queue.push(10);    // [10]
 queue.push(20);    // [10, 20]
-queue.push(30);    // [10, 20, 30]
+queue.push(30);    // [10, 20, 30]    ← 10 is at front, 30 at back
 
-// Dequeue (remove from front)
-queue.shift();     // returns 10, queue = [20, 30]
-queue.shift();     // returns 20, queue = [30]
+// === PEEK — Look at front WITHOUT removing ===
+const front = queue[0];  // 10 (still in queue)
 
-// Check front without removing
-queue[0];          // 30
+// === DEQUEUE — Remove from front ===
+queue.shift();     // returns 10, queue is now [20, 30]
+queue.shift();     // returns 20, queue is now [30]
+queue.shift();     // returns 30, queue is now []
 
-// Check if empty
-queue.length === 0;  // false
+// === CHECK IF EMPTY ===
+queue.length === 0;  // true
+
+// === REAL EXAMPLE: Process tasks in order ===
+function processTasks(tasks) {
+  const queue = [...tasks];  // copy tasks into queue
+  const completed = [];
+
+  while (queue.length > 0) {
+    const task = queue.shift();     // take first task
+    completed.push(`Done: ${task}`);
+  }
+
+  return completed;
+}
+
+processTasks(["email", "code", "review"]);
+// ["Done: email", "Done: code", "Done: review"]
+
+// === REAL EXAMPLE: BFS on a tree (level by level) ===
+function printLevelByLevel(root) {
+  if (!root) return;
+  const queue = [root];
+
+  while (queue.length > 0) {
+    const node = queue.shift();      // take first node
+    console.log(node.val);
+
+    if (node.left) queue.push(node.left);    // add children to back
+    if (node.right) queue.push(node.right);
+  }
+}
+// For tree:    1
+//             / \
+//            2   3
+// Prints: 1, 2, 3 (level by level)
 ```
 
 ```
 KEY FACTS:
-  ✅ push():   O(1)
-  ⚠️ shift():  O(n) — moves all remaining elements
+  ✅ push():   O(1) — add to back
+  ⚠️ shift():  O(n) — remove from front (moves all remaining elements)
   Think: "First In, First Out" — like a queue at a ticket counter
-  For performance-critical code, use a linked list queue (rare in interviews)
+
+  ⚠️ shift() is O(n) because it re-indexes the entire array.
+     For most interview problems, this is fine.
+     For production code with millions of items, use a linked list queue.
+
+COMMON QUEUE INTERVIEW PROBLEMS:
+  - BFS Level Order Traversal (LeetCode #102)
+  - Number of Islands (#200)
+  - Rotting Oranges (#994)
+  - Shortest Path in Grid
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -369,11 +493,22 @@ KEY FACTS:
 ```
 WHAT:    Chain of nodes. Each node has a value and a pointer to the next node.
          No index access — must walk from the head.
-WHY:     O(1) insert/delete at head. Used in many interview questions.
+WHY:     O(1) insert/delete at head. Foundation for stacks, queues, and more.
+```
+
+```
+VISUAL:
+  head
+   ↓
+  [1] → [2] → [3] → null
+
+  Each box (node) has:
+    - val:  the data (1, 2, 3)
+    - next: pointer to the next node (or null if last)
 ```
 
 ```javascript
-// Node structure
+// === NODE CLASS ===
 class ListNode {
   constructor(val) {
     this.val = val;
@@ -381,24 +516,129 @@ class ListNode {
   }
 }
 
-// Create: 1 → 2 → 3
+// === CREATE A LINKED LIST: 1 → 2 → 3 ===
 const head = new ListNode(1);
 head.next = new ListNode(2);
 head.next.next = new ListNode(3);
+// head → [1] → [2] → [3] → null
 
-// Traverse
-let current = head;
-while (current !== null) {
-  console.log(current.val);  // 1, 2, 3
-  current = current.next;
+// === TRAVERSE (visit every node) ===
+function printList(head) {
+  let current = head;
+  while (current !== null) {
+    console.log(current.val);
+    current = current.next;   // move to next node
+  }
+}
+printList(head);  // 1, 2, 3
+
+// === SEARCH (find a value) ===
+function search(head, target) {
+  let current = head;
+  while (current !== null) {
+    if (current.val === target) return true;
+    current = current.next;
+  }
+  return false;
+}
+search(head, 2);  // true
+search(head, 9);  // false
+
+// === INSERT AT HEAD (O(1)) ===
+function insertAtHead(head, val) {
+  const newNode = new ListNode(val);
+  newNode.next = head;   // new node points to old head
+  return newNode;        // new node IS the new head
+}
+// Before: [1] → [2] → [3]
+// insertAtHead(head, 0)
+// After:  [0] → [1] → [2] → [3]
+
+// === INSERT AT TAIL (O(n) — must walk to end) ===
+function insertAtTail(head, val) {
+  const newNode = new ListNode(val);
+  if (!head) return newNode;
+
+  let current = head;
+  while (current.next !== null) {
+    current = current.next;  // walk to last node
+  }
+  current.next = newNode;    // last node now points to new node
+  return head;
+}
+
+// === DELETE A NODE BY VALUE ===
+function deleteNode(head, target) {
+  if (!head) return null;
+  if (head.val === target) return head.next;  // delete head itself
+
+  let current = head;
+  while (current.next !== null) {
+    if (current.next.val === target) {
+      current.next = current.next.next;  // skip over the target node
+      return head;
+    }
+    current = current.next;
+  }
+  return head;  // target not found
+}
+// Before: [1] → [2] → [3]
+// deleteNode(head, 2)
+// After:  [1] → [3]
+
+// === REVERSE A LINKED LIST (very common interview question!) ===
+function reverseList(head) {
+  let prev = null;
+  let current = head;
+
+  while (current !== null) {
+    const next = current.next;  // save next
+    current.next = prev;        // reverse the link
+    prev = current;             // move prev forward
+    current = next;             // move current forward
+  }
+
+  return prev;  // prev is the new head
+}
+// Before: [1] → [2] → [3] → null
+// After:  [3] → [2] → [1] → null
+
+// === FIND MIDDLE NODE (fast & slow pointer) ===
+function findMiddle(head) {
+  let slow = head, fast = head;
+  while (fast !== null && fast.next !== null) {
+    slow = slow.next;           // moves 1 step
+    fast = fast.next.next;      // moves 2 steps
+  }
+  return slow;  // when fast reaches end, slow is at middle
+}
+
+// === DETECT CYCLE (fast & slow pointer) ===
+function hasCycle(head) {
+  let slow = head, fast = head;
+  while (fast !== null && fast.next !== null) {
+    slow = slow.next;
+    fast = fast.next.next;
+    if (slow === fast) return true;  // they met → cycle exists!
+  }
+  return false;  // fast reached end → no cycle
 }
 ```
 
 ```
 KEY FACTS:
-  ✅ Insert/delete at head: O(1)
-  ⚠️ Access by position: O(n) — must walk the chain
-  ⚠️ No random access like arrays
+  ✅ Insert/delete at head: O(1) — instant
+  ⚠️ Insert/delete at tail: O(n) — must walk the chain
+  ⚠️ Access by position: O(n) — no random access
+  ⚠️ Search: O(n) — must walk through
+
+COMMON LINKED LIST INTERVIEW PROBLEMS:
+  - Reverse Linked List (LeetCode #206)
+  - Detect Cycle (#141)
+  - Merge Two Sorted Lists (#21)
+  - Remove Nth Node From End (#19)
+  - Find Middle (#876)
+  - Palindrome Linked List (#234)
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -413,7 +653,20 @@ WHAT:    Hierarchical structure. Each node has a value, left child, right child.
 WHY:     Searching, sorting, hierarchical data (file systems, DOM, etc.)
 ```
 
+```
+VISUAL:
+         5          ← root
+        / \
+       3   8        ← children of 5
+      / \   \
+     1   4   9      ← leaves (no children)
+
+  BST rule: everything left of 5 is < 5, everything right is > 5
+  Node 3: left=1 (1<3 ✓), right=4 (4>3 ✓)
+```
+
 ```javascript
+// === NODE CLASS ===
 class TreeNode {
   constructor(val) {
     this.val = val;
@@ -422,22 +675,136 @@ class TreeNode {
   }
 }
 
-// Create:     5
-//            / \
-//           3   8
+// === CREATE A TREE ===
+//        5
+//       / \
+//      3   8
+//     / \   \
+//    1   4   9
 const root = new TreeNode(5);
 root.left = new TreeNode(3);
 root.right = new TreeNode(8);
+root.left.left = new TreeNode(1);
+root.left.right = new TreeNode(4);
+root.right.right = new TreeNode(9);
+
+// === DFS TRAVERSALS (using recursion) ===
+
+// Inorder: Left → Root → Right (gives SORTED order in BST)
+function inorder(node) {
+  if (!node) return;
+  inorder(node.left);
+  console.log(node.val);
+  inorder(node.right);
+}
+inorder(root);  // 1, 3, 4, 5, 8, 9 (sorted!)
+
+// Preorder: Root → Left → Right (useful for copying a tree)
+function preorder(node) {
+  if (!node) return;
+  console.log(node.val);
+  preorder(node.left);
+  preorder(node.right);
+}
+preorder(root);  // 5, 3, 1, 4, 8, 9
+
+// Postorder: Left → Right → Root (useful for deleting a tree)
+function postorder(node) {
+  if (!node) return;
+  postorder(node.left);
+  postorder(node.right);
+  console.log(node.val);
+}
+postorder(root);  // 1, 4, 3, 9, 8, 5
+
+// === BFS TRAVERSAL (level by level using queue) ===
+function levelOrder(root) {
+  if (!root) return [];
+  const queue = [root];
+  const result = [];
+
+  while (queue.length > 0) {
+    const size = queue.length;
+    const level = [];
+    for (let i = 0; i < size; i++) {
+      const node = queue.shift();
+      level.push(node.val);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+    result.push(level);
+  }
+  return result;
+}
+levelOrder(root);  // [[5], [3, 8], [1, 4, 9]]
+
+// === MAX DEPTH ===
+function maxDepth(node) {
+  if (!node) return 0;
+  return 1 + Math.max(maxDepth(node.left), maxDepth(node.right));
+}
+maxDepth(root);  // 3
+
+// === SEARCH IN BST ===
+function searchBST(node, target) {
+  if (!node) return null;
+  if (target === node.val) return node;
+  if (target < node.val) return searchBST(node.left, target);
+  return searchBST(node.right, target);
+}
+searchBST(root, 4);  // returns the node with val=4
+
+// === INSERT INTO BST ===
+function insertBST(node, val) {
+  if (!node) return new TreeNode(val);
+  if (val < node.val) node.left = insertBST(node.left, val);
+  else node.right = insertBST(node.right, val);
+  return node;
+}
+insertBST(root, 6);
+// 6 > 5 → go right → 6 < 8 → go left → insert as left child of 8
+
+// === INVERT TREE (mirror it) ===
+function invertTree(node) {
+  if (!node) return null;
+  const temp = node.left;
+  node.left = invertTree(node.right);
+  node.right = invertTree(temp);
+  return node;
+}
+
+// === VALIDATE BST ===
+function isValidBST(node, min = -Infinity, max = Infinity) {
+  if (!node) return true;
+  if (node.val <= min || node.val >= max) return false;
+  return isValidBST(node.left, min, node.val) &&
+         isValidBST(node.right, node.val, max);
+}
 ```
 
 ```
 KEY FACTS:
-  ✅ BST search:   O(log n) average — halves each step
+  ✅ BST search/insert: O(log n) average — halves each step
   ⚠️ BST worst case: O(n) — if tree is a straight line (unbalanced)
   ✅ Traversal orders:
-     Inorder (left, root, right)   → gives sorted order in BST
-     Preorder (root, left, right)  → used for copying trees
-     Postorder (left, right, root) → used for deleting trees
+     Inorder (left, root, right)   → sorted order in BST
+     Preorder (root, left, right)  → copy tree
+     Postorder (left, right, root) → delete tree
+     Level order (BFS)             → level by level
+  ✅ Every tree DFS problem has the same skeleton:
+     1. Base case: if null → return something
+     2. Recurse left
+     3. Recurse right
+     4. Combine results
+
+COMMON TREE INTERVIEW PROBLEMS:
+  - Max Depth (LeetCode #104)
+  - Invert Tree (#226)
+  - Validate BST (#98)
+  - Level Order Traversal (#102)
+  - Path Sum (#112)
+  - Same Tree (#100)
+  - Lowest Common Ancestor (#236)
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -448,30 +815,214 @@ KEY FACTS:
 
 ```
 WHAT:    Nodes (vertices) connected by edges. Can be directed or undirected.
-WHY:     Social networks, maps, dependencies, shortest paths
+WHY:     Social networks, maps, dependencies, routing, shortest paths
 HOW:     Usually represented as adjacency list (Map of node → neighbors)
 ```
 
+```
+VISUAL (Undirected):
+  0 --- 1
+  |     |
+  2 --- 3
+
+  Node 0 connects to: [1, 2]
+  Node 1 connects to: [0, 3]
+  Node 2 connects to: [0, 3]
+  Node 3 connects to: [1, 2]
+
+VISUAL (Directed):
+  0 → 1
+  ↓   ↓
+  2 → 3
+
+  Node 0 points to: [1, 2]
+  Node 1 points to: [3]
+  Node 2 points to: [3]
+  Node 3 points to: []
+```
+
 ```javascript
-// Adjacency list representation
-// Graph:  0 -- 1
-//         |    |
-//         2 -- 3
+// === CREATE GRAPH — Adjacency List ===
+
+// Method 1: Using Map
 const graph = new Map();
 graph.set(0, [1, 2]);
 graph.set(1, [0, 3]);
 graph.set(2, [0, 3]);
 graph.set(3, [1, 2]);
 
-// Access neighbors of node 0
-graph.get(0);  // [1, 2]
+// Method 2: Using Array of Arrays (when nodes are 0..n-1)
+const adjList = [
+  [1, 2],     // node 0's neighbors
+  [0, 3],     // node 1's neighbors
+  [0, 3],     // node 2's neighbors
+  [1, 2],     // node 3's neighbors
+];
+
+// Method 3: Build from edge list
+function buildGraph(n, edges) {
+  const graph = Array.from({ length: n }, () => []);
+  for (const [from, to] of edges) {
+    graph[from].push(to);
+    graph[to].push(from);  // remove this line for directed graph
+  }
+  return graph;
+}
+const g = buildGraph(4, [[0,1], [0,2], [1,3], [2,3]]);
+// g = [[1,2], [0,3], [0,3], [1,2]]
+
+// === DFS ON GRAPH (visit all connected nodes) ===
+function dfsGraph(graph, start) {
+  const visited = new Set();
+  const result = [];
+
+  function dfs(node) {
+    if (visited.has(node)) return;
+    visited.add(node);
+    result.push(node);
+    for (const neighbor of graph[node]) {
+      dfs(neighbor);
+    }
+  }
+
+  dfs(start);
+  return result;
+}
+dfsGraph(adjList, 0);  // [0, 1, 3, 2]
+
+// === BFS ON GRAPH (level by level, shortest path) ===
+function bfsGraph(graph, start) {
+  const visited = new Set([start]);
+  const queue = [start];
+  const result = [];
+
+  while (queue.length > 0) {
+    const node = queue.shift();
+    result.push(node);
+    for (const neighbor of graph[node]) {
+      if (!visited.has(neighbor)) {
+        visited.add(neighbor);
+        queue.push(neighbor);
+      }
+    }
+  }
+
+  return result;
+}
+bfsGraph(adjList, 0);  // [0, 1, 2, 3]
+
+// === COUNT CONNECTED COMPONENTS ===
+function countComponents(n, graph) {
+  const visited = new Set();
+  let count = 0;
+
+  function dfs(node) {
+    visited.add(node);
+    for (const neighbor of graph[node]) {
+      if (!visited.has(neighbor)) dfs(neighbor);
+    }
+  }
+
+  for (let i = 0; i < n; i++) {
+    if (!visited.has(i)) {
+      dfs(i);
+      count++;   // found a new component
+    }
+  }
+  return count;
+}
+
+// === SHORTEST PATH (BFS — unweighted graph) ===
+function shortestPath(graph, start, end) {
+  const visited = new Set([start]);
+  const queue = [[start, 0]];  // [node, distance]
+
+  while (queue.length > 0) {
+    const [node, dist] = queue.shift();
+    if (node === end) return dist;
+
+    for (const neighbor of graph[node]) {
+      if (!visited.has(neighbor)) {
+        visited.add(neighbor);
+        queue.push([neighbor, dist + 1]);
+      }
+    }
+  }
+  return -1;  // no path found
+}
+shortestPath(adjList, 0, 3);  // 2 (path: 0→1→3 or 0→2→3)
+
+// === DETECT CYCLE IN UNDIRECTED GRAPH ===
+function hasCycle(n, graph) {
+  const visited = new Set();
+
+  function dfs(node, parent) {
+    visited.add(node);
+    for (const neighbor of graph[node]) {
+      if (!visited.has(neighbor)) {
+        if (dfs(neighbor, node)) return true;
+      } else if (neighbor !== parent) {
+        return true;  // found a cycle!
+      }
+    }
+    return false;
+  }
+
+  for (let i = 0; i < n; i++) {
+    if (!visited.has(i)) {
+      if (dfs(i, -1)) return true;
+    }
+  }
+  return false;
+}
+
+// === NUMBER OF ISLANDS (2D Grid as Graph) ===
+function numIslands(grid) {
+  let count = 0;
+  const rows = grid.length, cols = grid[0].length;
+
+  function sink(r, c) {
+    if (r < 0 || r >= rows || c < 0 || c >= cols) return;
+    if (grid[r][c] === '0') return;
+    grid[r][c] = '0';  // mark visited
+    sink(r + 1, c);     // down
+    sink(r - 1, c);     // up
+    sink(r, c + 1);     // right
+    sink(r, c - 1);     // left
+  }
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (grid[r][c] === '1') {
+        count++;
+        sink(r, c);  // sink the entire island
+      }
+    }
+  }
+  return count;
+}
 ```
 
 ```
 KEY FACTS:
   ✅ Adjacency list space: O(V + E)  (V = vertices, E = edges)
-  ✅ Check if edge exists: O(degree of node)
-  ✅ Traversed with BFS or DFS
+  ✅ DFS: O(V + E) time, O(V) space
+  ✅ BFS: O(V + E) time, O(V) space
+  ✅ BFS finds shortest path in UNWEIGHTED graphs
+  ⚠️ Always track visited nodes to avoid infinite loops
+  ⚠️ For WEIGHTED shortest path, use Dijkstra's algorithm (Level 4)
+
+  DFS vs BFS on graphs:
+    DFS → explore all paths, detect cycles, connected components
+    BFS → shortest path, level-by-level, nearest neighbor
+
+COMMON GRAPH INTERVIEW PROBLEMS:
+  - Number of Islands (LeetCode #200) — grid DFS/BFS
+  - Clone Graph (#133)
+  - Course Schedule (#207) — topological sort
+  - Pacific Atlantic Water Flow (#417)
+  - Shortest Path in Grid
+  - Connected Components (#323)
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -538,7 +1089,7 @@ Ask: "What do I RETURN?"
   same-size changed list?  → 🔄 Transformer
   "seen before?" check?    → 🔎 Memory
   compare items?           → 📊 Pointer Walker
-  (see Section C for all patterns)
+  (see Section D for all patterns)
 ```
 
 ---
@@ -613,7 +1164,762 @@ GIVE BACK              →  return result
 
 ---
 
-# Section C: All Patterns
+# Section C: Algorithms
+
+> **Patterns tell you WHAT shape the problem is.**
+> **Algorithms tell you HOW to execute the solution.**
+> **When you pick a pattern, the algorithm comes FREE inside the template.**
+
+---
+
+## How They Relate
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│  DATA STRUCTURES    = The TOOLS (pot, pan, oven)           │
+│  Array, Set, Map, Stack, Queue, Tree, Graph                │
+│                                                             │
+│  ALGORITHMS         = The RECIPE (boil 10 min, add salt)   │
+│  Binary Search, BFS, DFS, Merge Sort, Kadane's            │
+│                                                             │
+│  PATTERNS           = The COOKING STYLE (grilling, baking) │
+│  Detective, Bucket, Memory, Sliding Window, DP             │
+│                                                             │
+│  6-PHASE PROCESS    = The CHEF'S METHOD                    │
+│  Decompose → Identify → Pseudo-code → Dry Run → Code      │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+THE FLOW:
+  Phase 2 (Identify Pattern) → Pattern gives you Template → Template IS the Algorithm
+
+  You never think: "I picked the pattern, now which algorithm?"
+  The template already IS the algorithm. They're one package.
+```
+
+```
+WHICH ALGORITHM LIVES INSIDE WHICH PATTERN:
+
+  🔍 Detective       → Linear Scan
+  🪣 Bucket          → Running Total, Kadane's Algorithm
+  🏆 Filter          → Linear Scan + Condition
+  🔄 Transformer     → Map Operation
+  🔎 Memory          → Hashing
+  📊 Pointer Walker  → Two Pointer Technique, Floyd's Cycle Detection
+  🪟 Sliding Window  → Sliding Window Technique
+  🔪 Binary Search   → Binary Search Algorithm
+  🏗️ Stack           → Stack-based Matching, Monotonic Stack
+  🌳 Tree DFS        → Inorder / Preorder / Postorder Traversal
+  🌊 BFS             → Breadth-First Search Algorithm
+  🧩 DP              → Memoization, Tabulation, Kadane's, Knapsack, LCS, LIS
+  🔙 Backtracking    → Recursive Backtracking
+  🏃 Greedy          → Activity Selection, Greedy Choice
+```
+
+---
+
+## Sorting Algorithms
+
+> Sorting is NOT a pattern — it's a TOOL you use before applying a pattern.
+> Example: Sort first → then use 📊 Pointer Walker or 🔪 Binary Search.
+
+### Built-in Sort (Use This 99% of the Time)
+
+```javascript
+// ⚠️ DEFAULT .sort() IS ALPHABETICAL — NOT NUMERIC!
+[10, 2, 30].sort();              // [10, 2, 30] → WRONG! (lexicographic)
+[10, 2, 30].sort((a, b) => a - b); // [2, 10, 30] → CORRECT (numeric ascending)
+[10, 2, 30].sort((a, b) => b - a); // [30, 10, 2] → numeric descending
+
+// Sort strings
+["banana", "apple", "cherry"].sort(); // ["apple", "banana", "cherry"]
+
+// Sort objects by property
+const people = [{name: "Bob", age: 25}, {name: "Ana", age: 30}];
+people.sort((a, b) => a.age - b.age);  // sort by age ascending
+```
+
+```
+Built-in sort: O(n log n) time, O(n) space
+This uses TimSort internally (hybrid of merge sort + insertion sort).
+For interviews, just use .sort() unless asked to implement one.
+```
+
+### Bubble Sort (Simple but Slow — Learn for Understanding Only)
+
+```
+WHAT: Repeatedly swap adjacent elements if they're in wrong order.
+      Like bubbles rising — biggest numbers "bubble" to the end.
+TIME: O(n²) — too slow for real use. Only for learning.
+```
+
+```javascript
+function bubbleSort(arr) {
+  const n = arr.length;
+  for (let i = 0; i < n - 1; i++) {
+    let swapped = false;
+    for (let j = 0; j < n - 1 - i; j++) {
+      if (arr[j] > arr[j + 1]) {
+        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];  // swap
+        swapped = true;
+      }
+    }
+    if (!swapped) break;  // already sorted → early exit
+  }
+  return arr;
+}
+```
+
+```
+Trace: [5, 3, 1]
+  Pass 1: compare 5,3 → swap → [3,5,1]
+          compare 5,1 → swap → [3,1,5]    (5 bubbled to end)
+  Pass 2: compare 3,1 → swap → [1,3,5]    (3 in place)
+  Done: [1, 3, 5] ✓
+```
+
+### Selection Sort (Simple but Slow)
+
+```
+WHAT: Find the minimum in remaining array, put it at the front.
+TIME: O(n²)
+```
+
+```javascript
+function selectionSort(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    let minIdx = i;
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[j] < arr[minIdx]) minIdx = j;
+    }
+    [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];  // swap min to front
+  }
+  return arr;
+}
+```
+
+```
+Trace: [3, 1, 4]
+  i=0: find min in [3,1,4] → min is 1 at index 1 → swap → [1,3,4]
+  i=1: find min in [3,4]   → min is 3 at index 1 → no swap
+  Done: [1, 3, 4] ✓
+```
+
+### Insertion Sort (Good for Nearly Sorted Data)
+
+```
+WHAT: Build sorted array one element at a time. Pick next element,
+      insert it into its correct position in the sorted part.
+TIME: O(n²) worst, O(n) best (already sorted)
+```
+
+```javascript
+function insertionSort(arr) {
+  for (let i = 1; i < arr.length; i++) {
+    const current = arr[i];
+    let j = i - 1;
+    while (j >= 0 && arr[j] > current) {
+      arr[j + 1] = arr[j];   // shift bigger elements right
+      j--;
+    }
+    arr[j + 1] = current;    // insert in correct position
+  }
+  return arr;
+}
+```
+
+```
+Trace: [5, 2, 4]
+  i=1: current=2, compare with 5 → shift 5 right → insert 2 → [2,5,4]
+  i=2: current=4, compare with 5 → shift 5 right
+                  compare with 2 → stop → insert 4 → [2,4,5]
+  Done: [2, 4, 5] ✓
+```
+
+### Merge Sort (Fast, Stable, Predictable)
+
+```
+WHAT: Divide array in half, sort each half, merge them back.
+      Classic divide-and-conquer algorithm.
+TIME: O(n log n) always — guaranteed
+SPACE: O(n) — needs extra array for merging
+```
+
+```javascript
+function mergeSort(arr) {
+  if (arr.length <= 1) return arr;
+
+  const mid = Math.floor(arr.length / 2);
+  const left = mergeSort(arr.slice(0, mid));   // sort left half
+  const right = mergeSort(arr.slice(mid));      // sort right half
+  return merge(left, right);                    // merge sorted halves
+}
+
+function merge(left, right) {
+  const result = [];
+  let i = 0, j = 0;
+
+  while (i < left.length && j < right.length) {
+    if (left[i] <= right[j]) {
+      result.push(left[i]);
+      i++;
+    } else {
+      result.push(right[j]);
+      j++;
+    }
+  }
+
+  // add remaining elements
+  while (i < left.length) result.push(left[i++]);
+  while (j < right.length) result.push(right[j++]);
+
+  return result;
+}
+```
+
+```
+Trace: [5, 3, 1, 4]
+  Split: [5, 3] and [1, 4]
+  Split: [5] [3] and [1] [4]
+  Merge: [3, 5] and [1, 4]
+  Merge: [1, 3, 4, 5] ✓
+```
+
+### Quick Sort (Fast, In-Place, Most Used)
+
+```
+WHAT: Pick a "pivot." Put smaller items left, bigger items right.
+      Recursively sort left and right parts.
+TIME: O(n log n) average, O(n²) worst (rare with good pivot)
+SPACE: O(log n) — in-place, just recursion stack
+```
+
+```javascript
+function quickSort(arr, lo = 0, hi = arr.length - 1) {
+  if (lo >= hi) return arr;
+
+  const pivotIdx = partition(arr, lo, hi);
+  quickSort(arr, lo, pivotIdx - 1);   // sort left of pivot
+  quickSort(arr, pivotIdx + 1, hi);   // sort right of pivot
+  return arr;
+}
+
+function partition(arr, lo, hi) {
+  const pivot = arr[hi];    // pick last element as pivot
+  let i = lo;               // i = where to place next small element
+
+  for (let j = lo; j < hi; j++) {
+    if (arr[j] < pivot) {
+      [arr[i], arr[j]] = [arr[j], arr[i]];  // swap small element to left
+      i++;
+    }
+  }
+  [arr[i], arr[hi]] = [arr[hi], arr[i]];  // put pivot in correct position
+  return i;
+}
+```
+
+```
+Trace: [5, 3, 1, 4, 2]  pivot = 2
+  j=0: 5<2? NO
+  j=1: 3<2? NO
+  j=2: 1<2? YES → swap arr[0] and arr[2] → [1, 3, 5, 4, 2], i=1
+  j=3: 4<2? NO
+  Place pivot: swap arr[1] and arr[4] → [1, 2, 5, 4, 3]
+  Pivot 2 is at index 1 — everything left is smaller ✓
+  Now sort [1] and [5, 4, 3] recursively
+```
+
+### Sorting Comparison Table
+
+```
+┌─────────────────┬───────────┬───────────┬──────────┬────────────┐
+│ Algorithm       │ Best      │ Average   │ Worst    │ Space      │
+├─────────────────┼───────────┼───────────┼──────────┼────────────┤
+│ Bubble Sort     │ O(n)      │ O(n²)     │ O(n²)    │ O(1)       │
+│ Selection Sort  │ O(n²)     │ O(n²)     │ O(n²)    │ O(1)       │
+│ Insertion Sort  │ O(n)      │ O(n²)     │ O(n²)    │ O(1)       │
+│ Merge Sort      │ O(n log n)│ O(n log n)│O(n log n)│ O(n)       │
+│ Quick Sort      │ O(n log n)│ O(n log n)│ O(n²)    │ O(log n)   │
+│ JS .sort()      │ O(n log n)│ O(n log n)│O(n log n)│ O(n)       │
+└─────────────────┴───────────┴───────────┴──────────┴────────────┘
+
+WHEN TO USE WHAT:
+  Interview says "sort this" → use .sort((a, b) => a - b)
+  Interview says "implement a sort" → Merge Sort (safe) or Quick Sort (fast)
+  Nearly sorted data → Insertion Sort is O(n)
+  Learning only → Bubble Sort (simplest to understand)
+```
+
+---
+
+## Searching Algorithms
+
+### Linear Search
+
+```
+WHAT: Check every element one by one.
+TIME: O(n) — slow but works on unsorted data.
+USED IN: 🔍 Detective, 🪣 Bucket, 🏆 Filter, 🔄 Transformer
+```
+
+```javascript
+function linearSearch(arr, target) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] === target) return i;
+  }
+  return -1;
+}
+```
+
+### Binary Search
+
+```
+WHAT: Cut search space in half each step. Requires SORTED data.
+TIME: O(log n) — extremely fast.
+USED IN: 🔪 Binary Search pattern
+```
+
+```javascript
+function binarySearch(arr, target) {
+  let lo = 0, hi = arr.length - 1;
+  while (lo <= hi) {
+    const mid = Math.floor((lo + hi) / 2);
+    if (arr[mid] === target) return mid;
+    if (arr[mid] < target) lo = mid + 1;
+    else hi = mid - 1;
+  }
+  return -1;
+}
+```
+
+### Hash-Based Search
+
+```
+WHAT: Store values in Set/Map. Lookup is O(1).
+TIME: O(1) per lookup, O(n) to build.
+USED IN: 🔎 Memory pattern
+```
+
+```javascript
+// Build lookup
+const set = new Set(arr);
+// Search
+set.has(target);  // O(1) instant!
+```
+
+```
+SEARCHING COMPARISON:
+  Linear Search  → O(n)     → works on anything
+  Binary Search  → O(log n) → requires sorted data
+  Hash Search    → O(1)     → requires building Set/Map first (O(n) space)
+```
+
+---
+
+## Traversal Algorithms
+
+### Array Traversal
+
+```javascript
+// Forward
+for (let i = 0; i < arr.length; i++) { /* arr[i] */ }
+
+// Backward
+for (let i = arr.length - 1; i >= 0; i--) { /* arr[i] */ }
+
+// For...of (when you don't need index)
+for (const item of arr) { /* item */ }
+```
+
+### Tree Traversal — DFS (Depth-First)
+
+```javascript
+// Inorder: Left → Root → Right (sorted order in BST)
+function inorder(node) {
+  if (!node) return;
+  inorder(node.left);
+  console.log(node.val);  // process
+  inorder(node.right);
+}
+
+// Preorder: Root → Left → Right (copy tree)
+function preorder(node) {
+  if (!node) return;
+  console.log(node.val);  // process
+  preorder(node.left);
+  preorder(node.right);
+}
+
+// Postorder: Left → Right → Root (delete tree)
+function postorder(node) {
+  if (!node) return;
+  postorder(node.left);
+  postorder(node.right);
+  console.log(node.val);  // process
+}
+```
+
+```
+Used in: 🌳 Tree DFS pattern
+```
+
+### Tree/Graph Traversal — BFS (Breadth-First)
+
+```javascript
+function bfs(root) {
+  if (!root) return;
+  const queue = [root];
+  while (queue.length > 0) {
+    const node = queue.shift();
+    console.log(node.val);  // process
+    if (node.left) queue.push(node.left);
+    if (node.right) queue.push(node.right);
+  }
+}
+```
+
+```
+Used in: 🌊 BFS pattern
+DFS vs BFS:
+  DFS → goes deep, uses stack/recursion, "explore all paths"
+  BFS → goes wide, uses queue, "shortest path / level by level"
+```
+
+### Graph Traversal
+
+```javascript
+// DFS on Graph
+function dfsGraph(graph, start) {
+  const visited = new Set();
+  function dfs(node) {
+    if (visited.has(node)) return;
+    visited.add(node);
+    console.log(node);  // process
+    for (const neighbor of graph[node]) {
+      dfs(neighbor);
+    }
+  }
+  dfs(start);
+}
+
+// BFS on Graph
+function bfsGraph(graph, start) {
+  const visited = new Set([start]);
+  const queue = [start];
+  while (queue.length > 0) {
+    const node = queue.shift();
+    console.log(node);  // process
+    for (const neighbor of graph[node]) {
+      if (!visited.has(neighbor)) {
+        visited.add(neighbor);
+        queue.push(neighbor);
+      }
+    }
+  }
+}
+```
+
+---
+
+## Classic Named Algorithms
+
+> These are famous algorithms you'll encounter. Each one lives inside a pattern.
+
+### Kadane's Algorithm (Maximum Subarray Sum)
+
+```
+WHAT: Find the contiguous subarray with the largest sum.
+LIVES IN: 🪣 Bucket pattern
+TIME: O(n)
+```
+
+```javascript
+function maxSubarraySum(arr) {
+  let currentSum = arr[0];
+  let bestSum = arr[0];
+
+  for (let i = 1; i < arr.length; i++) {
+    // Either extend the current subarray, or start fresh at arr[i]
+    currentSum = Math.max(arr[i], currentSum + arr[i]);
+    bestSum = Math.max(bestSum, currentSum);
+  }
+
+  return bestSum;
+}
+```
+
+```
+Trace: [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+  i=1: currentSum = max(1, -2+1) = 1, best=1
+  i=2: currentSum = max(-3, 1-3) = -2, best=1
+  i=3: currentSum = max(4, -2+4) = 4, best=4
+  i=4: currentSum = max(-1, 4-1) = 3, best=4
+  i=5: currentSum = max(2, 3+2) = 5, best=5
+  i=6: currentSum = max(1, 5+1) = 6, best=6
+  i=7: currentSum = max(-5, 6-5) = 1, best=6
+  i=8: currentSum = max(4, 1+4) = 5, best=6
+  Return: 6 ✓ (subarray [4, -1, 2, 1])
+
+LeetCode: #53 Maximum Subarray
+```
+
+### Floyd's Cycle Detection (Tortoise and Hare)
+
+```
+WHAT: Detect if a linked list has a cycle using slow + fast pointers.
+LIVES IN: 📊 Pointer Walker pattern
+TIME: O(n), SPACE: O(1)
+```
+
+```javascript
+function hasCycle(head) {
+  let slow = head, fast = head;
+  while (fast !== null && fast.next !== null) {
+    slow = slow.next;          // moves 1 step
+    fast = fast.next.next;     // moves 2 steps
+    if (slow === fast) return true;   // they met → cycle!
+  }
+  return false;   // fast reached end → no cycle
+}
+```
+
+```
+VISUAL:
+  No cycle:  1 → 2 → 3 → null    fast reaches null → false
+  Cycle:     1 → 2 → 3 → 4
+                  ↑         ↓
+                  └─────────┘    slow and fast will meet → true
+
+LeetCode: #141 Linked List Cycle, #142 Linked List Cycle II
+```
+
+### Dijkstra's Algorithm (Shortest Path in Weighted Graph)
+
+```
+WHAT: Find shortest path from one node to all other nodes in a weighted graph.
+LIVES IN: 🏃 Greedy pattern (always pick the closest unvisited node)
+TIME: O((V + E) log V) with a heap
+```
+
+```javascript
+function dijkstra(graph, start) {
+  // graph[node] = [{neighbor, weight}, ...]
+  const dist = new Map();
+  const visited = new Set();
+
+  // Initialize all distances as Infinity
+  for (const node of graph.keys()) {
+    dist.set(node, Infinity);
+  }
+  dist.set(start, 0);
+
+  // Simple version without heap (O(V²) — heap version is faster)
+  while (visited.size < graph.size) {
+    // Find unvisited node with smallest distance
+    let current = null;
+    let minDist = Infinity;
+    for (const [node, d] of dist) {
+      if (!visited.has(node) && d < minDist) {
+        current = node;
+        minDist = d;
+      }
+    }
+
+    if (current === null) break;  // remaining nodes unreachable
+    visited.add(current);
+
+    // Update distances to neighbors
+    for (const { neighbor, weight } of graph.get(current)) {
+      if (!visited.has(neighbor)) {
+        const newDist = dist.get(current) + weight;
+        if (newDist < dist.get(neighbor)) {
+          dist.set(neighbor, newDist);
+        }
+      }
+    }
+  }
+
+  return dist;  // Map of node → shortest distance from start
+}
+
+// Example usage:
+const weightedGraph = new Map();
+weightedGraph.set('A', [{neighbor: 'B', weight: 4}, {neighbor: 'C', weight: 1}]);
+weightedGraph.set('B', [{neighbor: 'D', weight: 1}]);
+weightedGraph.set('C', [{neighbor: 'B', weight: 2}, {neighbor: 'D', weight: 5}]);
+weightedGraph.set('D', []);
+
+dijkstra(weightedGraph, 'A');
+// A→0, B→3 (A→C→B), C→1 (A→C), D→4 (A→C→B→D)
+```
+
+```
+VISUAL:
+       4
+  A ------→ B
+  |          |
+ 1|         1|
+  ↓    2     ↓
+  C ------→ D
+       5
+  C also connects to D directly (weight 5)
+
+  Shortest: A→C (1), then C→B (2) = 3, then B→D (1) = 4
+  Not A→B (4) directly — going through C is cheaper!
+
+LeetCode: #743 Network Delay Time, #1631 Path with Min Effort
+```
+
+### Topological Sort (Task Ordering with Dependencies)
+
+```
+WHAT: Order tasks so that every dependency is completed before the task.
+      Only works on DAGs (Directed Acyclic Graphs — no cycles).
+LIVES IN: Level 4 specialist patterns
+TIME: O(V + E)
+```
+
+```javascript
+function topologicalSort(numNodes, edges) {
+  // Build graph and count in-degrees
+  const graph = Array.from({ length: numNodes }, () => []);
+  const inDegree = Array(numNodes).fill(0);
+
+  for (const [from, to] of edges) {
+    graph[from].push(to);
+    inDegree[to]++;
+  }
+
+  // Start with all nodes that have 0 dependencies
+  const queue = [];
+  for (let i = 0; i < numNodes; i++) {
+    if (inDegree[i] === 0) queue.push(i);
+  }
+
+  const order = [];
+  while (queue.length > 0) {
+    const node = queue.shift();
+    order.push(node);
+
+    for (const neighbor of graph[node]) {
+      inDegree[neighbor]--;
+      if (inDegree[neighbor] === 0) {
+        queue.push(neighbor);  // all dependencies met → ready
+      }
+    }
+  }
+
+  // If order doesn't include all nodes → there was a cycle
+  return order.length === numNodes ? order : [];
+}
+
+// Example: 4 courses, prerequisites: 1→0, 2→0, 3→1, 3→2
+topologicalSort(4, [[1,0], [2,0], [3,1], [3,2]]);
+// → [1, 2, 3, 0] or [2, 1, 3, 0] — both valid
+// Meaning: do 1 and 2 first (no deps), then 3, then 0
+```
+
+```
+LeetCode: #207 Course Schedule, #210 Course Schedule II
+```
+
+### Union-Find (Disjoint Set)
+
+```
+WHAT: Track which elements belong to the same group.
+      Two operations: union (merge groups) and find (which group?).
+LIVES IN: Level 4 specialist patterns
+TIME: Nearly O(1) per operation with path compression
+```
+
+```javascript
+class UnionFind {
+  constructor(n) {
+    this.parent = Array.from({ length: n }, (_, i) => i); // each node is its own parent
+    this.rank = Array(n).fill(0);
+  }
+
+  find(x) {
+    if (this.parent[x] !== x) {
+      this.parent[x] = this.find(this.parent[x]);  // path compression
+    }
+    return this.parent[x];
+  }
+
+  union(x, y) {
+    const rootX = this.find(x);
+    const rootY = this.find(y);
+    if (rootX === rootY) return false;  // already in same group
+
+    // Union by rank — attach smaller tree under bigger tree
+    if (this.rank[rootX] < this.rank[rootY]) {
+      this.parent[rootX] = rootY;
+    } else if (this.rank[rootX] > this.rank[rootY]) {
+      this.parent[rootY] = rootX;
+    } else {
+      this.parent[rootY] = rootX;
+      this.rank[rootX]++;
+    }
+    return true;
+  }
+
+  connected(x, y) {
+    return this.find(x) === this.find(y);
+  }
+}
+
+// Example: 5 people, connect friends
+const uf = new UnionFind(5);
+uf.union(0, 1);   // 0 and 1 are friends
+uf.union(2, 3);   // 2 and 3 are friends
+uf.connected(0, 1); // true
+uf.connected(0, 2); // false
+uf.union(1, 2);   // now groups merge
+uf.connected(0, 3); // true (0-1-2-3 all connected)
+```
+
+```
+LeetCode: #547 Number of Provinces, #684 Redundant Connection, #200 Number of Islands
+```
+
+### Complete Algorithm Map
+
+```
+┌──────────────────────┬────────────────────────────┬──────────────┐
+│ Algorithm            │ What It Does               │ Lives In     │
+├──────────────────────┼────────────────────────────┼──────────────┤
+│ Linear Search        │ Check every element         │ 🔍🪣🏆🔄     │
+│ Binary Search        │ Halve sorted search space   │ 🔪           │
+│ Hash Lookup          │ O(1) lookup via Set/Map     │ 🔎           │
+│ Two Pointer          │ Compare from both ends      │ 📊           │
+│ Sliding Window       │ Track contiguous window     │ 🪟           │
+│ Bubble Sort          │ Swap adjacent (slow)        │ Sorting      │
+│ Selection Sort       │ Find min, place it (slow)   │ Sorting      │
+│ Insertion Sort       │ Insert into sorted part     │ Sorting      │
+│ Merge Sort           │ Divide, sort, merge         │ Sorting      │
+│ Quick Sort           │ Pivot + partition           │ Sorting      │
+│ DFS (tree)           │ Go deep, then backtrack     │ 🌳           │
+│ BFS (tree/graph)     │ Go level by level           │ 🌊           │
+│ DFS (graph)          │ Explore all paths           │ 🌳           │
+│ Kadane's             │ Max subarray sum             │ 🪣           │
+│ Floyd's Cycle        │ Detect cycle (fast/slow)    │ 📊           │
+│ Dijkstra's           │ Shortest path (weighted)    │ 🏃 + Heap   │
+│ Topological Sort     │ Task order with deps        │ 🌊 + Graph  │
+│ Union-Find           │ Group connectivity           │ Specialist   │
+│ Memoization          │ Cache recursive results      │ 🧩 DP       │
+│ Tabulation           │ Bottom-up DP table           │ 🧩 DP       │
+│ Backtracking         │ Choose-explore-unchoose      │ 🔙           │
+│ Greedy Choice        │ Best local = best global     │ 🏃           │
+└──────────────────────┴────────────────────────────┴──────────────┘
+```
+
+[↑ Back to Table of Contents](#table-of-contents)
+
+---
+
+# Section D: All Patterns
 
 ```
 Level 1 (6 patterns)  → Solves 80%  → Weeks 1-2
@@ -1602,7 +2908,7 @@ LeetCode: #55 Jump Game, #121 Best Time to Buy/Sell Stock,
 
 ---
 
-# Section D: Pattern Combos
+# Section E: Pattern Combos
 
 > Most real problems use 2 patterns together. Here are the most common combos.
 
@@ -1740,7 +3046,7 @@ Generate + filter valid ones    → 🔙 + 🔍 (Backtracking + Detective)
 
 ---
 
-# Section E: Big-O Cheat Sheet
+# Section F: Big-O Cheat Sheet
 
 ## Common Complexities Ranked
 
@@ -1820,7 +3126,7 @@ THIS IS WHY PATTERN 5 (🔎 Memory) IS POWERFUL:
 
 ---
 
-# Section F: How Patterns Connect
+# Section G: How Patterns Connect
 
 ```
 Every advanced pattern is built from Level 1:
@@ -1841,7 +3147,7 @@ Every advanced pattern is built from Level 1:
 
 ---
 
-# Section G: Key Insights
+# Section H: Key Insights
 
 ```
  #1: If you can't say it in English, you can't code it.
@@ -1866,7 +3172,7 @@ Every advanced pattern is built from Level 1:
 
 ---
 
-# Section H: 35-Day Practice Roadmap
+# Section I: 35-Day Practice Roadmap
 
 ## Week 1-2: Level 1 Patterns
 
@@ -1924,7 +3230,7 @@ Every advanced pattern is built from Level 1:
 
 ---
 
-# Section I: Golden Rules
+# Section J: Golden Rules
 
 ```
 1. "If you can't explain it in English, you can't code it."
