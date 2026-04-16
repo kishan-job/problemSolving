@@ -2243,6 +2243,21 @@ function varWindow(arr) {
 }
 ```
 
+**Example — "Max sum of K consecutive numbers"**
+
+```javascript
+function maxSumK(arr, k) {
+  let windowSum = 0;
+  for (let i = 0; i < k; i++) windowSum += arr[i];
+  let best = windowSum;
+  for (let i = k; i < arr.length; i++) {
+    windowSum += arr[i] - arr[i - k];
+    best = Math.max(best, windowSum);
+  }
+  return best;
+}
+```
+
 ```
 Trace: [1,4,2,7,1] k=3
   First window [1,4,2] = 7
@@ -2253,7 +2268,12 @@ Trace: [1,4,2,7,1] k=3
 
 ```
 Practice:
-LeetCode: #3 Longest Substring, #209 Min Size Subarray, #438 Find Anagrams
+□ Max sum subarray of size K
+□ Longest substring without repeating characters
+□ Minimum size subarray with sum ≥ target
+□ Find all anagrams in a string
+LeetCode: #3 Longest Substring, #209 Min Size Subarray Sum,
+          #438 Find All Anagrams, #567 Permutation in String
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
