@@ -443,6 +443,10 @@ KEY FACTS:
   ⚠️ shift():  O(n) — remove from front (moves all remaining elements)
   Think: "First In, First Out" — like a queue at a ticket counter
 
+  ⚠️ shift() is O(n) because it re-indexes the entire array.
+     For most interview problems, this is fine.
+     For production code with millions of items, use a linked list queue.
+
 COMMON QUEUE INTERVIEW PROBLEMS:
   - BFS Level Order Traversal (LeetCode #102)
   - Number of Islands (#200)
@@ -467,6 +471,10 @@ VISUAL:
   head
    ↓
   [1] → [2] → [3] → null
+
+  Each box (node) has:
+    - val:  the data (1, 2, 3)
+    - next: pointer to the next node (or null if last)
 ```
 
 ```javascript
@@ -746,18 +754,59 @@ WHY:     Social networks, maps, dependencies, routing, shortest paths
 HOW:     Usually represented as adjacency list (Map of node → neighbors)
 ```
 
+```
+VISUAL (Undirected):
+  0 --- 1
+  |     |
+  2 --- 3
+
+  Node 0 connects to: [1, 2]
+  Node 1 connects to: [0, 3]
+  Node 2 connects to: [0, 3]
+  Node 3 connects to: [1, 2]
+
+VISUAL (Directed):
+  0 → 1
+  ↓   ↓
+  2 → 3
+
+  Node 0 points to: [1, 2]
+  Node 1 points to: [3]
+  Node 2 points to: [3]
+  Node 3 points to: []
+```
+
 ```javascript
-// Build from edge list
+// === CREATE GRAPH — Adjacency List ===
+
+// Method 1: Using Map
+const graph = new Map();
+graph.set(0, [1, 2]);
+graph.set(1, [0, 3]);
+graph.set(2, [0, 3]);
+graph.set(3, [1, 2]);
+
+// Method 2: Using Array of Arrays (when nodes are 0..n-1)
+const adjList = [
+  [1, 2],     // node 0's neighbors
+  [0, 3],     // node 1's neighbors
+  [0, 3],     // node 2's neighbors
+  [1, 2],     // node 3's neighbors
+];
+
+// Method 3: Build from edge list
 function buildGraph(n, edges) {
   const graph = Array.from({ length: n }, () => []);
   for (const [from, to] of edges) {
     graph[from].push(to);
-    graph[to].push(from);
+    graph[to].push(from);  // remove this line for directed graph
   }
   return graph;
 }
+const g = buildGraph(4, [[0,1], [0,2], [1,3], [2,3]]);
+// g = [[1,2], [0,3], [0,3], [1,2]]
 
-// DFS ON GRAPH
+// === DFS ON GRAPH (visit all connected nodes) ===
 function dfsGraph(graph, start) {
   const visited = new Set();
   const result = [];
@@ -770,8 +819,9 @@ function dfsGraph(graph, start) {
   dfs(start);
   return result;
 }
+dfsGraph(adjList, 0);  // [0, 1, 3, 2]
 
-// BFS ON GRAPH
+// === BFS ON GRAPH (level by level, shortest path) ===
 function bfsGraph(graph, start) {
   const visited = new Set([start]);
   const queue = [start];
@@ -788,6 +838,7 @@ function bfsGraph(graph, start) {
   }
   return result;
 }
+bfsGraph(adjList, 0);  // [0, 1, 2, 3]
 
 // COUNT CONNECTED COMPONENTS
 function countComponents(n, graph) {
@@ -1288,22 +1339,32 @@ WHEN TO USE WHAT:
 
 ## Searching Algorithms
 
+### Linear Search
+
 ```
-Linear Search  → O(n)     → works on anything
-Binary Search  → O(log n) → requires sorted data
-Hash Search    → O(1)     → requires building Set/Map first
+WHAT: Check every element one by one.
+TIME: O(n) — slow but works on unsorted data.
+USED IN: 🔍 Detective, 🪣 Bucket, 🏆 Filter, 🔄 Transformer
 ```
 
 ```javascript
-// Linear Search
 function linearSearch(arr, target) {
   for (let i = 0; i < arr.length; i++) {
     if (arr[i] === target) return i;
   }
   return -1;
 }
+```
 
-// Binary Search
+### Binary Search
+
+```
+WHAT: Cut search space in half each step. Requires SORTED data.
+TIME: O(log n) — extremely fast.
+USED IN: 🔪 Binary Search pattern
+```
+
+```javascript
 function binarySearch(arr, target) {
   let lo = 0, hi = arr.length - 1;
   while (lo <= hi) {
@@ -1314,10 +1375,28 @@ function binarySearch(arr, target) {
   }
   return -1;
 }
+```
 
-// Hash Search
+### Hash-Based Search
+
+```
+WHAT: Store values in Set/Map. Lookup is O(1).
+TIME: O(1) per lookup, O(n) to build.
+USED IN: 🔎 Memory pattern
+```
+
+```javascript
+// Build lookup
 const set = new Set(arr);
+// Search
 set.has(target);  // O(1) instant!
+```
+
+```
+SEARCHING COMPARISON:
+  Linear Search  → O(n)     → works on anything
+  Binary Search  → O(log n) → requires sorted data
+  Hash Search    → O(1)     → requires building Set/Map first (O(n) space)
 ```
 
 ---
@@ -1431,6 +1510,12 @@ function bfsGraph(graph, start) {
 
 ### Kadane's Algorithm (Maximum Subarray Sum)
 
+```
+WHAT: Find the contiguous subarray with the largest sum.
+LIVES IN: 🪣 Bucket pattern
+TIME: O(n)
+```
+
 ```javascript
 function maxSubarraySum(arr) {
   let currentSum = arr[0];
@@ -1460,6 +1545,12 @@ LeetCode: #53 Maximum Subarray
 ```
 
 ### Floyd's Cycle Detection (Tortoise and Hare)
+
+```
+WHAT: Detect if a linked list has a cycle using slow + fast pointers.
+LIVES IN: 📊 Pointer Walker pattern
+TIME: O(n), SPACE: O(1)
+```
 
 ```javascript
 function hasCycle(head) {
@@ -1816,9 +1907,14 @@ Trace: [3, 7, 2] → biggest = 7 ✓
 ```
 
 ```
-Practice:
-□ Sum of array    □ Find max/min    □ Count evens    □ Longest string
-LeetCode: #53 Max Subarray (Kadane's), #136 Single Number
+Practice Problems:
+□ Find the sum of an array
+□ Find the average
+□ Find the maximum / minimum
+□ Count how many even numbers
+□ Find the longest string
+□ Multiply all numbers (product)
+LeetCode: #1 (sum variant), #53 Max Subarray (Kadane's), #136 Single Number
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -1857,7 +1953,13 @@ function getEvens(arr) {
   }
   return winners;
 }
-// [1,4,3,8] → [4,8] ✓
+```
+Trace: [1, 4, 3, 8]
+  1: odd → skip    winners=[]
+  4: even → push   winners=[4]
+  3: odd → skip    winners=[4]
+  8: even → push   winners=[4,8]
+  Return: [4, 8] ✓
 ```
 
 ```
@@ -1907,6 +2009,11 @@ function squareAll(arr) {
   return result;
 }
 // [2,3,5] → [4,9,25] ✓
+```
+
+```
+Trace: [2, 3, 5]
+  2→4, 3→9, 5→25 → [4, 9, 25] ✓
 ```
 
 ```
@@ -1972,6 +2079,15 @@ function removeDuplicates(arr) {
   return result;
 }
 // [1,3,2,3] → [1,3,2] ✓
+```
+
+```
+Trace: [1, 3, 2, 3]
+  1: not seen → add → seen={1}     result=[1]
+  3: not seen → add → seen={1,3}   result=[1,3]
+  2: not seen → add → seen={1,3,2} result=[1,3,2]
+  3: SEEN → skip
+  Return: [1, 3, 2] ✓
 ```
 
 **Example — "Two Sum"**
@@ -2274,8 +2390,19 @@ function maxDepth(node) {
 ```
 
 ```
+Trace:    1
+         / \
+        2   3    → maxDepth = 1 + max(1, 1) = 2 ✓
+```
+
+```
 Practice:
-LeetCode: #104 Max Depth, #226 Invert Tree, #112 Path Sum, #98 Validate BST, #100 Same Tree
+□ Max depth of binary tree
+□ Invert binary tree
+□ Path sum (root to leaf)
+□ Validate BST
+LeetCode: #104 Maximum Depth, #226 Invert Tree, #112 Path Sum,
+          #98 Validate BST, #100 Same Tree, #572 Subtree of Another
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -2322,6 +2449,8 @@ LeetCode: #102 Level Order, #200 Number of Islands, #994 Rotting Oranges, #542 0
 ---
 
 ## Level 3 — Advanced (Solves 4% more)
+
+> **Prerequisite:** Level 2 patterns feel comfortable.
 
 ---
 
@@ -2714,9 +2843,10 @@ PRACTICAL LIMITS (what n can be for each complexity):
 └───────────────┴──────────┴──────────┴──────────┘
 * push to end is O(1), unshift to start is O(n)
 
-Array.includes(x) → O(n) = slow
-Set.has(x)        → O(1) = instant
-Switching from array to set turns O(n²) into O(n).
+THIS IS WHY PATTERN 5 (🔎 Memory) IS POWERFUL:
+  Array.includes(x) → O(n)  = slow
+  Set.has(x)        → O(1)  = instant
+  Switching from array to set turns O(n²) into O(n).
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
