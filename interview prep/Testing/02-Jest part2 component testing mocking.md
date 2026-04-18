@@ -1,4 +1,10 @@
 # Category 2: Component Testing & Mocking — Question Bank
+```
+Category 2 covers Phases 2 & 3
+
+Phase 2 — RTL, user interactions, async testing
+Phase 3 — Jest mocking, MSW, mocking React ecosystem
+```
 ## 65 Interview Questions with Answers
 ## Organized by Sub-Topic · Tagged by Difficulty
 

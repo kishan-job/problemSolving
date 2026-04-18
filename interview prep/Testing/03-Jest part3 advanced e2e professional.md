@@ -1,4 +1,11 @@
 # Category 3: Advanced Patterns, E2E & Professional Practices — Question Bank
+```
+Category 3 covers Phases 4, 5 & 6
+
+Phase 4 — Hooks, state management, routing, snapshots
+Phase 5 — Cypress, Playwright, accessibility
+Phase 6 — Coverage, CI/CD, architecture, Vitest, debugging
+```
 ## 70 Interview Questions with Answers
 ## Organized by Sub-Topic · Tagged by Difficulty
 

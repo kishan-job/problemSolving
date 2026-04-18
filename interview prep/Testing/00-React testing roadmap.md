@@ -5,6 +5,39 @@
 
 ---
 
+## 📋 Table of Contents
+
+- [Phase 1 — Foundations](#phase-1--foundations-15-weeks)
+  - [Testing Fundamentals](#-testing-fundamentals-23-days)
+  - [Jest — Test Runner & Assertions](#-jest--test-runner--assertions-34-days)
+  - [Testing Pure Functions & Utilities](#-testing-pure-functions--utilities-2-days)
+- [Phase 2 — Component Testing Core](#phase-2--component-testing-core-2-weeks)
+  - [React Testing Library (RTL) — Basics](#-react-testing-library-rtl--basics-45-days)
+  - [User Interactions — user-event](#-user-interactions--user-event-34-days)
+  - [Async Testing](#-async-testing-34-days)
+- [Phase 3 — Mocking & Isolation](#phase-3--mocking--isolation-2-weeks)
+  - [Jest Mocking Deep Dive](#-jest-mocking-deep-dive-45-days)
+  - [API Mocking — MSW](#-api-mocking--msw-57-days)
+  - [Mocking React Ecosystem](#-mocking-react-ecosystem-34-days)
+- [Phase 4 — Advanced Component Patterns](#phase-4--advanced-component-patterns-25-weeks)
+  - [Testing Hooks](#-testing-hooks-34-days)
+  - [Testing State Management](#-testing-state-management-57-days)
+  - [Testing Routing & Navigation](#-testing-routing--navigation-23-days)
+  - [Snapshot & Visual Testing](#-snapshot--visual-testing-23-days)
+- [Phase 5 — End-to-End & Integration](#phase-5--end-to-end--integration-25-weeks)
+  - [Cypress](#-cypress-710-days)
+  - [Playwright](#-playwright-57-days)
+  - [Accessibility Testing](#-accessibility-testing-34-days)
+- [Phase 6 — Professional Practices & CI/CD](#phase-6--professional-practices--cicd-2-weeks)
+  - [Test Architecture & Strategy](#-test-architecture--strategy-34-days)
+  - [CI/CD Integration](#-cicd-integration-45-days)
+  - [Performance & Advanced Testing](#-performance--advanced-testing-35-days)
+  - [Vitest (Modern Alternative)](#-vitest-modern-alternative-23-days)
+- [Dependency Flow](#dependency-flow)
+- [Quick Reference](#quick-reference)
+
+---
+
 ## 🟢 Easy (1–3 days) | 🟠 Medium (4–7 days) | 🔴 Hard (1–3 weeks)
 
 ---

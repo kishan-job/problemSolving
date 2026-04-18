@@ -1,4 +1,12 @@
 # Category 1: Jest Fundamentals & Setup — Question Bank
+
+```
+Category 1 covers Phases 1 & 2 partially
+
+Phase 1 — Foundations (Jest setup, config, running tests, file conventions)
+Phase 2 start — Pure functions, matchers like toBe, toEqual
+```
+
 ## 40 Interview Questions with Answers
 ## Organized by Sub-Topic · Tagged by Difficulty
 
