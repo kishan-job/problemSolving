@@ -63,6 +63,8 @@
   - [Week 5: Level 3](#week-5-level-3-patterns)
 - [Section J: Golden Rules](#section-j-golden-rules)
 - [Section K: How to Use This Blueprint](#section-k-how-to-use-this-blueprint)
+- [Section L: Personal Notes — Discoveries While Studying](#section-l-personal-notes--discoveries-while-studying)
+  - [Note 1: The Positive Framing Rule](#note-1-the-positive-framing-rule-discovered-day-1)
 
 ---
 
@@ -3075,6 +3077,71 @@ Every other section exists only for reference.
 Open it when you need it. Ignore it when you do not.
 
 ---
+
+
+---
+
+# Section L: Personal Notes — Discoveries While Studying
+
+---
+
+## Note 1: The Positive Framing Rule (Discovered Day 1)
+
+Q: In this blueprint, is this thinking missing —
+
+In problem solving we need to think in the right way. For example in remove
+the duplicate from the array we need to think there is no duplicate, if found
+then only the negative thing executes.
+
+Similarly moving all the zeros to back of the array — here also need to think
+in the positive: check if value is not zero, place it at the first index.
+If zero then only not.
+
+This thinking in positive applies to every problem, not just arrays.
+
+---
+
+Yes, this is missing from the blueprint.
+
+What you're describing is a real mental rule. It doesn't have a name in the
+document, but it should.
+
+The idea is this:
+
+Write the condition for what you WANT, not what you don't want.
+
+Your two examples show it perfectly:
+
+Remove duplicates
+  - Wrong framing: "if it IS a duplicate → skip"
+  - Right framing:  "if it is NOT seen before → keep"
+
+Move zeros to back
+  - Wrong framing: "if it IS zero → don't place"
+  - Right framing:  "if it is NOT zero → place it"
+
+The code works either way technically, but the second way forces you to think
+clearly about what belongs rather than what doesn't. This makes your logic
+cleaner and your bugs fewer.
+
+And you're right that this applies everywhere, not just arrays:
+
+  - Validating a form  → think "what makes it valid"     not "what makes it invalid"
+  - Filtering users    → think "who should I keep"        not "who should I remove"
+  - Tree traversal     → think "when should I go deeper"  not "when should I stop"
+
+Where it's missing in the blueprint:
+
+It should sit in Section J (Golden Rules) as Rule #9:
+"Write the KEEP condition, not the SKIP condition. Define what belongs,
+then everything else takes care of itself."
+
+It also belongs as a note inside Phase 1 (Decompose) — when you write your
+goal sentence, force yourself to phrase it positively:
+"I keep items that..." not "I remove items that..."
+
+Good observation. The blueprint teaches the mechanics but misses this
+thinking habit entirely.
 
 ## One sentence to remember:
 
