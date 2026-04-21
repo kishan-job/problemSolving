@@ -1000,6 +1000,28 @@ Ask: "What do I RETURN?"
   compare items?           → 📊 Pointer Walker
   (see Section D for all patterns)
 ```
+```
+Once you identify the pattern:
+  → the pattern gives you a TEMPLATE
+  → the algorithm lives INSIDE that template
+  → you do not pick algorithm separately
+ 
+THE FLOW:
+  "What do I return?" → Pattern → Template → Algorithm comes free
+ 
+EXAMPLE:
+  Return one value   → 🪣 Bucket → template is a running variable
+                                  → algorithm is Linear Scan (already inside)
+  Return true/false  → 🔍 Detective → template is loop + early return
+                                     → algorithm is Linear Scan (already inside)
+  Sorted data search → 🔪 Binary Search → template is lo/mid/hi loop
+                                         → algorithm is Binary Search (already inside)
+ 
+REMEMBER:
+  You never ask "which algorithm do I use?"
+  You only ask "what do I return?"
+  The rest comes automatically.
+```
 
 ---
 
