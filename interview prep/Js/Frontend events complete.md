@@ -4,16 +4,37 @@
 ---
 
 ## Table of Contents
-1. What is an Event
-2. Event Flow — Capturing, Target, Bubbling
-3. JavaScript Events (Vanilla)
-4. All Event Categories with Levels
-5. Complete Event Object Reference
-6. React Synthetic Events
-7. Event Patterns in React
-8. TypeScript Event Types
-9. Common Mistakes and Best Practices
-10. Interview Questions
+
+1. [What is an Event](#section-1--what-is-an-event)
+2. [Event Flow — Capturing, Target, Bubbling](#section-2--event-flow)
+3. [JavaScript Events (Vanilla)](#section-3--javascript-events-vanilla)
+4. [All Event Categories with Levels](#section-4--all-event-categories-with-levels)
+5. [Complete Event Object Reference](#section-5--complete-event-object-reference)
+   - [Understanding What Lives Where](#understanding-what-lives-where)
+   - [Base Event Properties](#base-event--properties-all-events-share)
+   - [Mouse Event Properties](#mouse-event-properties)
+   - [Keyboard Event Properties](#keyboard-event-properties)
+   - [e.key vs e.code Difference](#ekeyvs-ecode--important-difference)
+   - [Form / Input Event Properties](#form--input-event-properties)
+   - [onInput vs onChange Difference](#oninput-vs-onchange--important-difference)
+   - [Focus Event Properties](#focus-event-properties)
+   - [Clipboard Event Properties](#clipboard-event-properties)
+   - [Drag Event Properties](#drag-event-properties)
+   - [Touch Event Properties](#touch-event-properties)
+   - [Scroll and Wheel Properties](#scroll-and-wheel-event-properties)
+   - [Animation and Transition Properties](#animation-and-transition-event-properties)
+   - [Media Event Properties](#media-event-properties)
+   - [Property Inheritance Summary](#property-inheritance-summary)
+6. [React Synthetic Events](#section-6--react-synthetic-events)
+7. [Event Patterns in React](#section-7--event-patterns-in-react)
+   - [e.target vs e.currentTarget Real World](#etarget-vs-ecurrenttarget--real-world-example)
+   - [dispatchEvent — Triggering Programmatically](#dispatchevent--triggering-events-programmatically)
+   - [Custom Events](#custom-events--component-communication)
+8. [TypeScript Event Types](#section-8--typescript-event-types)
+9. [Common Mistakes and Best Practices](#section-9--common-mistakes-and-best-practices)
+   - [AbortController — Modern Cleanup](#modern-cleanup--abortcontroller-multiple-listeners-at-once)
+10. [Interview Questions](#section-10--interview-questions)
+11. [Quick Reference Card](#quick-reference-card)
 
 ---
 
@@ -53,6 +74,10 @@ native browser Event object    vs  SyntheticEvent wrapper
 listener on each element       vs  ONE listener at root (delegation)
 must manually removeListener   vs  React handles cleanup
 ```
+
+---
+
+[↑ Back to Table of Contents](#table-of-contents)
 
 ---
 
@@ -148,6 +173,10 @@ const handleContextMenu = (e) => {
 
 ---
 
+[↑ Back to Table of Contents](#table-of-contents)
+
+---
+
 ## Section 3 — JavaScript Events (Vanilla)
 
 ### addEventListener Syntax
@@ -191,6 +220,10 @@ element.removeEventListener('click', () => console.log('clicked')) // ❌ does n
 <!-- WAY 3 — React JSX (React way) -->
 <button onClick={handleClick}>Click</button>
 ```
+
+---
+
+[↑ Back to Table of Contents](#table-of-contents)
 
 ---
 
@@ -343,6 +376,10 @@ useEffect(() => {
 
 ---
 
+[↑ Back to Table of Contents](#table-of-contents)
+
+---
+
 ## Section 5 — Complete Event Object Reference
 
 ### Understanding What Lives Where
@@ -489,6 +526,39 @@ const handleKeyboard = (e) => {
 }
 ```
 
+### e.key vs e.code — Important Difference
+```javascript
+// USER PRESSES THE "A" KEY
+
+e.key   = "a"      // lowercase — no shift held
+e.key   = "A"      // uppercase — shift held
+// e.key depends on MODIFIER KEYS — gives you the CHARACTER
+
+e.code  = "KeyA"   // always "KeyA" regardless of shift
+// e.code is the PHYSICAL KEY LOCATION — never changes
+
+// ── WHEN TO USE WHICH ─────────────────────────────────────
+// Use e.key  → when you care about the CHARACTER typed
+//              "did user type a letter? a number?"
+if (e.key === 'Enter') submitForm()
+if (e.key === 'Escape') closeModal()
+
+// Use e.code → when you care about PHYSICAL KEY POSITION
+//              keyboard shortcuts regardless of language/layout
+if (e.code === 'KeyZ' && e.ctrlKey) undo()  // works on all keyboard layouts
+
+// ── REAL DIFFERENCE — keyboard layout example ─────────────
+// French keyboard — AZERTY layout
+// User presses the key in "A" position
+// e.key  = "q"      ← French layout maps it to Q
+// e.code = "KeyA"   ← physical position is always A
+
+// English keyboard — QWERTY layout
+// User presses same physical key
+// e.key  = "a"      ← English layout maps it to A
+// e.code = "KeyA"   ← physical position is always A
+```
+
 ### Form / Input Event Properties
 ```javascript
 const handleForm = (e) => {
@@ -532,6 +602,37 @@ const handleForm = (e) => {
   e.target.validationMessage  // browser validation message
   e.target.checkValidity()    // returns true/false
 }
+```
+
+### onInput vs onChange — Important Difference
+```javascript
+// VANILLA JAVASCRIPT
+input.addEventListener('input', fn)
+// fires on EVERY keystroke — immediately as user types
+
+input.addEventListener('change', fn)
+// fires ONLY when input loses focus (onblur) AND value changed
+// does NOT fire on every keystroke
+
+// REACT — onChange behaves like vanilla oninput!
+<input onChange={fn} />
+// fires on EVERY keystroke in React
+// React renamed the behavior — onChange in React = oninput in vanilla JS
+
+// COMPARISON TABLE
+// ─────────────────────────────────────────────────────────
+// Event          Vanilla JS            React
+// ─────────────────────────────────────────────────────────
+// oninput        every keystroke       —
+// onchange       on blur + changed     every keystroke (like oninput!)
+// ─────────────────────────────────────────────────────────
+
+// WHY React changed this:
+// React's onChange fires like oninput for controlled components
+// so state always stays in sync with what user is typing
+
+// If you need vanilla "on blur" behavior in React — use onBlur
+<input onBlur={fn} />  // fires when input loses focus
 ```
 
 ### Focus Event Properties
@@ -736,6 +837,14 @@ WHEEL EVENT adds:
 └── e.deltaX, e.deltaY, e.deltaZ, e.deltaMode
 ```
 
+---
+
+[↑ Back to Table of Contents](#table-of-contents)
+
+---
+
+## Section 6 — React Synthetic Events
+
 ### What is SyntheticEvent
 ```
 Browser fires native event
@@ -849,6 +958,10 @@ const handleClick = (e) => {
 
 ---
 
+[↑ Back to Table of Contents](#table-of-contents)
+
+---
+
 ## Section 7 — Event Patterns in React
 
 ### Basic Event Handler
@@ -861,6 +974,42 @@ function Button() {
 
   return <button onClick={handleClick}>Click</button>
 }
+```
+
+### e.target vs e.currentTarget — Real World Example
+```jsx
+// SCENARIO — notification list, each item has a delete button inside
+function NotificationList() {
+  const handleClick = (e) => {
+    console.log(e.target)        // could be <button> OR <span> inside button
+    console.log(e.currentTarget) // always the <li> — where handler is attached
+
+    // PROBLEM — user might click the icon inside the button
+    // e.target changes depending on exactly where they click
+    // e.currentTarget is always reliable — always the li
+
+    // RIGHT WAY — use currentTarget to get the id
+    const id = e.currentTarget.dataset.id
+    deleteNotification(id)
+  }
+
+  return (
+    <ul>
+      {notifications.map(n => (
+        <li key={n.id} data-id={n.id} onClick={handleClick}>
+          <span>{n.message}</span>
+          <button>
+            <span>✕</span>   {/* user might click this span */}
+          </button>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+// RULE:
+// e.target        → unreliable in nested elements — changes based on click position
+// e.currentTarget → always reliable — always the element with the handler
 ```
 
 ### Passing Arguments to Handlers
@@ -1076,6 +1225,82 @@ function DragDrop() {
 }
 ```
 
+### dispatchEvent — Triggering Events Programmatically
+```javascript
+// Fire a built-in event from code
+const button = document.getElementById('btn')
+button.dispatchEvent(new Event('click'))
+
+// Fire with bubbling enabled
+button.dispatchEvent(new Event('click', { bubbles: true }))
+
+// Fire mouse event with position
+button.dispatchEvent(new MouseEvent('click', {
+  bubbles: true,
+  clientX: 100,
+  clientY: 200
+}))
+
+// Fire keyboard event
+input.dispatchEvent(new KeyboardEvent('keydown', {
+  key: 'Enter',
+  bubbles: true
+}))
+
+// In React — trigger via ref
+function App() {
+  const buttonRef = useRef(null)
+
+  const triggerClick = () => {
+    buttonRef.current.dispatchEvent(new Event('click', { bubbles: true }))
+    // OR simpler in React:
+    buttonRef.current.click()
+  }
+
+  return <button ref={buttonRef} onClick={handleClick}>Click</button>
+}
+```
+
+### Custom Events — Component Communication
+```javascript
+// CREATING AND DISPATCHING a custom event
+const myEvent = new CustomEvent('userLoggedIn', {
+  detail: { userId: 123, name: 'Alice' },  // your custom data
+  bubbles: true,    // should it bubble up?
+  cancelable: true  // can it be cancelled?
+})
+
+window.dispatchEvent(myEvent)
+
+// LISTENING to a custom event
+window.addEventListener('userLoggedIn', (e) => {
+  console.log(e.detail.userId)  // 123
+  console.log(e.detail.name)    // "Alice"
+})
+
+// IN REACT — custom events via useEffect
+function App() {
+  useEffect(() => {
+    const handleLogin = (e) => {
+      setUser(e.detail)
+    }
+
+    window.addEventListener('userLoggedIn', handleLogin)
+    return () => window.removeEventListener('userLoggedIn', handleLogin)
+  }, [])
+}
+
+// REAL USE CASES for Custom Events:
+// - Communication between separate React trees
+// - Vanilla JS libraries talking to React components
+// - Browser extensions interacting with your app
+// - Micro-frontend architecture (separate apps on same page)
+```
+
+---
+
+[↑ Back to Table of Contents](#table-of-contents)
+
 ---
 
 ## Section 8 — TypeScript Event Types
@@ -1146,6 +1371,10 @@ HTMLElement             // any element (generic fallback)
 
 ---
 
+[↑ Back to Table of Contents](#table-of-contents)
+
+---
+
 ## Section 9 — Common Mistakes and Best Practices
 
 ### Mistake 1 — Not Cleaning Up Event Listeners
@@ -1160,6 +1389,49 @@ useEffect(() => {
 useEffect(() => {
   window.addEventListener('resize', handleResize)
   return () => window.removeEventListener('resize', handleResize)
+}, [])
+```
+
+### Modern Cleanup — AbortController (multiple listeners at once)
+```javascript
+// OLD WAY — remove each listener separately
+useEffect(() => {
+  window.addEventListener('resize', handleResize)
+  window.addEventListener('scroll', handleScroll)
+  window.addEventListener('keydown', handleKeyDown)
+
+  return () => {
+    window.removeEventListener('resize', handleResize)   // tedious
+    window.removeEventListener('scroll', handleScroll)   // tedious
+    window.removeEventListener('keydown', handleKeyDown) // tedious
+  }
+}, [])
+
+// MODERN WAY — AbortController removes ALL at once
+useEffect(() => {
+  const controller = new AbortController()
+  const { signal } = controller
+
+  window.addEventListener('resize',  handleResize,  { signal })
+  window.addEventListener('scroll',  handleScroll,  { signal })
+  window.addEventListener('keydown', handleKeyDown, { signal })
+
+  return () => controller.abort() // removes ALL three in one line ✅
+}, [])
+
+// AbortController also works with fetch — cancel network requests too
+useEffect(() => {
+  const controller = new AbortController()
+
+  fetch('/api/data', { signal: controller.signal })
+    .then(res => res.json())
+    .then(setData)
+    .catch(err => {
+      if (err.name === 'AbortError') return // fetch was cancelled — ignore
+      console.error(err)
+    })
+
+  return () => controller.abort() // cancels both fetch AND any listeners
 }, [])
 ```
 
@@ -1252,6 +1524,10 @@ useEffect(() => {
 ❌ Never attach heavy listeners without passive flag
 ❌ Never use inline arrow functions in render-heavy lists
 ```
+
+---
+
+[↑ Back to Table of Contents](#table-of-contents)
 
 ---
 
@@ -1365,6 +1641,10 @@ const handleClick = (e) => {
 
 ---
 
+[↑ Back to Table of Contents](#table-of-contents)
+
+---
+
 ## Quick Reference Card
 
 ### Must Know Events
@@ -1396,3 +1676,7 @@ e.target              — what was interacted with
 e.target.value        — input current value
 e.key                 — which key was pressed
 ```
+
+---
+
+[↑ Back to Table of Contents](#table-of-contents)
