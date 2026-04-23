@@ -132,14 +132,6 @@ HOW IT LOOKS:
 Everything in regex is built from these 5 things.
 Learn these and you can understand any pattern.
 
-TO DESCRIBE STRUCTURE YOU NEED TOOLS:
-
-  TOOL 1 → exact characters    → literals
-  TOOL 2 → types of characters → \d \w \s []
-  TOOL 3 → how many times      → quantifiers + * ? {n}
-  TOOL 4 → where in string     → anchors ^ $
-  TOOL 5 → grouping choices    → groups () []
-
 BUILDING BLOCK 1 → LITERAL
   Exact character. Matches itself.
   a → matches "a"
