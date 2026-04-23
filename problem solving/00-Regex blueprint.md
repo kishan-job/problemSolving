@@ -92,6 +92,8 @@ It is a structure that describes text.
 Every email, phone, date — they are all BUILT a certain way.
 Regex lets you describe that structure formally.
 
+REGEX   → the pattern you are searching for
+
 TWO USES:
   SEARCH   → you have a big text
              find everything built that structure
