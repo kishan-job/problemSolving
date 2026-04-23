@@ -257,7 +257,7 @@ str.match(/cat/g);    // ["cat"] — g flag finds ALL matches
 /\(/    → matches a real open bracket "("
 
 // EXAMPLE
-"price is $5.00".match(/\$\d+\.\d+/)   // ["$5.00"] ✓
+"price is $5.00".match(/\$5\.00/)   // ["$5.00"] ✓
 ```
 
 ```
@@ -305,14 +305,14 @@ USED IN: Validation. Every time you validate a whole string,
 /\bcat\b/    → "the cat sat"   ✓    "concatenate" ✗
 
 // REAL EXAMPLES
-// Validate: does string START with a capital letter?
-/^[A-Z]/.test("Hello")         // true  ✓
-/^[A-Z]/.test("hello")         // false ✗
+// Validate: does string START with "Hello"?
+/^Hello/.test("Hello world")   // true  ✓
+/^Hello/.test("Say Hello")     // false ✗
 
-// Validate: is the WHOLE string a 4-digit number?
-/^\d{4}$/.test("1234")         // true  ✓
-/^\d{4}$/.test("12345")        // false ✗
-/^\d{4}$/.test("ab12")         // false ✗
+// Validate: is the WHOLE string exactly "hello"?
+/^hello$/.test("hello")        // true  ✓
+/^hello$/.test("say hello")    // false ✗
+/^hello$/.test("helloworld")   // false ✗
 ```
 
 ```
@@ -362,13 +362,13 @@ USED IN: Very common. Anywhere you need "one of these characters."
 /[^0-9]/       → matches any character that is NOT a digit
 
 // EXAMPLES
-"hello123".match(/[a-z]+/g)    // ["hello"]
-"hello123".match(/[0-9]+/g)    // ["123"]
-"h3ll0".match(/[^a-z0-9]/g)   // null (all are letters or digits)
+"hello123".match(/[a-z]/)    // ["h"] — first lowercase letter
+"hello123".match(/[0-9]/)    // ["1"] — first digit
+"h3ll0".match(/[^a-z0-9]/)  // null  — nothing outside letters or digits
 
-// REAL USE — validate hex color code
-/^#[0-9A-Fa-f]{6}$/.test("#FF5733")   // true  ✓
-/^#[0-9A-Fa-f]{6}$/.test("#ZZZZZZ")   // false ✗
+// REAL USE — validate first character is a hex digit
+/^#[0-9A-Fa-f]/.test("#FF5733")   // true  ✓
+/^#[0-9A-Fa-f]/.test("#ZZZZZZ")   // false ✗
 ```
 
 ```
@@ -412,24 +412,22 @@ USED IN: Extremely common. Used in almost every real pattern.
 .     → any character EXCEPT newline
 
 // EXAMPLES
-"hello 123".match(/\d+/g)    // ["123"]
-"hello 123".match(/\w+/g)    // ["hello","123"]
-"hello 123".match(/\s/g)     // [" "]
-"hello 123".match(/\D+/g)    // ["hello "]
+"hello 123".match(/\d/)    // ["1"] — first digit
+"hello 123".match(/\w/)    // ["h"] — first word character
+"hello 123".match(/\s/)    // [" "] — the space
+"hello 123".match(/\D/)    // ["h"] — first non-digit
 
 // REAL USE
-// Remove all digits
-"h3ll0 w0rld".replace(/\d/g, "")      // "hll wrld"
+// Remove first digit
+"h3ll0".replace(/\d/, "")         // "hll0"
 
-// Remove all whitespace
-"hello   world".replace(/\s+/g, " ")  // "hello world"
+// Check if string has any whitespace
+/\s/.test("hello world")          // true  ✓
+/\s/.test("helloworld")           // false ✗
 
-// Find all words
-"one two three".match(/\w+/g)         // ["one","two","three"]
-
-// Check if string has only digits
-/^\d+$/.test("12345")     // true  ✓
-/^\d+$/.test("123ab")     // false ✗
+// Check if string has any digit
+/\d/.test("hello123")             // true  ✓
+/\d/.test("hello")                // false ✗
 ```
 
 ```
