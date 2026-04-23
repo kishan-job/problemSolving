@@ -11,6 +11,7 @@ This is not a reading assignment. It is a daily reference map.
 BEFORE DAY 1 (today):
   → Read Section A: What is Regex (understand the concept)
   → Read Section B: The 5 Building Blocks (learn the alphabet)
+  → Read How to Think About Regex (understand the mental model)
   → Do NOT try to memorize everything. Just get familiar.
 
 DAY 1:
@@ -49,6 +50,7 @@ TOOL TO USE ALWAYS:
 
 - [Section A: What is Regex?](#section-a-what-is-regex)
 - [Section B: The 5 Building Blocks](#section-b-the-5-building-blocks)
+-  [How to Think About Regex](#how-to-think-about-regex)
 - [Level 1 — Foundation (80% of real problems)](#level-1--foundation-80-of-real-problems)
   - [Category 1: Literal Characters](#category-1-literal-characters)
   - [Category 2: Anchors](#category-2-anchors)
@@ -86,10 +88,16 @@ TOOL TO USE ALWAYS:
 ```
 REGEX = Regular Expression
 
-It is a pattern that describes text.
+It is a structure that describes text.
+Every email, phone, date — they are all BUILT a certain way.
+Regex lets you describe that structure formally.
 
-You give regex a pattern.
-Regex searches a string and finds everything that matches.
+TWO USES:
+  SEARCH   → you have a big text
+             find everything built that structure
+             
+  VALIDATE → you have one specific input
+             check if it is built that structure → yes or no
 
 ANALOGY:
   Think of regex like a search bar but smarter.
@@ -124,6 +132,14 @@ HOW IT LOOKS:
 Everything in regex is built from these 5 things.
 Learn these and you can understand any pattern.
 
+TO DESCRIBE STRUCTURE YOU NEED TOOLS:
+
+  TOOL 1 → exact characters    → literals
+  TOOL 2 → types of characters → \d \w \s []
+  TOOL 3 → how many times      → quantifiers + * ? {n}
+  TOOL 4 → where in string     → anchors ^ $
+  TOOL 5 → grouping choices    → groups () []
+
 BUILDING BLOCK 1 → LITERAL
   Exact character. Matches itself.
   a → matches "a"
@@ -152,6 +168,54 @@ BUILDING BLOCK 5 → GROUP
   (abc)     → capturing group
   [abc]     → character class
   (cat|dog) → alternation
+```
+
+[↑ Back to Table of Contents](#table-of-contents)
+
+---
+
+# How to Think About Regex
+
+```
+STEP 1 → What problem do I have?
+          search   → I have big text, find things inside it
+          validate → I have one input, check if it is correct
+
+STEP 2 → What structure does that text follow?
+          every email is built → something @ something . something
+          every phone is built → 10 digits starting with 6-9
+          every date is built  → 4 digits - 2 digits - 2 digits
+
+STEP 3 → Describe that structure using tools
+          TOOL 1 → exact characters     → literals
+          TOOL 2 → types of characters  → \d \w \s []
+          TOOL 3 → how many times       → quantifiers + * ? {n}
+          TOOL 4 → where in string      → anchors ^ $
+          TOOL 5 → grouping choices     → groups () []
+
+STEP 4 → Use the right method
+          test()    → validate  → yes or no
+          match()   → search    → find matches
+          replace() → clean     → swap matches
+          split()   → cut       → split at matches
+
+WHEN YOU SEE ANY REGEX — DO NOT memorize it
+READ it as a sentence — a description of structure
+
+  /^[6-9]\d{9}$/
+  ^       → must START here
+  [6-9]   → first character must be 6, 7, 8, or 9
+  \d{9}   → followed by exactly 9 more digits
+  $       → must END here
+  → "10 digit number starting with 6 to 9"
+  → that is an Indian phone number structure
+
+REMEMBER FOREVER:
+  See a structure in real life
+        ↓
+  Describe it using regex tools
+        ↓
+  Let computer search or validate it
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
