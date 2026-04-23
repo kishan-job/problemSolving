@@ -1978,6 +1978,7 @@ function getEvens(arr) {
   return winners;
 }
 ```
+```
 Trace: [1, 4, 3, 8]
   1: odd → skip    winners=[]
   4: even → push   winners=[4]
@@ -2013,6 +2014,8 @@ DON'T USE WHEN:
 ```
 
 ```javascript
+
+
 function transform(arr) {
   const result = [];
   for (let i = 0; i < arr.length; i++) {
