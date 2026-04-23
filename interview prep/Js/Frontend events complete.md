@@ -396,8 +396,11 @@ const handler = (e) => {
   e.stopPropagation()   // stop event bubbling up
   e.stopImmediatePropagation() // stop bubbling + other listeners on same element
 
-  // ── PHASE INFO ────────────────────────────────────────────
-  e.bubbles             // does this event bubble? true/false
+  // ── REACT SPECIFIC ────────────────────────────────────────
+  e.nativeEvent         // actual browser event underneath React's SyntheticEvent
+                        // use when you need browser-specific behavior
+                        // 99% of time you don't need this — use e directly
+  e.persist()           // React 16 only — prevent event from being pooled/nullified
   e.cancelable          // can preventDefault be called? true/false
   e.eventPhase          // 1=capturing, 2=target, 3=bubbling
 }
@@ -698,7 +701,9 @@ Every event type INHERITS base properties AND adds its own:
 BASE (every event)
 ├── e.target, e.currentTarget, e.type
 ├── e.preventDefault(), e.stopPropagation()
-└── e.bubbles, e.cancelable, e.timeStamp
+├── e.bubbles, e.cancelable, e.timeStamp
+├── e.nativeEvent         ← React only — actual browser event underneath
+└── e.persist()           ← React 16 only — prevent pooling
 
 MOUSE EVENT adds (on the event itself):
 ├── e.clientX, e.clientY, e.pageX, e.pageY
