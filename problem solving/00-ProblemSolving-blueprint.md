@@ -2065,16 +2065,8 @@ USE WHEN:
             Basic    → yes or no      → SET
             Extended → how many times → MAP (store count)
 
-            Problems:
-              duplicates, unique values,
-              character frequency, anagram,
-              first unique character
-
   CASE 2 → "Find a pair/relationship"
             Two values that connect   → MAP (store index)
-
-            Problems:
-              Two Sum, difference of K
 
 KEYWORDS:  "Duplicates", "Two Sum", "Frequency", "First unique", "Anagram"
 
@@ -2083,7 +2075,10 @@ LOGIC:     Set/Map = instant memory. Check memory before processing.
 DON'T USE WHEN:
   ✗ Data is already sorted (use 📊 Pointer Walker — no extra space)
   ✗ You don't need lookup, just filtering by a simple condition (use 🏆 Filter)
+  ✗ Checking if ONE value exists once (use 🔍 Detective instead)
 ```
+
+---
 
 ```
 SET → stores VALUE only
@@ -2100,7 +2095,9 @@ SET vs MAP — When to pick:
   "What index was this value at?"   → MAP (key → index)
 ```
 
-```javascript
+---
+
+```
 // Template (Set) — Case 1 Basic
 // Use for: duplicates, unique values
 function memorySet(arr) {
@@ -2232,7 +2229,50 @@ function twoSum(nums, target) {
 ```
 Trace: [2, 7, 11] target=9
   i=0: complement=9-2=7  memory.has(7)? NO  → store 2→0  memory={2:0}
-  i=1: complement=9-7=2  memory.has(2)? YES → return [memory.get(2), 1] = [0,1] ✓
+  i=1: complement=9-7=2  memory.has(2)? YES → return [0,1] ✓
+```
+
+---
+
+## All Problems
+
+```
+CASE 1 BASIC → SET
+  □ Does array have duplicates?
+  □ Are all values unique?
+  □ Find first repeated character
+  □ Remove duplicates from array
+  □ Intersection of two arrays
+  □ Union of two arrays
+  □ Is this a subset?
+
+CASE 1 EXTENDED → MAP count
+  □ Character frequency of a string
+  □ Element frequency of an array
+  □ Are two strings anagrams?
+  □ First unique character in string
+  □ Most frequent element
+  □ Find elements that appear exactly twice
+  □ Find elements that appear more than n/2 times
+  □ Group anagrams together
+  □ Ransom note
+
+CASE 2 → MAP index
+  □ Two Sum
+  □ Difference of K
+  □ Subarray sum equals K
+  □ Longest consecutive sequence
+  □ Four Sum
+```
+
+---
+
+## How to Identify Which Case
+
+```
+"Does something exist or repeat?"   → Case 1 Basic    → SET
+"How many times does it appear?"    → Case 1 Extended → MAP count
+"Find two values that relate?"      → Case 2          → MAP index
 ```
 
 ---
