@@ -2060,8 +2060,24 @@ LeetCode: #977 Squares of Sorted Array
 ### Pattern 5: 🔎 Memory (Lookup / Existence)
 
 ```
-USE WHEN:  "Have I seen this before?" or "Find a pair/relationship"
+USE WHEN:
+  CASE 1 → "Have I seen this before?"
+            Basic    → yes or no      → SET
+            Extended → how many times → MAP (store count)
+
+            Problems:
+              duplicates, unique values,
+              character frequency, anagram,
+              first unique character
+
+  CASE 2 → "Find a pair/relationship"
+            Two values that connect   → MAP (store index)
+
+            Problems:
+              Two Sum, difference of K
+
 KEYWORDS:  "Duplicates", "Two Sum", "Frequency", "First unique", "Anagram"
+
 LOGIC:     Set/Map = instant memory. Check memory before processing.
 
 DON'T USE WHEN:
@@ -2070,31 +2086,55 @@ DON'T USE WHEN:
 ```
 
 ```
-Set → just "have I seen it?"           → seen.has(x), seen.add(x)
-Map → "seen it, and WHAT was stored?"  → map.get(x), map.set(x, value)
+SET → stores VALUE only
+      one question → "have I seen it?" → yes or no
+      methods      → seen.has(x), seen.add(x)
+
+MAP → stores VALUE + EXTRA INFO
+      two questions → "have I seen it?" + "what did I store?"
+      methods       → map.has(x), map.get(x), map.set(x, value)
+
+SET vs MAP — When to pick:
+  "Have I seen this value?"         → SET
+  "How many times did I see it?"    → MAP (key → count)
+  "What index was this value at?"   → MAP (key → index)
 ```
 
 ```javascript
-// Template (Set)
+// Template (Set) — Case 1 Basic
+// Use for: duplicates, unique values
 function memorySet(arr) {
   const seen = new Set();
   for (let i = 0; i < arr.length; i++) {
     if (seen.has(arr[i])) { /* FOUND — handle it */ }
-    seen.add(arr[i]);
+    seen.add(arr[i]);    // check FIRST → add AFTER
   }
 }
 
-// Template (Map — for counting)
-function memoryMap(arr) {
+// Template (Map — count) — Case 1 Extended
+// Use for: frequency, anagram, first unique
+function memoryMapCount(arr) {
   const freq = new Map();
   for (let i = 0; i < arr.length; i++) {
     freq.set(arr[i], (freq.get(arr[i]) || 0) + 1);
   }
   return freq;
 }
+
+// Template (Map — index) — Case 2
+// Use for: Two Sum, pair/relationship
+function memoryMapIndex(arr) {
+  const memory = new Map();
+  for (let i = 0; i < arr.length; i++) {
+    // check complement or relationship first
+    // memory.set(arr[i], i) — store value → index
+  }
+}
 ```
 
-**Example — "Remove Duplicates"**
+---
+
+**Example — "Remove Duplicates" (Case 1 Basic → SET)**
 
 ```javascript
 function removeDuplicates(arr) {
@@ -2117,7 +2157,64 @@ Trace: [1, 3, 2, 3]
   Return: [1, 3, 2] ✓
 ```
 
-**Example — "Two Sum"**
+---
+
+**Example — "Character Frequency" (Case 1 Extended → MAP count)**
+
+```javascript
+function charFrequency(str) {
+  const freq = new Map();
+  for (const ch of str) {
+    freq.set(ch, (freq.get(ch) || 0) + 1);
+  }
+  return freq;
+}
+// "hello" → { h→1, e→1, l→2, o→1 }
+```
+
+```
+Trace: "hello"
+  h: undefined→0+1=1  freq={h→1}
+  e: undefined→0+1=1  freq={h→1, e→1}
+  l: undefined→0+1=1  freq={h→1, e→1, l→1}
+  l: 1+1=2            freq={h→1, e→1, l→2}
+  o: undefined→0+1=1  freq={h→1, e→1, l→2, o→1}
+```
+
+---
+
+**Example — "Are Anagrams?" (Case 1 Extended → MAP count)**
+
+```javascript
+function isAnagram(str1, str2) {
+  if (str1.length !== str2.length) return false;
+
+  const freq = new Map();
+  for (const ch of str1) {
+    freq.set(ch, (freq.get(ch) || 0) + 1);
+  }
+
+  for (const ch of str2) {
+    if (!freq.get(ch)) return false;
+    freq.set(ch, freq.get(ch) - 1);
+  }
+
+  return true;
+}
+// isAnagram("listen", "silent") → true  ✓
+// isAnagram("hello", "world")   → false ✗
+```
+
+```
+WHY SUBTRACT:
+  str1 builds counts UP   → adds 1 each time
+  str2 checks counts DOWN → subtracts 1 each time
+  Without subtract → same character passes unlimited times → wrong answer
+```
+
+---
+
+**Example — "Two Sum" (Case 2 → MAP index)**
 
 ```javascript
 function twoSum(nums, target) {
@@ -2129,12 +2226,25 @@ function twoSum(nums, target) {
   }
   return [];
 }
+// nums=[2,7,11] target=9 → [0,1] ✓
 ```
 
 ```
+Trace: [2, 7, 11] target=9
+  i=0: complement=9-2=7  memory.has(7)? NO  → store 2→0  memory={2:0}
+  i=1: complement=9-7=2  memory.has(2)? YES → return [memory.get(2), 1] = [0,1] ✓
+```
+
+---
+
+```
 Practice:
-□ Has duplicates?    □ Two Sum    □ Character frequency    □ Are anagrams?
-LeetCode: #1 Two Sum, #217 Contains Duplicate, #242 Valid Anagram, #387 First Unique
+□ Has duplicates?          → Case 1 Basic    → SET
+□ Character frequency?     → Case 1 Extended → MAP count
+□ Are anagrams?            → Case 1 Extended → MAP count
+□ Two Sum?                 → Case 2          → MAP index
+LeetCode: #217 Contains Duplicate, #242 Valid Anagram,
+          #387 First Unique Character, #1 Two Sum
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
