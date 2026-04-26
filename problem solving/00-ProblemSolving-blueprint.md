@@ -23,7 +23,7 @@
   - [Phase 4: Dry Run (Trace Table)](#phase-4-dry-run)
   - [Phase 5: Code](#phase-5-code)
   - [Phase 6: Refine](#phase-6-refine)
-  - [Translation Dictionary (English → JavaScript)](#translation-dictionary)
+  - [Translation Dictionary](#translation-dictionary)
 - [Section C: Algorithms — The Procedures Inside Patterns](#section-c-algorithms)
   - [How Patterns, Algorithms, and Data Structures Relate](#how-they-relate)
   - [Sorting Algorithms](#sorting-algorithms)
@@ -52,19 +52,12 @@
   - [Level 4 — Specialist (Solves remaining 1%)](#level-4--specialist-solves-remaining-1)
 - [Section E: Pattern Combos — Real Problems Use 2+ Patterns](#section-e-pattern-combos)
 - [Section F: Big-O Cheat Sheet](#section-f-big-o-cheat-sheet)
-  - [Common Complexities Ranked](#common-complexities-ranked)
-  - [Every Pattern's Complexity](#every-patterns-complexity)
-  - [Data Structure Operations](#data-structure-operations)
 - [Section G: How Patterns Connect](#section-g-how-patterns-connect)
 - [Section H: Key Insights](#section-h-key-insights)
-- [Section I: 35-Day Practice Roadmap](#section-i-35-day-practice-roadmap)
-  - [Week 1-2: Level 1](#week-1-2-level-1-patterns)
-  - [Week 3-4: Level 2](#week-3-4-level-2-patterns)
-  - [Week 5: Level 3](#week-5-level-3-patterns)
+- [Section I: 38-Day Practice Roadmap](#section-i-38-day-practice-roadmap)
 - [Section J: Golden Rules](#section-j-golden-rules)
 - [Section K: How to Use This Blueprint](#section-k-how-to-use-this-blueprint)
-- [Section L: Personal Notes — Discoveries While Studying](#section-l-personal-notes--discoveries-while-studying)
-  - [Note 1: The Positive Framing Rule](#note-1-the-positive-framing-rule-discovered-day-1)
+- [Section L: Personal Notes](#section-l-personal-notes)
 
 ---
 
@@ -72,7 +65,28 @@
 
 > **You MUST know these data structures before learning patterns.**
 > Patterns are strategies. Data structures are the tools those strategies use.
-> You can't play chess if you don't know how the pieces move.
+
+```
+WHICH ARE BUILT INTO JAVASCRIPT:
+  ✅ Arrays  → [] — built in
+  ✅ Strings → "" — built in
+  ✅ Set     → new Set() — built in
+  ✅ Map     → new Map() — built in
+
+WHICH YOU MUST BUILD YOURSELF:
+  ✗ Stack       → built using Array (push/pop)
+  ✗ Queue       → built using Array (push/shift)
+  ✗ Linked List → built using class + nodes
+  ✗ Tree        → built using class + nodes
+  ✗ Graph       → built using Array or Map
+
+WHEN TO READ EACH:
+  Arrays + Strings + Set + Map → read BEFORE Day 1
+  Stack + Queue                → read on Day 18
+  Tree                         → read on Day 20
+  Graph                        → read on Day 22
+  Linked List                  → read after Day 38
+```
 
 ---
 
@@ -85,7 +99,6 @@ ACCESS:  arr[0] → 10, arr[2] → 30
 ```
 
 ```javascript
-// Create
 const fruits = ["apple", "banana", "cherry"];
 
 // Read
@@ -93,34 +106,34 @@ fruits[0];          // "apple"
 fruits.length;      // 3
 
 // Add
-fruits.push("date");       // add to END   → ["apple","banana","cherry","date"]
-fruits.unshift("avocado"); // add to START → ["avocado","apple","banana","cherry","date"]
+fruits.push("date");       // add to END
+fruits.unshift("avocado"); // add to START
 
 // Remove
-fruits.pop();       // remove from END   → returns "date"
-fruits.shift();     // remove from START → returns "avocado"
+fruits.pop();       // remove from END
+fruits.shift();     // remove from START
 
 // Search
-fruits.indexOf("banana");  // 1 (position) — O(n) slow!
-fruits.includes("banana"); // true          — O(n) slow!
+fruits.indexOf("banana");  // 1 — O(n) slow!
+fruits.includes("banana"); // true — O(n) slow!
 
 // Loop
 for (let i = 0; i < fruits.length; i++) { console.log(fruits[i]); }
 for (const fruit of fruits) { console.log(fruit); }
 
 // Other useful methods
-fruits.slice(1, 3);         // ["banana","cherry"] (copy a section, does NOT modify original)
-fruits.splice(1, 1);        // removes 1 item at index 1 (MODIFIES original)
-[...fruits];                 // copy the array
-fruits.sort((a, b) => a - b); // sort numbers ascending (⚠️ default sort is alphabetical!)
+fruits.slice(1, 3);           // copy section — does NOT modify original
+fruits.splice(1, 1);          // removes 1 item at index 1 — MODIFIES original
+[...fruits];                   // copy the array
+fruits.sort((a, b) => a - b); // sort ascending — ⚠️ default sort is alphabetical!
 ```
 
 ```
 KEY FACTS:
   ✅ Access by index:  O(1) — instant
   ✅ Push / Pop (end):  O(1) — instant
-  ⚠️ Shift / Unshift (start): O(n) — slow (moves everything)
-  ⚠️ indexOf / includes: O(n) — slow (scans whole array)
+  ⚠️ Shift / Unshift (start): O(n) — slow
+  ⚠️ indexOf / includes: O(n) — slow
   ⚠️ sort(): O(n log n)
 ```
 
@@ -131,7 +144,7 @@ KEY FACTS:
 ## 2. Strings
 
 ```
-WHAT:    Sequence of characters. IMMUTABLE in JS (can't change in place).
+WHAT:    Sequence of characters. IMMUTABLE in JS.
 SYNTAX:  const str = "hello"
 ACCESS:  str[0] → "h", str.length → 5
 ```
@@ -139,29 +152,20 @@ ACCESS:  str[0] → "h", str.length → 5
 ```javascript
 const str = "hello world";
 
-// Access
 str[0];             // "h"
 str.length;         // 11
-
-// Search
 str.indexOf("world");  // 6
 str.includes("hello"); // true
-
-// Extract
 str.slice(0, 5);    // "hello"
 str.split(" ");     // ["hello", "world"]
-
-// Transform (returns NEW string, original unchanged)
 str.toUpperCase();  // "HELLO WORLD"
 str.toLowerCase();  // "hello world"
 str.trim();         // removes whitespace from both ends
 str.replace("hello", "hi"); // "hi world"
 
-// Loop through characters
 for (const ch of str) { console.log(ch); }
 
-// Convert to array and back
-[...str];                    // ["h","e","l","l","o"," ","w","o","r","l","d"]
+[...str];                        // ["h","e","l","l","o"," ","w","o","r","l","d"]
 [..."hello"].reverse().join(""); // "olleh"
 ```
 
@@ -181,35 +185,26 @@ KEY FACTS:
 
 ```
 WHAT:    Collection of UNIQUE values. No duplicates allowed.
-         Instant lookup: "Is this value in the set?" → O(1)
-WHY:     Use when you need fast "have I seen this?" checks
+         Instant lookup: O(1)
+WHY:     Fast "have I seen this?" checks
 ```
 
 ```javascript
-// Create
 const seen = new Set();
 const colors = new Set(["red", "blue", "green"]);
 
-// Add
 seen.add(5);
 seen.add(10);
 seen.add(5);    // ignored — 5 already exists
 // seen = {5, 10}
 
-// Check
 seen.has(5);    // true  — O(1) instant!
 seen.has(99);   // false — O(1) instant!
-
-// Remove
-seen.delete(5); // removes 5
-
-// Size
+seen.delete(5);
 seen.size;      // 1
 
-// Loop
 for (const val of seen) { console.log(val); }
 
-// Convert array to Set and back (removes duplicates!)
 const unique = [...new Set([1, 2, 2, 3, 3, 3])]; // [1, 2, 3]
 ```
 
@@ -218,7 +213,6 @@ KEY FACTS:
   ✅ add():    O(1)
   ✅ has():    O(1) — THIS IS WHY SET EXISTS. Array.includes() is O(n).
   ✅ delete(): O(1)
-  ✅ Maintains insertion order
   ⚠️ No duplicates — adding same value twice does nothing
   ⚠️ No index access — can't do set[0]
 ```
@@ -230,39 +224,26 @@ KEY FACTS:
 ## 4. Map (Hash Map)
 
 ```
-WHAT:    Key-value pairs. Like Set but each key stores a value.
-         Instant lookup: "What value is stored for this key?" → O(1)
-WHY:     Use for counting, storing indices, grouping
+WHAT:    Key-value pairs. Instant lookup: O(1)
+WHY:     Counting, storing indices, grouping
 ```
 
 ```javascript
-// Create
 const memory = new Map();
 
-// Set key-value pairs
 memory.set("apple", 3);
 memory.set("banana", 5);
 memory.set("apple", 7);   // overwrites — apple is now 7
 
-// Get
-memory.get("apple");   // 7     — O(1)
+memory.get("apple");   // 7
 memory.get("cherry");  // undefined
-
-// Check
-memory.has("banana");  // true  — O(1)
-
-// Delete
+memory.has("banana");  // true
 memory.delete("banana");
+memory.size;           // 1
 
-// Size
-memory.size;  // 1
+for (const [key, value] of memory) { console.log(key, value); }
 
-// Loop
-for (const [key, value] of memory) {
-  console.log(key, value);
-}
-
-// Common pattern: counting frequency
+// Counting frequency
 const freq = new Map();
 for (const ch of "hello") {
   freq.set(ch, (freq.get(ch) || 0) + 1);
@@ -272,21 +253,14 @@ for (const ch of "hello") {
 
 ```
 KEY FACTS:
-  ✅ set():    O(1)
-  ✅ get():    O(1)
-  ✅ has():    O(1)
-  ✅ Keys can be ANY type (numbers, strings, objects)
-  ✅ Maintains insertion order
-  ⚠️ Plain objects {} also work as maps BUT keys are always strings
-     → Use Map when keys are numbers or you need .size
-```
+  ✅ set(): O(1)   ✅ get(): O(1)   ✅ has(): O(1)
+  ✅ Keys can be ANY type
 
-```
-SET vs MAP — When to pick:
-  "Have I seen this value?"         → Set
-  "How many times did I see it?"    → Map (key → count)
-  "What index was this value at?"   → Map (key → index)
-  "Group items by a category?"      → Map (key → array)
+SET vs MAP:
+  "Have I seen this value?"      → Set
+  "How many times did I see it?" → Map (key → count)
+  "What index was this value at?"→ Map (key → index)
+  "Group items by a category?"   → Map (key → array)
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -297,9 +271,9 @@ SET vs MAP — When to pick:
 
 ```
 WHAT:    Last-In, First-Out (LIFO). Like a stack of plates.
-         The last plate you put on top is the first one you take off.
 WHY:     Matching brackets, undo operations, expression evaluation
-HOW:     In JS, just use an array with push() and pop()
+HOW:     In JS, use array with push() and pop()
+READ:    Day 18 — one day before Pattern 9
 ```
 
 ```
@@ -310,31 +284,23 @@ VISUAL:
   |  20  |                             └──────┘
   |  10  |
   └──────┘
-
-  Last in (30) is first out.
 ```
 
 ```javascript
-// === CREATING A STACK ===
 const stack = [];
 
-// === PUSH — Add to top ===
 stack.push(10);   // [10]
 stack.push(20);   // [10, 20]
-stack.push(30);   // [10, 20, 30]    ← 30 is on top
+stack.push(30);   // [10, 20, 30] ← 30 is on top
 
-// === PEEK — Look at top WITHOUT removing ===
-const top = stack[stack.length - 1];  // 30 (still in stack)
+const top = stack[stack.length - 1];  // peek → 30
 
-// === POP — Remove from top ===
 stack.pop();      // returns 30, stack is now [10, 20]
 stack.pop();      // returns 20, stack is now [10]
 stack.pop();      // returns 10, stack is now []
+stack.length === 0; // true
 
-// === CHECK IF EMPTY ===
-stack.length === 0;  // true (empty now)
-
-// === REAL EXAMPLE: Reverse a string using a stack ===
+// REAL EXAMPLE: Reverse a string
 function reverseString(str) {
   const stack = [];
   for (const ch of str) { stack.push(ch); }
@@ -342,9 +308,9 @@ function reverseString(str) {
   while (stack.length > 0) { reversed += stack.pop(); }
   return reversed;
 }
-reverseString("hello");  // "olleh"
+reverseString("hello"); // "olleh"
 
-// === REAL EXAMPLE: Check matching brackets ===
+// REAL EXAMPLE: Check matching brackets
 function isBalanced(str) {
   const stack = [];
   const pairs = { ')': '(', ']': '[', '}': '{' };
@@ -357,23 +323,20 @@ function isBalanced(str) {
   }
   return stack.length === 0;
 }
-isBalanced("([{}])");  // true
-isBalanced("([)]");    // false
+isBalanced("([{}])"); // true
+isBalanced("([)]");   // false
 ```
 
 ```
 KEY FACTS:
-  ✅ push():   O(1) — instant
-  ✅ pop():    O(1) — instant
-  ✅ peek:     O(1) — instant
-  Think: "Last In, First Out" — like browser back button, undo, or call stack
+  ✅ push(): O(1)   ✅ pop(): O(1)   ✅ peek: O(1)
+  Think: "Last In, First Out"
 
-COMMON STACK INTERVIEW PROBLEMS:
-  - Valid Parentheses (LeetCode #20)
+COMMON PROBLEMS:
+  - Valid Parentheses (#20)
   - Daily Temperatures (#739)
-  - Evaluate Reverse Polish Notation (#150)
+  - Evaluate RPN (#150)
   - Min Stack (#155)
-  - Next Greater Element (#496)
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -384,36 +347,32 @@ COMMON STACK INTERVIEW PROBLEMS:
 
 ```
 WHAT:    First-In, First-Out (FIFO). Like a line at a shop.
-         The first person in line is the first one served.
 WHY:     BFS traversal, scheduling, level-order processing
 HOW:     In JS, use array with push() and shift()
+READ:    Day 22 — one day before Pattern 11
 ```
 
 ```
 VISUAL:
-  enqueue(10) → enqueue(20) → enqueue(30)     dequeue()
-
-  FRONT → | 10 | 20 | 30 | ← BACK            FRONT → | 20 | 30 | ← BACK
-                                                (10 removed from front)
+  FRONT → | 10 | 20 | 30 | ← BACK
   First in (10) is first out.
 ```
 
 ```javascript
 const queue = [];
 
-queue.push(10);    // [10]
-queue.push(20);    // [10, 20]
-queue.push(30);    // [10, 20, 30]
+queue.push(10);   // [10]
+queue.push(20);   // [10, 20]
+queue.push(30);   // [10, 20, 30]
 
-const front = queue[0];  // 10 (still in queue)
+const front = queue[0]; // 10
 
-queue.shift();     // returns 10, queue is now [20, 30]
-queue.shift();     // returns 20, queue is now [30]
-queue.shift();     // returns 30, queue is now []
+queue.shift(); // returns 10, queue is now [20, 30]
+queue.shift(); // returns 20, queue is now [30]
+queue.shift(); // returns 30, queue is now []
+queue.length === 0; // true
 
-queue.length === 0;  // true
-
-// === REAL EXAMPLE: Process tasks in order ===
+// REAL EXAMPLE: Process tasks in order
 function processTasks(tasks) {
   const queue = [...tasks];
   const completed = [];
@@ -426,7 +385,7 @@ function processTasks(tasks) {
 processTasks(["email", "code", "review"]);
 // ["Done: email", "Done: code", "Done: review"]
 
-// === REAL EXAMPLE: BFS on a tree (level by level) ===
+// REAL EXAMPLE: BFS level by level
 function printLevelByLevel(root) {
   if (!root) return;
   const queue = [root];
@@ -441,19 +400,14 @@ function printLevelByLevel(root) {
 
 ```
 KEY FACTS:
-  ✅ push():   O(1) — add to back
-  ⚠️ shift():  O(n) — remove from front (moves all remaining elements)
-  Think: "First In, First Out" — like a queue at a ticket counter
+  ✅ push():  O(1) — add to back
+  ⚠️ shift(): O(n) — remove from front
+  Think: "First In, First Out"
 
-  ⚠️ shift() is O(n) because it re-indexes the entire array.
-     For most interview problems, this is fine.
-     For production code with millions of items, use a linked list queue.
-
-COMMON QUEUE INTERVIEW PROBLEMS:
-  - BFS Level Order Traversal (LeetCode #102)
+COMMON PROBLEMS:
+  - BFS Level Order (#102)
   - Number of Islands (#200)
   - Rotting Oranges (#994)
-  - Shortest Path in Grid
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -463,9 +417,9 @@ COMMON QUEUE INTERVIEW PROBLEMS:
 ## 7. Linked List
 
 ```
-WHAT:    Chain of nodes. Each node has a value and a pointer to the next node.
-         No index access — must walk from the head.
-WHY:     O(1) insert/delete at head. Foundation for stacks, queues, and more.
+WHAT:    Chain of nodes. Each node has value and pointer to next.
+WHY:     O(1) insert/delete at head.
+READ:    After Day 38 — not in roadmap
 ```
 
 ```
@@ -473,10 +427,6 @@ VISUAL:
   head
    ↓
   [1] → [2] → [3] → null
-
-  Each box (node) has:
-    - val:  the data (1, 2, 3)
-    - next: pointer to the next node (or null if last)
 ```
 
 ```javascript
@@ -511,14 +461,14 @@ function search(head, target) {
   return false;
 }
 
-// INSERT AT HEAD (O(1))
+// INSERT AT HEAD O(1)
 function insertAtHead(head, val) {
   const newNode = new ListNode(val);
   newNode.next = head;
   return newNode;
 }
 
-// INSERT AT TAIL (O(n))
+// INSERT AT TAIL O(n)
 function insertAtTail(head, val) {
   const newNode = new ListNode(val);
   if (!head) return newNode;
@@ -528,7 +478,7 @@ function insertAtTail(head, val) {
   return head;
 }
 
-// DELETE A NODE BY VALUE
+// DELETE BY VALUE
 function deleteNode(head, target) {
   if (!head) return null;
   if (head.val === target) return head.next;
@@ -543,7 +493,7 @@ function deleteNode(head, target) {
   return head;
 }
 
-// REVERSE A LINKED LIST
+// REVERSE
 function reverseList(head) {
   let prev = null, current = head;
   while (current !== null) {
@@ -554,10 +504,8 @@ function reverseList(head) {
   }
   return prev;
 }
-// Before: [1] → [2] → [3] → null
-// After:  [3] → [2] → [1] → null
 
-// FIND MIDDLE NODE
+// FIND MIDDLE
 function findMiddle(head) {
   let slow = head, fast = head;
   while (fast !== null && fast.next !== null) {
@@ -581,18 +529,17 @@ function hasCycle(head) {
 
 ```
 KEY FACTS:
-  ✅ Insert/delete at head: O(1) — instant
-  ⚠️ Insert/delete at tail: O(n) — must walk the chain
-  ⚠️ Access by position: O(n) — no random access
-  ⚠️ Search: O(n) — must walk through
+  ✅ Insert/delete at head: O(1)
+  ⚠️ Insert/delete at tail: O(n)
+  ⚠️ Access by position: O(n)
+  ⚠️ Search: O(n)
 
-COMMON LINKED LIST INTERVIEW PROBLEMS:
-  - Reverse Linked List (LeetCode #206)
+COMMON PROBLEMS:
+  - Reverse Linked List (#206)
   - Detect Cycle (#141)
   - Merge Two Sorted Lists (#21)
   - Remove Nth Node From End (#19)
   - Find Middle (#876)
-  - Palindrome Linked List (#234)
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -602,20 +549,19 @@ COMMON LINKED LIST INTERVIEW PROBLEMS:
 ## 8. Tree (Binary Tree)
 
 ```
-WHAT:    Hierarchical structure. Each node has a value, left child, right child.
-         Binary Search Tree (BST): left < parent < right
-WHY:     Searching, sorting, hierarchical data (file systems, DOM, etc.)
+WHAT:    Hierarchical structure. Each node has value, left, right.
+         BST rule: left < parent < right
+WHY:     Searching, sorting, hierarchical data
+READ:    Day 20 — one day before Pattern 10
 ```
 
 ```
 VISUAL:
          5          ← root
         / \
-       3   8        ← children of 5
+       3   8
       / \   \
-     1   4   9      ← leaves (no children)
-
-  BST rule: everything left of 5 is < 5, everything right is > 5
+     1   4   9      ← leaves
 ```
 
 ```javascript
@@ -634,14 +580,14 @@ root.left.left = new TreeNode(1);
 root.left.right = new TreeNode(4);
 root.right.right = new TreeNode(9);
 
-// Inorder: Left → Root → Right (gives SORTED order in BST)
+// Inorder: Left → Root → Right (sorted order in BST)
 function inorder(node) {
   if (!node) return;
   inorder(node.left);
   console.log(node.val);
   inorder(node.right);
 }
-inorder(root);  // 1, 3, 4, 5, 8, 9 (sorted!)
+inorder(root); // 1, 3, 4, 5, 8, 9
 
 // Preorder: Root → Left → Right
 function preorder(node) {
@@ -659,7 +605,7 @@ function postorder(node) {
   console.log(node.val);
 }
 
-// BFS — Level Order
+// BFS Level Order
 function levelOrder(root) {
   if (!root) return [];
   const queue = [root];
@@ -677,7 +623,7 @@ function levelOrder(root) {
   }
   return result;
 }
-levelOrder(root);  // [[5], [3, 8], [1, 4, 9]]
+levelOrder(root); // [[5], [3, 8], [1, 4, 9]]
 
 // MAX DEPTH
 function maxDepth(node) {
@@ -721,24 +667,25 @@ function isValidBST(node, min = -Infinity, max = Infinity) {
 
 ```
 KEY FACTS:
-  ✅ BST search/insert: O(log n) average — halves each step
-  ⚠️ BST worst case: O(n) — if tree is a straight line (unbalanced)
-  ✅ Traversal orders:
-     Inorder (left, root, right)   → sorted order in BST
-     Preorder (root, left, right)  → copy tree
-     Postorder (left, right, root) → delete tree
-     Level order (BFS)             → level by level
+  ✅ BST search/insert: O(log n) average
+  ⚠️ BST worst case: O(n) — unbalanced tree
   ✅ Every tree DFS problem has the same skeleton:
      1. Base case: if null → return something
      2. Recurse left
      3. Recurse right
      4. Combine results
 
-COMMON TREE INTERVIEW PROBLEMS:
-  - Max Depth (LeetCode #104)
+TRAVERSAL ORDERS:
+  Inorder   (left, root, right) → sorted order in BST
+  Preorder  (root, left, right) → copy tree
+  Postorder (left, right, root) → delete tree
+  Level order (BFS)             → level by level
+
+COMMON PROBLEMS:
+  - Max Depth (#104)
   - Invert Tree (#226)
   - Validate BST (#98)
-  - Level Order Traversal (#102)
+  - Level Order (#102)
   - Path Sum (#112)
   - Same Tree (#100)
   - Lowest Common Ancestor (#236)
@@ -751,49 +698,33 @@ COMMON TREE INTERVIEW PROBLEMS:
 ## 9. Graph
 
 ```
-WHAT:    Nodes (vertices) connected by edges. Can be directed or undirected.
-WHY:     Social networks, maps, dependencies, routing, shortest paths
-HOW:     Usually represented as adjacency list (Map of node → neighbors)
+WHAT:    Nodes connected by edges. Directed or undirected.
+WHY:     Social networks, maps, dependencies, routing
+HOW:     Adjacency list (Map or Array of Arrays)
+READ:    Day 22 — one day before Pattern 11
 ```
 
 ```
-VISUAL (Undirected):
-  0 --- 1
-  |     |
-  2 --- 3
-
-  Node 0 connects to: [1, 2]
-  Node 1 connects to: [0, 3]
-  Node 2 connects to: [0, 3]
-  Node 3 connects to: [1, 2]
-
-VISUAL (Directed):
-  0 → 1
-  ↓   ↓
-  2 → 3
-
-  Node 0 points to: [1, 2]
-  Node 1 points to: [3]
-  Node 2 points to: [3]
-  Node 3 points to: []
+VISUAL (Undirected):        VISUAL (Directed):
+  0 --- 1                     0 → 1
+  |     |                     ↓   ↓
+  2 --- 3                     2 → 3
 ```
 
 ```javascript
-// === CREATE GRAPH — Adjacency List ===
-
-// Method 1: Using Map
+// Method 1: Map
 const graph = new Map();
 graph.set(0, [1, 2]);
 graph.set(1, [0, 3]);
 graph.set(2, [0, 3]);
 graph.set(3, [1, 2]);
 
-// Method 2: Using Array of Arrays (when nodes are 0..n-1)
+// Method 2: Array of Arrays
 const adjList = [
-  [1, 2],     // node 0's neighbors
-  [0, 3],     // node 1's neighbors
-  [0, 3],     // node 2's neighbors
-  [1, 2],     // node 3's neighbors
+  [1, 2],  // node 0
+  [0, 3],  // node 1
+  [0, 3],  // node 2
+  [1, 2],  // node 3
 ];
 
 // Method 3: Build from edge list
@@ -801,14 +732,12 @@ function buildGraph(n, edges) {
   const graph = Array.from({ length: n }, () => []);
   for (const [from, to] of edges) {
     graph[from].push(to);
-    graph[to].push(from);  // remove this line for directed graph
+    graph[to].push(from); // remove for directed
   }
   return graph;
 }
-const g = buildGraph(4, [[0,1], [0,2], [1,3], [2,3]]);
-// g = [[1,2], [0,3], [0,3], [1,2]]
 
-// === DFS ON GRAPH (visit all connected nodes) ===
+// DFS ON GRAPH
 function dfsGraph(graph, start) {
   const visited = new Set();
   const result = [];
@@ -821,9 +750,8 @@ function dfsGraph(graph, start) {
   dfs(start);
   return result;
 }
-dfsGraph(adjList, 0);  // [0, 1, 3, 2]
 
-// === BFS ON GRAPH (level by level, shortest path) ===
+// BFS ON GRAPH
 function bfsGraph(graph, start) {
   const visited = new Set([start]);
   const queue = [start];
@@ -840,7 +768,6 @@ function bfsGraph(graph, start) {
   }
   return result;
 }
-bfsGraph(adjList, 0);  // [0, 1, 2, 3]
 
 // COUNT CONNECTED COMPONENTS
 function countComponents(n, graph) {
@@ -858,7 +785,7 @@ function countComponents(n, graph) {
   return count;
 }
 
-// SHORTEST PATH (BFS — unweighted)
+// SHORTEST PATH (BFS unweighted)
 function shortestPath(graph, start, end) {
   const visited = new Set([start]);
   const queue = [[start, 0]];
@@ -875,7 +802,7 @@ function shortestPath(graph, start, end) {
   return -1;
 }
 
-// DETECT CYCLE IN UNDIRECTED GRAPH
+// DETECT CYCLE
 function hasCycle(n, graph) {
   const visited = new Set();
   function dfs(node, parent) {
@@ -903,8 +830,7 @@ function numIslands(grid) {
     if (r < 0 || r >= rows || c < 0 || c >= cols) return;
     if (grid[r][c] === '0') return;
     grid[r][c] = '0';
-    sink(r + 1, c); sink(r - 1, c);
-    sink(r, c + 1); sink(r, c - 1);
+    sink(r+1,c); sink(r-1,c); sink(r,c+1); sink(r,c-1);
   }
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
@@ -920,17 +846,15 @@ KEY FACTS:
   ✅ DFS: O(V + E) time, O(V) space
   ✅ BFS: O(V + E) time, O(V) space
   ✅ BFS finds shortest path in UNWEIGHTED graphs
-  ⚠️ Always track visited nodes to avoid infinite loops
+  ⚠️ Always track visited nodes
 
-  DFS vs BFS on graphs:
-    DFS → explore all paths, detect cycles, connected components
-    BFS → shortest path, level-by-level, nearest neighbor
+  DFS → explore all paths, detect cycles, components
+  BFS → shortest path, level-by-level, nearest neighbor
 
-COMMON GRAPH INTERVIEW PROBLEMS:
-  - Number of Islands (LeetCode #200)
+COMMON PROBLEMS:
+  - Number of Islands (#200)
   - Clone Graph (#133)
   - Course Schedule (#207)
-  - Pacific Atlantic Water Flow (#417)
   - Connected Components (#323)
 ```
 
@@ -945,13 +869,13 @@ COMMON GRAPH INTERVIEW PROBLEMS:
 
   Ordered items, access by index       → Array
   Sequence of characters               → String
-  Fast "have I seen this?" check        → Set
-  Fast key → value lookup               → Map
-  Last-in-first-out processing          → Stack (array with push/pop)
-  First-in-first-out processing         → Queue (array with push/shift)
-  O(1) insert/delete at head            → Linked List
-  Hierarchical / sorted data            → Tree
-  Connected relationships               → Graph
+  Fast "have I seen this?" check       → Set
+  Fast key → value lookup              → Map
+  Last-in-first-out processing         → Stack (array push/pop)
+  First-in-first-out processing        → Queue (array push/shift)
+  O(1) insert/delete at head           → Linked List
+  Hierarchical / sorted data           → Tree
+  Connected relationships              → Graph
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -960,7 +884,7 @@ COMMON GRAPH INTERVIEW PROBLEMS:
 
 # Section B: The 6 Phases
 
-> Follow these 6 phases for every problem, every time. This is your process.
+> Follow these 6 phases for every problem, every time.
 
 ```
 PHASE 1 → DECOMPOSE:   "What goes in? What comes out?"
@@ -984,6 +908,14 @@ Ask these 5 questions:
      "I take [INPUT] and return [OUTPUT] by doing [X]"
   5. List EDGE CASES:
      → empty input, single item, all same, negatives, already solved
+
+POSITIVE FRAMING RULE:
+  Write the condition for what you WANT not what you don't want.
+  "I keep items that..."  not  "I remove items that..."
+
+  Remove duplicates → think "keep if NOT seen before"
+  Move zeros to back → think "keep if NOT zero"
+  Validating form → think "what makes it valid"
 ```
 
 ---
@@ -999,24 +931,23 @@ Ask: "What do I RETURN?"
   "seen before?" check?    → 🔎 Memory
   compare items?           → 📊 Pointer Walker
   (see Section D for all patterns)
-```
-```
+
 Once you identify the pattern:
   → the pattern gives you a TEMPLATE
   → the algorithm lives INSIDE that template
   → you do not pick algorithm separately
- 
+
 THE FLOW:
   "What do I return?" → Pattern → Template → Algorithm comes free
- 
+
 EXAMPLE:
   Return one value   → 🪣 Bucket → template is a running variable
-                                  → algorithm is Linear Scan (already inside)
+                                  → algorithm is Linear Scan
   Return true/false  → 🔍 Detective → template is loop + early return
-                                     → algorithm is Linear Scan (already inside)
+                                     → algorithm is Linear Scan
   Sorted data search → 🔪 Binary Search → template is lo/mid/hi loop
-                                         → algorithm is Binary Search (already inside)
- 
+                                         → algorithm is Binary Search
+
 REMEMBER:
   You never ask "which algorithm do I use?"
   You only ask "what do I return?"
@@ -1041,14 +972,14 @@ Write 3-5 lines of English using these words:
 
 ## Phase 4: Dry Run
 
-> **This is the most important phase.** This builds your brain muscle.
+> **This is the most important phase.**
 
 ```
 Draw a trace table:
   - Columns = your variables
-  - Rows = each step of your recipe
+  - Rows = each step
   - Use a small input (3-4 items)
-  - If table result = expected result → your logic is correct
+  - If table result = expected result → logic is correct
 ```
 
 ---
@@ -1107,73 +1038,61 @@ GIVE BACK              →  return result
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
+│  DATA STRUCTURES = The TOOLS (pot, pan, oven)               │
+│  Array, Set, Map, Stack, Queue, Tree, Graph                 │
 │                                                             │
-│  DATA STRUCTURES    = The TOOLS (pot, pan, oven)           │
-│  Array, Set, Map, Stack, Queue, Tree, Graph                │
+│  ALGORITHMS = The RECIPE (boil 10 min, add salt)           │
+│  Binary Search, BFS, DFS, Merge Sort, Kadane's             │
 │                                                             │
-│  ALGORITHMS         = The RECIPE (boil 10 min, add salt)   │
-│  Binary Search, BFS, DFS, Merge Sort, Kadane's            │
-│                                                             │
-│  PATTERNS           = The COOKING STYLE (grilling, baking) │
+│  PATTERNS = The COOKING STYLE (grilling, baking)           │
 │  Detective, Bucket, Memory, Sliding Window, DP             │
 │                                                             │
-│  6-PHASE PROCESS    = The CHEF'S METHOD                    │
+│  6-PHASE PROCESS = The CHEF'S METHOD                       │
 │  Decompose → Identify → Pseudo-code → Dry Run → Code      │
-│                                                             │
 └─────────────────────────────────────────────────────────────┘
-
-THE FLOW:
-  Phase 2 (Identify Pattern) → Pattern gives you Template → Template IS the Algorithm
 ```
 
 ```
-WHICH ALGORITHM LIVES INSIDE WHICH PATTERN:
+PATTERN TO ALGORITHM MAP:
 
-  🔍 Detective       → Linear Scan
-  🪣 Bucket          → Running Total, Kadane's Algorithm
-  🏆 Filter          → Linear Scan + Condition
-  🔄 Transformer     → Map Operation
-  🔎 Memory          → Hashing
-  📊 Pointer Walker  → Two Pointer Technique, Floyd's Cycle Detection
-  🪟 Sliding Window  → Sliding Window Technique
-  🔪 Binary Search   → Binary Search Algorithm
-  🏗️ Stack           → Stack-based Matching, Monotonic Stack
-  🌳 Tree DFS        → Inorder / Preorder / Postorder Traversal
-  🌊 BFS             → Breadth-First Search Algorithm
-  🧩 DP              → Memoization, Tabulation, Kadane's, Knapsack, LCS, LIS
-  🔙 Backtracking    → Recursive Backtracking
-  🏃 Greedy          → Activity Selection, Greedy Choice
+  Pattern 1  → 🔍 Detective      → Linear Search
+  Pattern 2  → 🪣 Bucket         → Linear Search + Kadane's Algorithm
+  Pattern 3  → 🏆 Filter         → Linear Search
+  Pattern 4  → 🔄 Transformer    → Linear Search
+  Pattern 5  → 🔎 Memory         → Hash-Based Search
+  Pattern 6  → 📊 Pointer Walker → Two Pointer + Floyd's Cycle Detection
+  Pattern 7  → 🪟 Sliding Window → Sliding Window Technique
+  Pattern 8  → 🔪 Binary Search  → Binary Search Algorithm
+  Pattern 9  → 🏗️ Stack          → Stack-based Matching
+  Pattern 10 → 🌳 Tree DFS       → Tree Traversal DFS
+  Pattern 11 → 🌊 BFS            → BFS Algorithm + Dijkstra's
+  Pattern 12 → 🧩 DP             → Memoization + Tabulation
+  Pattern 13 → 🔙 Backtracking   → Recursive Backtracking
+  Pattern 14 → 🏃 Greedy         → Greedy Choice
 ```
 
 ---
 
 ## Sorting Algorithms
 
-> Sorting is NOT a pattern — it's a TOOL you use before applying a pattern.
-> Example: Sort first → then use 📊 Pointer Walker or 🔪 Binary Search.
+> Sorting is NOT a pattern. It is a TOOL you use before applying a pattern.
 
-### Built-in Sort (Use This 99% of the Time)
+### Built-in Sort
 
 ```javascript
-// ⚠️ DEFAULT .sort() IS ALPHABETICAL — NOT NUMERIC!
-[10, 2, 30].sort();              // [10, 2, 30] → WRONG! (lexicographic)
-[10, 2, 30].sort((a, b) => a - b); // [2, 10, 30] → CORRECT (numeric ascending)
-[10, 2, 30].sort((a, b) => b - a); // [30, 10, 2] → numeric descending
-
-// Sort strings
-["banana", "apple", "cherry"].sort(); // ["apple", "banana", "cherry"]
-
-// Sort objects by property
-const people = [{name: "Bob", age: 25}, {name: "Ana", age: 30}];
-people.sort((a, b) => a.age - b.age);  // sort by age ascending
+[10, 2, 30].sort();              // WRONG — alphabetical!
+[10, 2, 30].sort((a, b) => a - b); // [2, 10, 30] ascending
+[10, 2, 30].sort((a, b) => b - a); // [30, 10, 2] descending
+["banana", "apple"].sort();         // ["apple", "banana"]
+const people = [{name:"Bob",age:25},{name:"Ana",age:30}];
+people.sort((a, b) => a.age - b.age); // sort by age
 ```
 
-### Bubble Sort (Simple but Slow — Learn for Understanding Only)
+### Bubble Sort
 
 ```
-WHAT: Repeatedly swap adjacent elements if they're in wrong order.
-      Like bubbles rising — biggest numbers "bubble" to the end.
-TIME: O(n²) — too slow for real use. Only for learning.
+WHAT: Swap adjacent elements if wrong order.
+TIME: O(n²) — learning only
 ```
 
 ```javascript
@@ -1195,16 +1114,15 @@ function bubbleSort(arr) {
 
 ```
 Trace: [5, 3, 1]
-  Pass 1: compare 5,3 → swap → [3,5,1]
-          compare 5,1 → swap → [3,1,5]
-  Pass 2: compare 3,1 → swap → [1,3,5]
+  Pass 1: 5,3 → swap → [3,5,1] → 5,1 → swap → [3,1,5]
+  Pass 2: 3,1 → swap → [1,3,5]
   Done: [1, 3, 5] ✓
 ```
 
-### Selection Sort (Simple but Slow)
+### Selection Sort
 
 ```
-WHAT: Find the minimum in remaining array, put it at the front.
+WHAT: Find minimum in remaining, put at front.
 TIME: O(n²)
 ```
 
@@ -1221,17 +1139,10 @@ function selectionSort(arr) {
 }
 ```
 
-```
-Trace: [3, 1, 4]
-  i=0: find min → 1 at index 1 → swap → [1,3,4]
-  Done: [1, 3, 4] ✓
-```
-
-### Insertion Sort (Good for Nearly Sorted Data)
+### Insertion Sort
 
 ```
-WHAT: Build sorted array one element at a time. Pick next element,
-      insert it into its correct position in the sorted part.
+WHAT: Insert each element into its correct position.
 TIME: O(n²) worst, O(n) best (already sorted)
 ```
 
@@ -1250,20 +1161,12 @@ function insertionSort(arr) {
 }
 ```
 
-```
-Trace: [5, 2, 4]
-  i=1: current=2 → shift 5 right → [2,5,4]
-  i=2: current=4 → shift 5 right → [2,4,5]
-  Done: [2, 4, 5] ✓
-```
-
-### Merge Sort (Fast, Stable, Predictable)
+### Merge Sort
 
 ```
-WHAT: Divide array in half, sort each half, merge them back.
-      Classic divide-and-conquer algorithm.
-TIME: O(n log n) always — guaranteed
-SPACE: O(n) — needs extra array for merging
+WHAT: Divide in half, sort each half, merge back.
+TIME: O(n log n) always
+SPACE: O(n)
 ```
 
 ```javascript
@@ -1288,20 +1191,12 @@ function merge(left, right) {
 }
 ```
 
-```
-Trace: [5, 3, 1, 4]
-  Split: [5,3] and [1,4]
-  Merge: [3,5] and [1,4]
-  Merge: [1,3,4,5] ✓
-```
-
-### Quick Sort (Fast, In-Place, Most Used)
+### Quick Sort
 
 ```
-WHAT: Pick a "pivot." Put smaller items left, bigger items right.
-      Recursively sort left and right parts.
-TIME: O(n log n) average, O(n²) worst (rare with good pivot)
-SPACE: O(log n) — in-place, just recursion stack
+WHAT: Pick pivot, put smaller left, bigger right, recurse.
+TIME: O(n log n) average, O(n²) worst
+SPACE: O(log n)
 ```
 
 ```javascript
@@ -1328,19 +1223,7 @@ function partition(arr, lo, hi) {
 ```
 
 ```
-Trace: [5, 3, 1, 4, 2]  pivot = 2
-  j=0: 5<2? NO
-  j=1: 3<2? NO
-  j=2: 1<2? YES → swap arr[0] and arr[2] → [1, 3, 5, 4, 2], i=1
-  j=3: 4<2? NO
-  Place pivot: swap arr[1] and arr[4] → [1, 2, 5, 4, 3]
-  Pivot 2 is at index 1 — everything left is smaller ✓
-  Now sort [1] and [5, 4, 3] recursively
-```
-
-### Sorting Comparison Table
-
-```
+SORTING COMPARISON:
 ┌─────────────────┬───────────┬───────────┬──────────┬────────────┐
 │ Algorithm       │ Best      │ Average   │ Worst    │ Space      │
 ├─────────────────┼───────────┼───────────┼──────────┼────────────┤
@@ -1353,10 +1236,10 @@ Trace: [5, 3, 1, 4, 2]  pivot = 2
 └─────────────────┴───────────┴───────────┴──────────┴────────────┘
 
 WHEN TO USE WHAT:
-  Interview says "sort this"       → use .sort((a, b) => a - b)
-  Interview says "implement a sort" → Merge Sort (safe) or Quick Sort (fast)
-  Nearly sorted data               → Insertion Sort is O(n)
-  Learning only                    → Bubble Sort (simplest)
+  Interview says "sort this"        → .sort((a, b) => a - b)
+  Interview says "implement a sort" → Merge Sort or Quick Sort
+  Nearly sorted data                → Insertion Sort is O(n)
+  Learning only                     → Bubble Sort
 ```
 
 ---
@@ -1367,7 +1250,7 @@ WHEN TO USE WHAT:
 
 ```
 WHAT: Check every element one by one.
-TIME: O(n) — slow but works on unsorted data.
+TIME: O(n)
 USED IN: 🔍 Detective, 🪣 Bucket, 🏆 Filter, 🔄 Transformer
 ```
 
@@ -1383,8 +1266,8 @@ function linearSearch(arr, target) {
 ### Binary Search
 
 ```
-WHAT: Cut search space in half each step. Requires SORTED data.
-TIME: O(log n) — extremely fast.
+WHAT: Cut search space in half. Requires SORTED data.
+TIME: O(log n)
 USED IN: 🔪 Binary Search pattern
 ```
 
@@ -1404,23 +1287,14 @@ function binarySearch(arr, target) {
 ### Hash-Based Search
 
 ```
-WHAT: Store values in Set/Map. Lookup is O(1).
+WHAT: Store in Set/Map. Lookup is O(1).
 TIME: O(1) per lookup, O(n) to build.
 USED IN: 🔎 Memory pattern
 ```
 
 ```javascript
-// Build lookup
 const set = new Set(arr);
-// Search
-set.has(target);  // O(1) instant!
-```
-
-```
-SEARCHING COMPARISON:
-  Linear Search  → O(n)     → works on anything
-  Binary Search  → O(log n) → requires sorted data
-  Hash Search    → O(1)     → requires building Set/Map first (O(n) space)
+set.has(target); // O(1) instant!
 ```
 
 ---
@@ -1430,49 +1304,37 @@ SEARCHING COMPARISON:
 ### Array Traversal
 
 ```javascript
-// Forward
-for (let i = 0; i < arr.length; i++) { /* arr[i] */ }
-
-// Backward
-for (let i = arr.length - 1; i >= 0; i--) { /* arr[i] */ }
-
-// For...of (when you don't need index)
-for (const item of arr) { /* item */ }
+for (let i = 0; i < arr.length; i++) { /* forward */ }
+for (let i = arr.length - 1; i >= 0; i--) { /* backward */ }
+for (const item of arr) { /* no index needed */ }
 ```
 
-### Tree Traversal — DFS (Depth-First)
+### Tree DFS
 
 ```javascript
-// Inorder: Left → Root → Right (sorted order in BST)
 function inorder(node) {
   if (!node) return;
   inorder(node.left);
-  console.log(node.val);  // process
+  console.log(node.val);
   inorder(node.right);
 }
 
-// Preorder: Root → Left → Right (copy tree)
 function preorder(node) {
   if (!node) return;
-  console.log(node.val);  // process
+  console.log(node.val);
   preorder(node.left);
   preorder(node.right);
 }
 
-// Postorder: Left → Right → Root (delete tree)
 function postorder(node) {
   if (!node) return;
   postorder(node.left);
   postorder(node.right);
-  console.log(node.val);  // process
+  console.log(node.val);
 }
 ```
 
-```
-Used in: 🌳 Tree DFS pattern
-```
-
-### Tree/Graph Traversal — BFS (Breadth-First)
+### BFS
 
 ```javascript
 function bfs(root) {
@@ -1480,44 +1342,31 @@ function bfs(root) {
   const queue = [root];
   while (queue.length > 0) {
     const node = queue.shift();
-    console.log(node.val);  // process
+    console.log(node.val);
     if (node.left) queue.push(node.left);
     if (node.right) queue.push(node.right);
   }
 }
 ```
 
-```
-Used in: 🌊 BFS pattern
-DFS vs BFS:
-  DFS → goes deep, uses stack/recursion, "explore all paths"
-  BFS → goes wide, uses queue, "shortest path / level by level"
-```
-
-### Graph Traversal
+### Graph DFS and BFS
 
 ```javascript
-// DFS on Graph
 function dfsGraph(graph, start) {
   const visited = new Set();
   function dfs(node) {
     if (visited.has(node)) return;
     visited.add(node);
-    console.log(node);  // process
-    for (const neighbor of graph[node]) {
-      dfs(neighbor);
-    }
+    for (const neighbor of graph[node]) { dfs(neighbor); }
   }
   dfs(start);
 }
 
-// BFS on Graph
 function bfsGraph(graph, start) {
   const visited = new Set([start]);
   const queue = [start];
   while (queue.length > 0) {
     const node = queue.shift();
-    console.log(node);  // process
     for (const neighbor of graph[node]) {
       if (!visited.has(neighbor)) {
         visited.add(neighbor);
@@ -1545,7 +1394,6 @@ function maxSubarraySum(arr) {
   let currentSum = arr[0];
   let bestSum = arr[0];
   for (let i = 1; i < arr.length; i++) {
-    // Either extend the current subarray, or start fresh at arr[i]
     currentSum = Math.max(arr[i], currentSum + arr[i]);
     bestSum = Math.max(bestSum, currentSum);
   }
@@ -1555,24 +1403,23 @@ function maxSubarraySum(arr) {
 
 ```
 Trace: [-2, 1, -3, 4, -1, 2, 1, -5, 4]
-  i=1: currentSum = max(1, -2+1) = 1, best=1
-  i=2: currentSum = max(-3, 1-3) = -2, best=1
-  i=3: currentSum = max(4, -2+4) = 4, best=4
-  i=4: currentSum = max(-1, 4-1) = 3, best=4
-  i=5: currentSum = max(2, 3+2) = 5, best=5
-  i=6: currentSum = max(1, 5+1) = 6, best=6
-  i=7: currentSum = max(-5, 6-5) = 1, best=6
-  i=8: currentSum = max(4, 1+4) = 5, best=6
-  Return: 6 ✓ (subarray [4, -1, 2, 1])
-
-LeetCode: #53 Maximum Subarray
+  i=1: current=max(1,-1)=1,  best=1
+  i=2: current=max(-3,-2)=-2, best=1
+  i=3: current=max(4,2)=4,   best=4
+  i=4: current=max(-1,3)=3,  best=4
+  i=5: current=max(2,5)=5,   best=5
+  i=6: current=max(1,6)=6,   best=6
+  i=7: current=max(-5,1)=1,  best=6
+  i=8: current=max(4,5)=5,   best=6
+  Return: 6 ✓ — subarray [4,-1,2,1]
+LeetCode: #53
 ```
 
-### Floyd's Cycle Detection (Tortoise and Hare)
+### Floyd's Cycle Detection
 
 ```
-WHAT: Detect if a linked list has a cycle using slow + fast pointers.
-LIVES IN: 📊 Pointer Walker pattern
+WHAT: Detect cycle using slow + fast pointers.
+LIVES IN: 📊 Pointer Walker
 TIME: O(n), SPACE: O(1)
 ```
 
@@ -1580,60 +1427,46 @@ TIME: O(n), SPACE: O(1)
 function hasCycle(head) {
   let slow = head, fast = head;
   while (fast !== null && fast.next !== null) {
-    slow = slow.next;          // moves 1 step
-    fast = fast.next.next;     // moves 2 steps
-    if (slow === fast) return true;   // they met → cycle!
+    slow = slow.next;
+    fast = fast.next.next;
+    if (slow === fast) return true;
   }
-  return false;   // fast reached end → no cycle
+  return false;
 }
 ```
 
 ```
 VISUAL:
-  No cycle:  1 → 2 → 3 → null    fast reaches null → false
-  Cycle:     1 → 2 → 3 → 4
-                  ↑         ↓
-                  └─────────┘    slow and fast will meet → true
-
-LeetCode: #141 Linked List Cycle, #142 Linked List Cycle II
+  No cycle: 1→2→3→null → fast reaches null → false
+  Cycle: 1→2→3→4→(back to 2) → slow and fast meet → true
+LeetCode: #141, #142
 ```
 
-### Dijkstra's Algorithm (Shortest Path in Weighted Graph)
+### Dijkstra's Algorithm
 
 ```
-WHAT: Find shortest path from one node to all other nodes in a weighted graph.
-LIVES IN: 🏃 Greedy pattern (always pick the closest unvisited node)
-TIME: O((V + E) log V) with a heap
+WHAT: Shortest path from one node to all others in weighted graph.
+LIVES IN: 🏃 Greedy pattern
+TIME: O((V + E) log V) with heap
 ```
 
 ```javascript
 function dijkstra(graph, start) {
-  // graph[node] = [{neighbor, weight}, ...]
   const dist = new Map();
   const visited = new Set();
-
-  // Initialize all distances as Infinity
-  for (const node of graph.keys()) {
-    dist.set(node, Infinity);
-  }
+  for (const node of graph.keys()) { dist.set(node, Infinity); }
   dist.set(start, 0);
 
-  // Simple version without heap (O(V²) — heap version is faster)
   while (visited.size < graph.size) {
-    // Find unvisited node with smallest distance
-    let current = null;
-    let minDist = Infinity;
+    let current = null, minDist = Infinity;
     for (const [node, d] of dist) {
       if (!visited.has(node) && d < minDist) {
-        current = node;
-        minDist = d;
+        current = node; minDist = d;
       }
     }
-
-    if (current === null) break;  // remaining nodes unreachable
+    if (current === null) break;
     visited.add(current);
 
-    // Update distances to neighbors
     for (const { neighbor, weight } of graph.get(current)) {
       if (!visited.has(neighbor)) {
         const newDist = dist.get(current) + weight;
@@ -1643,19 +1476,8 @@ function dijkstra(graph, start) {
       }
     }
   }
-
-  return dist;  // Map of node → shortest distance from start
+  return dist;
 }
-
-// Example usage:
-const weightedGraph = new Map();
-weightedGraph.set('A', [{neighbor: 'B', weight: 4}, {neighbor: 'C', weight: 1}]);
-weightedGraph.set('B', [{neighbor: 'D', weight: 1}]);
-weightedGraph.set('C', [{neighbor: 'B', weight: 2}, {neighbor: 'D', weight: 5}]);
-weightedGraph.set('D', []);
-
-dijkstra(weightedGraph, 'A');
-// A→0, B→3 (A→C→B), C→1 (A→C), D→4 (A→C→B→D)
 ```
 
 ```
@@ -1666,27 +1488,20 @@ VISUAL:
  1|         1|
   ↓    2     ↓
   C ------→ D
-       5
-  C also connects to D directly (weight 5)
-
-  Shortest: A→C (1), then C→B (2) = 3, then B→D (1) = 4
-  Not A→B (4) directly — going through C is cheaper!
-
-LeetCode: #743 Network Delay Time, #1631 Path with Min Effort
+  Shortest: A→C(1)→B(2)=3, then B→D(1)=4
+LeetCode: #743, #1631
 ```
 
-### Topological Sort (Task Ordering with Dependencies)
+### Topological Sort
 
 ```
-WHAT: Order tasks so that every dependency is completed before the task.
-      Only works on DAGs (Directed Acyclic Graphs — no cycles).
-LIVES IN: Level 4 specialist patterns
+WHAT: Order tasks so every dependency comes before the task.
+LIVES IN: Level 4 specialist
 TIME: O(V + E)
 ```
 
 ```javascript
 function topologicalSort(numNodes, edges) {
-  // Build graph and count in-degrees
   const graph = Array.from({ length: numNodes }, () => []);
   const inDegree = Array(numNodes).fill(0);
 
@@ -1695,7 +1510,6 @@ function topologicalSort(numNodes, edges) {
     inDegree[to]++;
   }
 
-  // Start with all nodes that have 0 dependencies
   const queue = [];
   for (let i = 0; i < numNodes; i++) {
     if (inDegree[i] === 0) queue.push(i);
@@ -1705,48 +1519,37 @@ function topologicalSort(numNodes, edges) {
   while (queue.length > 0) {
     const node = queue.shift();
     order.push(node);
-
     for (const neighbor of graph[node]) {
       inDegree[neighbor]--;
-      if (inDegree[neighbor] === 0) {
-        queue.push(neighbor);  // all dependencies met → ready
-      }
+      if (inDegree[neighbor] === 0) queue.push(neighbor);
     }
   }
-
-  // If order doesn't include all nodes → there was a cycle
   return order.length === numNodes ? order : [];
 }
-
-// Example: 4 courses, prerequisites: 1→0, 2→0, 3→1, 3→2
-topologicalSort(4, [[1,0], [2,0], [3,1], [3,2]]);
-// → [1, 2, 3, 0] or [2, 1, 3, 0] — both valid
-// Meaning: do 1 and 2 first (no deps), then 3, then 0
 ```
 
 ```
-LeetCode: #207 Course Schedule, #210 Course Schedule II
+LeetCode: #207, #210
 ```
 
-### Union-Find (Disjoint Set)
+### Union-Find
 
 ```
 WHAT: Track which elements belong to the same group.
-      Two operations: union (merge groups) and find (which group?).
-LIVES IN: Level 4 specialist patterns
-TIME: Nearly O(1) per operation with path compression
+LIVES IN: Level 4 specialist
+TIME: Nearly O(1) per operation
 ```
 
 ```javascript
 class UnionFind {
   constructor(n) {
-    this.parent = Array.from({ length: n }, (_, i) => i); // each node is its own parent
+    this.parent = Array.from({ length: n }, (_, i) => i);
     this.rank = Array(n).fill(0);
   }
 
   find(x) {
     if (this.parent[x] !== x) {
-      this.parent[x] = this.find(this.parent[x]);  // path compression
+      this.parent[x] = this.find(this.parent[x]);
     }
     return this.parent[x];
   }
@@ -1754,9 +1557,7 @@ class UnionFind {
   union(x, y) {
     const rootX = this.find(x);
     const rootY = this.find(y);
-    if (rootX === rootY) return false;  // already in same group
-
-    // Union by rank — attach smaller tree under bigger tree
+    if (rootX === rootY) return false;
     if (this.rank[rootX] < this.rank[rootY]) {
       this.parent[rootX] = rootY;
     } else if (this.rank[rootX] > this.rank[rootY]) {
@@ -1768,23 +1569,12 @@ class UnionFind {
     return true;
   }
 
-  connected(x, y) {
-    return this.find(x) === this.find(y);
-  }
+  connected(x, y) { return this.find(x) === this.find(y); }
 }
-
-// Example: 5 people, connect friends
-const uf = new UnionFind(5);
-uf.union(0, 1);   // 0 and 1 are friends
-uf.union(2, 3);   // 2 and 3 are friends
-uf.connected(0, 1); // true
-uf.connected(0, 2); // false
-uf.union(1, 2);   // now groups merge
-uf.connected(0, 3); // true (0-1-2-3 all connected)
 ```
 
 ```
-LeetCode: #547 Number of Provinces, #684 Redundant Connection, #200 Number of Islands
+LeetCode: #547, #684, #323
 ```
 
 ### Complete Algorithm Map
@@ -1799,7 +1589,7 @@ LeetCode: #547 Number of Provinces, #684 Redundant Connection, #200 Number of Is
 │ Two Pointer          │ Compare from both ends      │ 📊           │
 │ Sliding Window       │ Track contiguous window     │ 🪟           │
 │ Bubble Sort          │ Swap adjacent (slow)        │ Sorting      │
-│ Selection Sort       │ Find min, place it (slow)   │ Sorting      │
+│ Selection Sort       │ Find min, place it          │ Sorting      │
 │ Insertion Sort       │ Insert into sorted part     │ Sorting      │
 │ Merge Sort           │ Divide, sort, merge         │ Sorting      │
 │ Quick Sort           │ Pivot + partition           │ Sorting      │
@@ -1825,9 +1615,9 @@ LeetCode: #547 Number of Provinces, #684 Redundant Connection, #200 Number of Is
 # Section D: All Patterns
 
 ```
-Level 1 (6 patterns)  → Solves 80%  → Weeks 1-2
-Level 2 (5 patterns)  → Solves 15%  → Weeks 3-4
-Level 3 (3 patterns)  → Solves 4%   → Week 5
+Level 1 (6 patterns)  → Solves 80%  → Days 1-14
+Level 2 (5 patterns)  → Solves 15%  → Days 15-28
+Level 3 (3 patterns)  → Solves 4%   → Days 29-38
 Level 4 (8 patterns)  → Solves 1%   → As needed
 ```
 
@@ -1843,11 +1633,17 @@ Level 4 (8 patterns)  → Solves 1%   → As needed
 USE WHEN:  You need a true/false answer
 KEYWORDS:  "Is it...?", "Are all...?", "Does every...?", "Is valid?"
 LOGIC:     Find ONE bad thing → return false. Survive loop → return true.
+ALGORITHM: → Section C → Linear Search
+
+NOTE: Detective is the ONE exception to the positive framing rule.
+      It deliberately writes the BAD condition.
+      Find ONE bad thing → stop immediately. This is intentional.
 
 DON'T USE WHEN:
-  ✗ You need to COUNT how many bad things (use 🪣 Bucket instead)
-  ✗ You need to COLLECT the bad items (use 🏆 Filter instead)
+  ✗ You need to COUNT bad things (use 🪣 Bucket)
+  ✗ You need to COLLECT bad items (use 🏆 Filter)
   ✗ The answer isn't true/false
+  ✗ Checking if ONE value exists once (use includes())
 ```
 
 ```javascript
@@ -1893,6 +1689,10 @@ LeetCode: #1550 Three Consecutive Odds, #896 Monotonic Array
 USE WHEN:  You need ONE value from a list (sum, max, count, longest)
 KEYWORDS:  "Sum of...", "Total...", "Count...", "Maximum...", "Longest..."
 LOGIC:     Start with empty bucket. Pour each item in. Return bucket.
+ALGORITHM: → Section C → Linear Search + Kadane's Algorithm
+
+  Normal Bucket  → Linear Scan  → touches ALL items
+  Kadane's Bucket → Kadane's    → finds BEST subarray
 
 DON'T USE WHEN:
   ✗ You need a list of results (use 🏆 Filter or 🔄 Transformer)
@@ -1927,18 +1727,33 @@ function findMax(arr) {
 ```
 
 ```
-Trace: [3, 7, 2] → biggest = 7 ✓
+Trace: [3, 7, 2]
+  i=0: 3 > -Inf → biggest=3
+  i=1: 7 > 3    → biggest=7
+  i=2: 2 > 7? NO
+  Return: 7 ✓
+```
+
+**Kadane's Example — "Maximum Subarray Sum"**
+
+```javascript
+function maxSubarraySum(arr) {
+  let currentSum = arr[0];
+  let bestSum = arr[0];
+  for (let i = 1; i < arr.length; i++) {
+    currentSum = Math.max(arr[i], currentSum + arr[i]);
+    bestSum = Math.max(bestSum, currentSum);
+  }
+  return bestSum;
+}
+// [-2,1,-3,4,-1,2,1,-5,4] → 6 ✓
 ```
 
 ```
-Practice Problems:
-□ Find the sum of an array
-□ Find the average
-□ Find the maximum / minimum
-□ Count how many even numbers
-□ Find the longest string
-□ Multiply all numbers (product)
-LeetCode: #1 (sum variant), #53 Max Subarray (Kadane's), #136 Single Number
+Practice:
+□ Sum of array    □ Find average    □ Find max/min
+□ Count evens     □ Longest string  □ Product of all
+LeetCode: #53 Max Subarray, #136 Single Number
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -1951,10 +1766,11 @@ LeetCode: #1 (sum variant), #53 Max Subarray (Kadane's), #136 Single Number
 USE WHEN:  You need a SHORTER list — only items passing a test
 KEYWORDS:  "Get all...", "Find all...", "Remove...", "Keep only..."
 LOGIC:     Empty winners list. Test each. Pass → push. Fail → skip.
+ALGORITHM: → Section C → Linear Search
 
 DON'T USE WHEN:
-  ✗ You need EVERY item changed (use 🔄 Transformer — same size list)
-  ✗ You need one value like a count (use 🪣 Bucket)
+  ✗ You need EVERY item changed (use 🔄 Transformer)
+  ✗ You need one value (use 🪣 Bucket)
 ```
 
 ```javascript
@@ -1978,23 +1794,22 @@ function getEvens(arr) {
   return winners;
 }
 ```
+
 ```
 Trace: [1, 4, 3, 8]
-  1: odd → skip    winners=[]
-  4: even → push   winners=[4]
-  3: odd → skip    winners=[4]
-  8: even → push   winners=[4,8]
+  1: odd → skip   winners=[]
+  4: even → push  winners=[4]
+  3: odd → skip   winners=[4]
+  8: even → push  winners=[4,8]
   Return: [4, 8] ✓
 ```
 
 ```
-Practice Problems:
-□ Get all even numbers
-□ Get all strings longer than 5 characters
-□ Remove all negative numbers
-□ Remove all falsy values
-□ Get words starting with a vowel
-LeetCode: #1filter (no direct LC, but used in #217, #349)
+Practice:
+□ Get all even numbers              □ Strings longer than 5 chars
+□ Remove all negative numbers       □ Remove all falsy values
+□ Get words starting with vowel
+LeetCode: used in #217, #349
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -2007,15 +1822,14 @@ LeetCode: #1filter (no direct LC, but used in #217, #349)
 USE WHEN:  You need SAME-SIZE list with CHANGED items
 KEYWORDS:  "Double each...", "Convert...", "Format...", "Extract..."
 LOGIC:     New list. Transform each item. Push transformed version.
+ALGORITHM: → Section C → Linear Search
 
 DON'T USE WHEN:
-  ✗ Some items should be removed (use 🏆 Filter — shorter list)
-  ✗ You need one value, not a list (use 🪣 Bucket)
+  ✗ Some items should be removed (use 🏆 Filter)
+  ✗ You need one value (use 🪣 Bucket)
 ```
 
 ```javascript
-
-
 function transform(arr) {
   const result = [];
   for (let i = 0; i < arr.length; i++) {
@@ -2039,17 +1853,12 @@ function squareAll(arr) {
 ```
 
 ```
-Trace: [2, 3, 5]
-  2→4, 3→9, 5→25 → [4, 9, 25] ✓
-```
-
-```
-Practice Problems:
+Practice:
 □ Double every number
 □ Square every number
-□ Convert Celsius to Fahrenheit (C × 9/5 + 32)
-□ Convert all strings to uppercase
-□ Get length of each string: ["hi","hello"] → [2,5]
+□ Celsius → Fahrenheit (C × 9/5 + 32)
+□ All strings to uppercase
+□ Get length of each string
 LeetCode: #977 Squares of Sorted Array
 ```
 
@@ -2069,16 +1878,14 @@ USE WHEN:
             Two values that connect   → MAP (store index)
 
 KEYWORDS:  "Duplicates", "Two Sum", "Frequency", "First unique", "Anagram"
-
+ALGORITHM: → Section C → Hash-Based Search
 LOGIC:     Set/Map = instant memory. Check memory before processing.
 
 DON'T USE WHEN:
-  ✗ Data is already sorted (use 📊 Pointer Walker — no extra space)
-  ✗ You don't need lookup, just filtering by a simple condition (use 🏆 Filter)
-  ✗ Checking if ONE value exists once (use 🔍 Detective instead)
+  ✗ Data is already sorted (use 📊 Pointer Walker)
+  ✗ Just filtering by simple condition (use 🏆 Filter)
+  ✗ Checking if ONE value exists once (use 🔍 Detective)
 ```
-
----
 
 ```
 SET → stores VALUE only
@@ -2089,27 +1896,23 @@ MAP → stores VALUE + EXTRA INFO
       two questions → "have I seen it?" + "what did I store?"
       methods       → map.has(x), map.get(x), map.set(x, value)
 
-SET vs MAP — When to pick:
-  "Have I seen this value?"         → SET
-  "How many times did I see it?"    → MAP (key → count)
-  "What index was this value at?"   → MAP (key → index)
+HOW TO IDENTIFY WHICH CASE:
+  "Does something exist or repeat?"   → Case 1 Basic    → SET
+  "How many times does it appear?"    → Case 1 Extended → MAP count
+  "Find two values that relate?"      → Case 2          → MAP index
 ```
 
----
-
-```
+```javascript
 // Template (Set) — Case 1 Basic
-// Use for: duplicates, unique values
 function memorySet(arr) {
   const seen = new Set();
   for (let i = 0; i < arr.length; i++) {
-    if (seen.has(arr[i])) { /* FOUND — handle it */ }
-    seen.add(arr[i]);    // check FIRST → add AFTER
+    if (seen.has(arr[i])) { /* FOUND */ }
+    seen.add(arr[i]); // check FIRST → add AFTER
   }
 }
 
 // Template (Map — count) — Case 1 Extended
-// Use for: frequency, anagram, first unique
 function memoryMapCount(arr) {
   const freq = new Map();
   for (let i = 0; i < arr.length; i++) {
@@ -2119,19 +1922,17 @@ function memoryMapCount(arr) {
 }
 
 // Template (Map — index) — Case 2
-// Use for: Two Sum, pair/relationship
-function memoryMapIndex(arr) {
+function memoryMapIndex(arr, target) {
   const memory = new Map();
   for (let i = 0; i < arr.length; i++) {
-    // check complement or relationship first
-    // memory.set(arr[i], i) — store value → index
+    const complement = target - arr[i];
+    if (memory.has(complement)) return [memory.get(complement), i];
+    memory.set(arr[i], i);
   }
 }
 ```
 
----
-
-**Example — "Remove Duplicates" (Case 1 Basic → SET)**
+**Example — Remove Duplicates (Case 1 Basic)**
 
 ```javascript
 function removeDuplicates(arr) {
@@ -2145,18 +1946,7 @@ function removeDuplicates(arr) {
 // [1,3,2,3] → [1,3,2] ✓
 ```
 
-```
-Trace: [1, 3, 2, 3]
-  1: not seen → add → seen={1}     result=[1]
-  3: not seen → add → seen={1,3}   result=[1,3]
-  2: not seen → add → seen={1,3,2} result=[1,3,2]
-  3: SEEN → skip
-  Return: [1, 3, 2] ✓
-```
-
----
-
-**Example — "Character Frequency" (Case 1 Extended → MAP count)**
+**Example — Character Frequency (Case 1 Extended)**
 
 ```javascript
 function charFrequency(str) {
@@ -2166,52 +1956,10 @@ function charFrequency(str) {
   }
   return freq;
 }
-// "hello" → { h→1, e→1, l→2, o→1 }
+// "hello" → {h→1, e→1, l→2, o→1}
 ```
 
-```
-Trace: "hello"
-  h: undefined→0+1=1  freq={h→1}
-  e: undefined→0+1=1  freq={h→1, e→1}
-  l: undefined→0+1=1  freq={h→1, e→1, l→1}
-  l: 1+1=2            freq={h→1, e→1, l→2}
-  o: undefined→0+1=1  freq={h→1, e→1, l→2, o→1}
-```
-
----
-
-**Example — "Are Anagrams?" (Case 1 Extended → MAP count)**
-
-```javascript
-function isAnagram(str1, str2) {
-  if (str1.length !== str2.length) return false;
-
-  const freq = new Map();
-  for (const ch of str1) {
-    freq.set(ch, (freq.get(ch) || 0) + 1);
-  }
-
-  for (const ch of str2) {
-    if (!freq.get(ch)) return false;
-    freq.set(ch, freq.get(ch) - 1);
-  }
-
-  return true;
-}
-// isAnagram("listen", "silent") → true  ✓
-// isAnagram("hello", "world")   → false ✗
-```
-
-```
-WHY SUBTRACT:
-  str1 builds counts UP   → adds 1 each time
-  str2 checks counts DOWN → subtracts 1 each time
-  Without subtract → same character passes unlimited times → wrong answer
-```
-
----
-
-**Example — "Two Sum" (Case 2 → MAP index)**
+**Example — Two Sum (Case 2)**
 
 ```javascript
 function twoSum(nums, target) {
@@ -2223,20 +1971,12 @@ function twoSum(nums, target) {
   }
   return [];
 }
-// nums=[2,7,11] target=9 → [0,1] ✓
+// [2,7,11] target=9 → [0,1] ✓
 ```
 
 ```
-Trace: [2, 7, 11] target=9
-  i=0: complement=9-2=7  memory.has(7)? NO  → store 2→0  memory={2:0}
-  i=1: complement=9-7=2  memory.has(2)? YES → return [0,1] ✓
-```
+All Problems:
 
----
-
-## All Problems
-
-```
 CASE 1 BASIC → SET
   □ Does array have duplicates?
   □ Are all values unique?
@@ -2253,7 +1993,6 @@ CASE 1 EXTENDED → MAP count
   □ First unique character in string
   □ Most frequent element
   □ Find elements that appear exactly twice
-  □ Find elements that appear more than n/2 times
   □ Group anagrams together
   □ Ransom note
 
@@ -2263,28 +2002,8 @@ CASE 2 → MAP index
   □ Subarray sum equals K
   □ Longest consecutive sequence
   □ Four Sum
-```
 
----
-
-## How to Identify Which Case
-
-```
-"Does something exist or repeat?"   → Case 1 Basic    → SET
-"How many times does it appear?"    → Case 1 Extended → MAP count
-"Find two values that relate?"      → Case 2          → MAP index
-```
-
----
-
-```
-Practice:
-□ Has duplicates?          → Case 1 Basic    → SET
-□ Character frequency?     → Case 1 Extended → MAP count
-□ Are anagrams?            → Case 1 Extended → MAP count
-□ Two Sum?                 → Case 2          → MAP index
-LeetCode: #217 Contains Duplicate, #242 Valid Anagram,
-          #387 First Unique Character, #1 Two Sum
+LeetCode: #217, #242, #387, #1
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -2297,9 +2016,10 @@ LeetCode: #217 Contains Duplicate, #242 Valid Anagram,
 USE WHEN:  Compare elements with each other, sorted array problems
 KEYWORDS:  "Palindrome", "Sorted array pair", "In-place removal", "Merge"
 LOGIC:     Two index variables moving through the data.
+ALGORITHM: → Section C → Two Pointer + Floyd's Cycle Detection
 
 DON'T USE WHEN:
-  ✗ Data is unsorted and you need pair lookup (use 🔎 Memory — faster)
+  ✗ Data is unsorted and you need pair lookup (use 🔎 Memory)
   ✗ You're not comparing elements with EACH OTHER
 ```
 
@@ -2346,15 +2066,11 @@ Trace: "racecar"
 ```
 
 ```
-Practice Problems:
-□ Is string a palindrome?
-□ Reverse array in-place
-□ Two Sum in SORTED array
-□ Remove duplicates from sorted array
-□ Move all zeroes to end
-□ Merge two sorted arrays
-LeetCode: #125 Valid Palindrome, #26 Remove Duplicates from Sorted,
-          #167 Two Sum II, #283 Move Zeroes, #88 Merge Sorted Array
+Practice:
+□ Is string a palindrome?           □ Reverse array in-place
+□ Two Sum in SORTED array           □ Remove duplicates from sorted
+□ Move all zeroes to end            □ Merge two sorted arrays
+LeetCode: #125, #26, #167, #283, #88
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -2378,7 +2094,7 @@ LeetCode: #125 Valid Palindrome, #26 Remove Duplicates from Sorted,
 
 ## Level 2 — Intermediate (Solves 15% more)
 
-> **Prerequisite:** Level 1 patterns feel easy. You pick them in under 30 seconds.
+> **Prerequisite:** Level 1 patterns feel easy. Pick them in under 30 seconds.
 
 ---
 
@@ -2388,11 +2104,12 @@ LeetCode: #125 Valid Palindrome, #26 Remove Duplicates from Sorted,
 USE WHEN:  Best/longest/shortest CONTIGUOUS subarray or substring
 KEYWORDS:  "Consecutive", "Subarray of size K", "Longest substring"
 LOGIC:     Window slides across data. Add new item, drop old item.
+ALGORITHM: → Section C → Sliding Window Technique
 BUILT ON:  📊 Pointer Walker + 🪣 Bucket
 
 DON'T USE WHEN:
-  ✗ Elements don't need to be contiguous/adjacent
-  ✗ You need to find a pair, not a range
+  ✗ Elements don't need to be contiguous
+  ✗ You need a pair, not a range
 ```
 
 ```javascript
@@ -2420,21 +2137,6 @@ function varWindow(arr) {
 }
 ```
 
-**Example — "Max sum of K consecutive numbers"**
-
-```javascript
-function maxSumK(arr, k) {
-  let windowSum = 0;
-  for (let i = 0; i < k; i++) windowSum += arr[i];
-  let best = windowSum;
-  for (let i = k; i < arr.length; i++) {
-    windowSum += arr[i] - arr[i - k];
-    best = Math.max(best, windowSum);
-  }
-  return best;
-}
-```
-
 ```
 Trace: [1,4,2,7,1] k=3
   First window [1,4,2] = 7
@@ -2446,11 +2148,9 @@ Trace: [1,4,2,7,1] k=3
 ```
 Practice:
 □ Max sum subarray of size K
-□ Longest substring without repeating characters
+□ Longest substring without repeating
 □ Minimum size subarray with sum ≥ target
-□ Find all anagrams in a string
-LeetCode: #3 Longest Substring, #209 Min Size Subarray Sum,
-          #438 Find All Anagrams, #567 Permutation in String
+LeetCode: #3, #209, #438, #567
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -2463,11 +2163,11 @@ LeetCode: #3 Longest Substring, #209 Min Size Subarray Sum,
 USE WHEN:  Find target in SORTED data by halving search space
 KEYWORDS:  "Sorted array", "Find position", "First/last occurrence"
 LOGIC:     Check middle. Too small → go right. Too big → go left.
+ALGORITHM: → Section C → Binary Search Algorithm
 BUILT ON:  🔍 Detective (elimination)
 
 DON'T USE WHEN:
   ✗ Data is NOT sorted and can't be sorted
-  ✗ You need to check every element anyway
 ```
 
 ```javascript
@@ -2491,7 +2191,7 @@ Trace: [2,5,8,12,16] target=12
 
 ```
 Practice:
-LeetCode: #704 Binary Search, #34 First/Last Position, #33 Rotated Search, #69 Sqrt
+LeetCode: #704, #34, #33, #69
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -2504,6 +2204,7 @@ LeetCode: #704 Binary Search, #34 First/Last Position, #33 Rotated Search, #69 S
 USE WHEN:  Matching pairs, undo, Last-In-First-Out processing
 KEYWORDS:  "Valid parentheses", "Next greater", "Evaluate expression"
 LOGIC:     Push items. Pop when condition met. Check what's on top.
+ALGORITHM: → Section C → Stack-based Matching
 
 DON'T USE WHEN:
   ✗ Processing order doesn't matter
@@ -2540,16 +2241,16 @@ function isValid(s) {
 
 ```
 Trace: "([])"
-  ( → push    stack: [(]
-  [ → push    stack: [(, []
-  ] → pop [   match ✓
-  ) → pop (   match ✓
+  ( → push  stack:[(]
+  [ → push  stack:[(,[]
+  ] → pop [ → match ✓
+  ) → pop ( → match ✓
   Empty → true ✓
 ```
 
 ```
 Practice:
-LeetCode: #20 Valid Parentheses, #150 Evaluate RPN, #739 Daily Temperatures, #155 Min Stack
+LeetCode: #20, #150, #739, #155
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -2562,6 +2263,7 @@ LeetCode: #20 Valid Parentheses, #150 Evaluate RPN, #739 Daily Temperatures, #15
 USE WHEN:  Explore a tree deeply using recursion
 KEYWORDS:  "Max depth", "Path sum", "Invert tree", "Validate BST"
 LOGIC:     Base case (null) → Ask left → Ask right → Combine answers
+ALGORITHM: → Section C → Tree Traversal DFS
 
 DON'T USE WHEN:
   ✗ You need level-by-level processing (use 🌊 BFS)
@@ -2589,17 +2291,12 @@ function maxDepth(node) {
 ```
 Trace:    1
          / \
-        2   3    → maxDepth = 1 + max(1, 1) = 2 ✓
+        2   3   → maxDepth = 1 + max(1,1) = 2 ✓
 ```
 
 ```
 Practice:
-□ Max depth of binary tree
-□ Invert binary tree
-□ Path sum (root to leaf)
-□ Validate BST
-LeetCode: #104 Maximum Depth, #226 Invert Tree, #112 Path Sum,
-          #98 Validate BST, #100 Same Tree, #572 Subtree of Another
+LeetCode: #104, #226, #112, #98, #100, #572
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -2611,7 +2308,8 @@ LeetCode: #104 Maximum Depth, #226 Invert Tree, #112 Path Sum,
 ```
 USE WHEN:  Level-by-level traversal or shortest path
 KEYWORDS:  "Level order", "Shortest path", "Nearest", "Layer by layer"
-LOGIC:     Queue. Process all nodes at current level. Add children for next.
+LOGIC:     Queue. Process all at current level. Add children for next.
+ALGORITHM: → Section C → BFS Algorithm + Dijkstra's
 
 DON'T USE WHEN:
   ✗ You need to explore all paths to leaves (use 🌳 DFS)
@@ -2638,7 +2336,7 @@ function bfs(root) {
 
 ```
 Practice:
-LeetCode: #102 Level Order, #200 Number of Islands, #994 Rotting Oranges, #542 01 Matrix
+LeetCode: #102, #200, #994, #542
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -2657,11 +2355,12 @@ LeetCode: #102 Level Order, #200 Number of Islands, #994 Rotting Oranges, #542 0
 USE WHEN:  Overlapping sub-problems + optimal substructure
 KEYWORDS:  "How many ways?", "Minimum cost", "Can I reach?", "Longest..."
 LOGIC:     Store answers to small problems. Build up to the big answer.
+ALGORITHM: → Section C → Memoization + Tabulation
 BUILT ON:  🪣 Bucket + 🔎 Memory + Recursion
 
 DON'T USE WHEN:
   ✗ Sub-problems don't overlap (use Divide & Conquer)
-  ✗ A greedy/local choice is provably optimal (use 🏃 Greedy)
+  ✗ Greedy local choice is provably optimal (use 🏃 Greedy)
 
 3-Step Recipe:
   1. DEFINE: "What does dp[i] mean?"
@@ -2693,7 +2392,6 @@ function climbStairs(n) {
   }
   return prev1;
 }
-// n=5 → dp: 1,1,2,3,5,8 → return 8 ✓
 ```
 
 ```
@@ -2702,13 +2400,8 @@ Trace: n=5
 ```
 
 ```
-Practice (in order):
-□ Climbing Stairs
-□ House Robber
-□ Coin Change
-□ Longest Increasing Subsequence
-LeetCode: #70 Climbing Stairs, #198 House Robber, #322 Coin Change,
-          #300 LIS, #1143 Longest Common Subsequence, #416 Partition Equal Subset
+Practice:
+LeetCode: #70, #198, #322, #300, #1143, #416
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -2721,11 +2414,8 @@ LeetCode: #70 Climbing Stairs, #198 House Robber, #322 Coin Change,
 USE WHEN:  Generate ALL combinations, permutations, valid configurations
 KEYWORDS:  "All subsets", "All permutations", "N-Queens", "Sudoku"
 LOGIC:     CHOOSE → EXPLORE → UN-CHOOSE. Always this order.
+ALGORITHM: → Section C → Recursive Backtracking
 BUILT ON:  🌳 DFS + trial-and-error
-
-DON'T USE WHEN:
-  ✗ You need just ONE solution (use 🧩 DP or 🏃 Greedy)
-  ✗ You can solve it with a simple loop
 ```
 
 ```javascript
@@ -2760,12 +2450,7 @@ function subsets(nums) {
 
 ```
 Practice:
-□ All subsets
-□ All permutations
-□ Combination Sum
-□ Word Search in grid
-LeetCode: #78 Subsets, #46 Permutations, #39 Combination Sum,
-          #79 Word Search, #51 N-Queens, #17 Letter Combos of Phone Number
+LeetCode: #78, #46, #39, #79, #51, #17
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -2778,10 +2463,11 @@ LeetCode: #78 Subsets, #46 Permutations, #39 Combination Sum,
 USE WHEN:  Best local choice leads to best global result
 KEYWORDS:  "Maximum events", "Minimum stops", "Jump game"
 LOGIC:     Sort (usually). Pick best option NOW. Never look back.
+ALGORITHM: → Section C → Greedy Choice
 
 DON'T USE WHEN:
   ✗ Local best ≠ global best (use 🧩 DP instead)
-  Tip: If unsure whether greedy works, default to DP. It's always correct.
+  Tip: If unsure, default to DP. It is always correct.
 ```
 
 ```javascript
@@ -2797,20 +2483,16 @@ function canJump(nums) {
 
 ```
 Trace: [2, 3, 1, 1, 4]
-  i=0: maxReach = max(0, 0+2) = 2
-  i=1: maxReach = max(2, 1+3) = 4
-  i=2: maxReach = max(4, 2+1) = 4
-  i=3: maxReach = max(4, 3+1) = 4
+  i=0: maxReach=2
+  i=1: maxReach=4
+  i=2: maxReach=4
+  i=3: maxReach=4
   i=4: reached end → true ✓
 ```
 
 ```
 Practice:
-□ Jump Game
-□ Best Time to Buy/Sell Stock
-□ Max non-overlapping intervals
-LeetCode: #55 Jump Game, #121 Best Time to Buy/Sell Stock,
-          #435 Non-overlapping Intervals, #455 Assign Cookies
+LeetCode: #55, #121, #435, #455
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -2823,14 +2505,14 @@ LeetCode: #55 Jump Game, #121 Best Time to Buy/Sell Stock,
 
 | # | Pattern | Use When | LeetCode |
 |---|---------|----------|----------|
-| 15 | ⛰️ Heap | "Kth largest", "Top K frequent", "Running median" | #215, #347, #295 |
-| 16 | 📚 Trie | "Autocomplete", "Spell check", "Starts with prefix" | #208, #211, #212 |
-| 17 | Prefix Sum | "Sum of range [i..j]", "Subarray sum equals K" | #303, #560, #238 |
-| 18 | Merge Intervals | "Overlapping meetings", "Merge ranges" | #56, #57, #252 |
-| 19 | Union-Find | "Are nodes connected?", "Number of components" | #547, #684, #323 |
-| 20 | Topological Sort | "Course prerequisites", "Build order" | #207, #210, #269 |
-| 21 | Bit Manipulation | "Single number (XOR)", "Power of 2" | #136, #191, #338 |
-| 22 | Monotonic Stack | "Next greater element", "Largest rectangle" | #496, #503, #84 |
+| 15 | ⛰️ Heap | "Kth largest", "Top K frequent" | #215, #347, #295 |
+| 16 | 📚 Trie | "Autocomplete", "Starts with prefix" | #208, #211, #212 |
+| 17 | Prefix Sum | "Sum of range [i..j]" | #303, #560, #238 |
+| 18 | Merge Intervals | "Overlapping meetings" | #56, #57, #252 |
+| 19 | Union-Find | "Are nodes connected?" | #547, #684, #323 |
+| 20 | Topological Sort | "Course prerequisites" | #207, #210, #269 |
+| 21 | Bit Manipulation | "Single number (XOR)" | #136, #191, #338 |
+| 22 | Monotonic Stack | "Next greater element" | #496, #503, #84 |
 
 [↑ Back to Table of Contents](#table-of-contents)
 
@@ -2838,25 +2520,18 @@ LeetCode: #55 Jump Game, #121 Best Time to Buy/Sell Stock,
 
 # Section E: Pattern Combos
 
-> Most real problems use 2 patterns together. Here are the most common combos.
+> Most real problems use 2 patterns together.
 
 ### Combo 1: 🔎 Memory + 🏆 Filter → "Remove Duplicates"
-
-```
-Why two patterns?
-  🔎 Memory answers: "Have I seen this before?"
-  🏆 Filter answers: "Should I keep this item?"
-  Together: "Keep only items I haven't seen before"
-```
 
 ```javascript
 function removeDuplicates(arr) {
   const seen = new Set();       // 🔎 Memory
-  const result = [];             // 🏆 Filter
+  const result = [];            // 🏆 Filter
   for (const item of arr) {
-    if (!seen.has(item)) {       // Memory check
+    if (!seen.has(item)) {
       seen.add(item);
-      result.push(item);         // Filter: keep it
+      result.push(item);
     }
   }
   return result;
@@ -2868,20 +2543,14 @@ function removeDuplicates(arr) {
 
 ### Combo 2: 🔎 Memory + 🔍 Detective → "Contains Duplicate"
 
-```
-Why two patterns?
-  🔎 Memory: stores what we've seen
-  🔍 Detective: the moment we find a duplicate → return true (early exit)
-```
-
 ```javascript
 function containsDuplicate(arr) {
   const seen = new Set();       // 🔎 Memory
   for (const item of arr) {
-    if (seen.has(item)) return true;  // 🔍 Detective: found the spoiler
+    if (seen.has(item)) return true;  // 🔍 Detective: early exit
     seen.add(item);
   }
-  return false;                 // 🔍 Detective: survived → false
+  return false;
 }
 // LeetCode: #217
 ```
@@ -2890,22 +2559,16 @@ function containsDuplicate(arr) {
 
 ### Combo 3: 🪟 Sliding Window + 🔎 Memory → "Longest Substring Without Repeat"
 
-```
-Why two patterns?
-  🪟 Sliding Window: tracks the current window [left...right]
-  🔎 Memory (Set): tracks which characters are in the window
-```
-
 ```javascript
 function lengthOfLongestSubstring(s) {
-  const inWindow = new Set();    // 🔎 Memory
-  let left = 0, best = 0;       // 🪟 Window
+  const inWindow = new Set();   // 🔎 Memory
+  let left = 0, best = 0;      // 🪟 Window
   for (let right = 0; right < s.length; right++) {
     while (inWindow.has(s[right])) {
       inWindow.delete(s[left]);
-      left++;                    // shrink window
+      left++;
     }
-    inWindow.add(s[right]);      // expand window
+    inWindow.add(s[right]);
     best = Math.max(best, right - left + 1);
   }
   return best;
@@ -2917,14 +2580,16 @@ function lengthOfLongestSubstring(s) {
 
 ### Combo 4: 🏗️ Stack + 🔍 Detective → "Valid Parentheses"
 
-```
-Why two patterns?
-  🏗️ Stack: tracks the opening brackets
-  🔍 Detective: any mismatch → return false immediately
-```
-
 ```javascript
-// (already shown in Pattern 9)
+function isValid(s) {
+  const stack = [];             // 🏗️ Stack
+  const pairs = { ')': '(', ']': '[', '}': '{' };
+  for (const ch of s) {
+    if ('([{'.includes(ch)) stack.push(ch);
+    else if (stack.pop() !== pairs[ch]) return false; // 🔍 Detective
+  }
+  return stack.length === 0;
+}
 // LeetCode: #20
 ```
 
@@ -2932,16 +2597,10 @@ Why two patterns?
 
 ### Combo 5: 🪣 Bucket + 📊 Pointer Walker → "Container With Most Water"
 
-```
-Why two patterns?
-  📊 Pointer Walker: left and right move inward
-  🪣 Bucket: track the maximum area seen so far
-```
-
 ```javascript
 function maxArea(height) {
   let left = 0, right = height.length - 1;  // 📊 Pointers
-  let best = 0;                               // 🪣 Bucket
+  let best = 0;                              // 🪣 Bucket
   while (left < right) {
     const area = Math.min(height[left], height[right]) * (right - left);
     best = Math.max(best, area);
@@ -2960,14 +2619,14 @@ function maxArea(height) {
 ```
 Problem Shape                   → Combo
 ────────────────────────────────────────────────
-Remove items based on lookup    → 🔎 + 🏆 (Memory + Filter)
-Find if something exists fast   → 🔎 + 🔍 (Memory + Detective)
-Best contiguous + condition     → 🪟 + 🔎 (Window + Memory)
-Matching/nesting + validation   → 🏗️ + 🔍 (Stack + Detective)
-Sorted array optimization       → 📊 + 🪣 (Pointers + Bucket)
-Tree path problems              → 🌳 + 🪣 (DFS + Bucket)
-Grid shortest path              → 🌊 + 🔎 (BFS + Memory for visited)
-Generate + filter valid ones    → 🔙 + 🔍 (Backtracking + Detective)
+Remove items based on lookup    → 🔎 + 🏆
+Find if something exists fast   → 🔎 + 🔍
+Best contiguous + condition     → 🪟 + 🔎
+Matching/nesting + validation   → 🏗️ + 🔍
+Sorted array optimization       → 📊 + 🪣
+Tree path problems              → 🌳 + 🪣
+Grid shortest path              → 🌊 + 🔎
+Generate + filter valid ones    → 🔙 + 🔍
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -2981,17 +2640,17 @@ Generate + filter valid ones    → 🔙 + 🔍 (Backtracking + Detective)
 ```
 FASTEST → SLOWEST
 
-O(1)         Constant      Instant. Hash lookup, array access by index.
+O(1)         Constant      Instant. Hash lookup, array access.
 O(log n)     Logarithmic   Binary search. Halves each step.
-O(n)         Linear        One loop through the data. Best you can often get.
-O(n log n)   Linearithmic  Sorting (merge sort, quick sort).
-O(n²)        Quadratic     Nested loops. Usually too slow for n > 10,000.
-O(2^n)       Exponential   Backtracking, subsets. Only for small n (< 25).
-O(n!)        Factorial     Permutations. Only for tiny n (< 12).
+O(n)         Linear        One loop. Best you can often get.
+O(n log n)   Linearithmic  Sorting.
+O(n²)        Quadratic     Nested loops. Too slow for n > 10,000.
+O(2^n)       Exponential   Backtracking. Only for n < 25.
+O(n!)        Factorial     Permutations. Only for n < 12.
 ```
 
 ```
-PRACTICAL LIMITS (what n can be for each complexity):
+PRACTICAL LIMITS:
   O(n)       → n up to 10,000,000  ✅
   O(n log n) → n up to 1,000,000   ✅
   O(n²)      → n up to 10,000      ⚠️
@@ -3020,9 +2679,8 @@ PRACTICAL LIMITS (what n can be for each complexity):
 │ 🔙 Backtracking          │ O(2^n)     │ O(n)     │
 │ 🏃 Greedy                │ O(n log n) │ O(1)     │
 └─────────────────────────┴────────────┴──────────┘
-
-*  O(k) if window tracks a Set/Map
-** h = height of tree (log n balanced, n worst case)
+*   O(k) if window tracks Set/Map
+**  h = height of tree
 *** w = max width of tree
 ```
 
@@ -3038,12 +2696,11 @@ PRACTICAL LIMITS (what n can be for each complexity):
 │ Delete        │ O(n)     │ O(1)     │ O(1)     │
 │ Sort          │O(n log n)│ N/A      │ N/A      │
 └───────────────┴──────────┴──────────┴──────────┘
-* push to end is O(1), unshift to start is O(n)
+* push end O(1), unshift start O(n)
 
-THIS IS WHY PATTERN 5 (🔎 Memory) IS POWERFUL:
-  Array.includes(x) → O(n)  = slow
-  Set.has(x)        → O(1)  = instant
-  Switching from array to set turns O(n²) into O(n).
+Array.includes(x) → O(n) = slow
+Set.has(x)        → O(1) = instant
+That one swap turns O(n²) into O(n).
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -3081,11 +2738,11 @@ Every advanced pattern is built from Level 1:
  #5: You learn patterns by solving 3-5 problems with each.
  #6: Code is the LAST step. Hard coding = skipped planning.
  #7: Data structure choice is half the solution.
-     Array.includes = O(n). Set.has = O(1). That one swap changes everything.
+     Array.includes = O(n). Set.has = O(1). That swap changes everything.
  #8: "Replace linear scan with hash lookup" solves dozens of problems.
  #9: Working brute force > broken optimal.
 #10: Patterns COMBINE. Most real problems use 2 patterns together.
-#11: The #1 optimization move: nested loop → single loop + Set/Map.
+#11: The #1 optimization: nested loop → single loop + Set/Map.
 #12: "Contiguous subarray" + "max/min" = Sliding Window. Every time.
 #13: Binary search works on ANSWERS, not just sorted arrays.
 #14: Every tree problem: base case → left → right → combine.
@@ -3096,59 +2753,156 @@ Every advanced pattern is built from Level 1:
 
 ---
 
-# Section I: 35-Day Practice Roadmap
+# Section I: 38-Day Practice Roadmap
+
+## How to Use the Roadmap
+
+```
+EACH DAY HAS THIS STRUCTURE:
+
+  PREPARE A → read this from Section A
+  PREPARE C → read this from Section C
+
+  SOLVE     → problem → pattern → LeetCode
+  TIME      → time complexity
+  SPACE     → space complexity
+
+  Apply Section B — 6 Phases:
+    PHASE 1 → DECOMPOSE
+    PHASE 2 → IDENTIFY pattern + algorithm
+    PHASE 3 → PSEUDO-CODE
+    PHASE 4 → TRACE TABLE
+    PHASE 5 → CODE
+    PHASE 6 → EDGE CASES
+
+TOTAL TIME: 25 minutes per day maximum.
+
+COMPLEX PATTERNS SPLIT ACROSS MULTIPLE DAYS:
+  Memory pattern      → 3 days (Days 5-7)
+  Sliding Window      → 2 days (Days 15-16)
+  Stack               → prep Day 18, solve Days 19-20
+  Tree DFS            → prep Day 20, solve Days 21-22
+  BFS                 → prep Day 22, solve Days 23-24
+  DP                  → 3 days (Days 29-31)
+  Backtracking        → 2 days (Days 32-33)
+  Greedy              → 2 days (Days 34-35)
+```
+
+---
 
 ## Week 1-2: Level 1 Patterns
 
-| Day | Problem | Pattern | LeetCode |
-|-----|---------|---------|----------|
-| 1 | Sum of array | 🪣 Bucket | — |
-| 2 | Is array sorted? | 🔍 Detective | #896 |
-| 3 | Get all even numbers | 🏆 Filter | — |
-| 4 | Double every number | 🔄 Transformer | — |
-| 5 | Has duplicates? | 🔎 Memory | #217 |
-| 6 | Is palindrome? | 📊 Pointer Walker | #125 |
-| 7 | Remove duplicates | 🏆 + 🔎 Combo | #26 |
-| 8 | Find maximum | 🪣 Bucket | — |
-| 9 | All numbers positive? | 🔍 Detective | — |
-| 10 | Remove falsy values | 🏆 Filter | — |
-| 11 | Celsius → Fahrenheit | 🔄 Transformer | — |
-| 12 | Two Sum | 🔎 Memory | #1 |
-| 13 | Reverse array in-place | 📊 Pointer Walker | #344 |
-| 14 | Character frequency | 🔎 Memory | #387 |
+| Day | Prepare A | Prepare C | Solve | Pattern | Time | Space | LeetCode |
+|-----|-----------|-----------|-------|---------|------|-------|----------|
+| 1 | Arrays | Linear Search | Sum of array | 🪣 Bucket | O(n) | O(1) | — |
+| 2 | Arrays | Linear Search | Is array sorted? | 🔍 Detective | O(n) | O(1) | #896 |
+| 3 | Arrays | Linear Search | Get all even numbers | 🏆 Filter | O(n) | O(n) | — |
+| 4 | Arrays | Linear Search | Double every number | 🔄 Transformer | O(n) | O(n) | — |
+| 5 | Set + Map | Hash-Based Search | Has duplicates? | 🔎 Memory Case 1 | O(n) | O(n) | #217 |
+| 6 | Map | Hash-Based Search | Character frequency | 🔎 Memory Case 1 Ext | O(n) | O(n) | #387 |
+| 7 | Map | Hash-Based Search | Two Sum | 🔎 Memory Case 2 | O(n) | O(n) | #1 |
+| 8 | Strings | Two Pointer | Is palindrome? | 📊 Pointer Walker | O(n) | O(1) | #125 |
+| 9 | Arrays | Linear Search | Find maximum | 🪣 Bucket | O(n) | O(1) | — |
+| 10 | Arrays | Linear Search | All numbers positive? | 🔍 Detective | O(n) | O(1) | — |
+| 11 | Arrays | Linear Search | Remove falsy values | 🏆 Filter | O(n) | O(n) | — |
+| 12 | Arrays | Linear Search | Celsius → Fahrenheit | 🔄 Transformer | O(n) | O(n) | — |
+| 13 | Arrays | Two Pointer | Reverse array in-place | 📊 Pointer Walker | O(n) | O(1) | #344 |
+| 14 | Arrays + Set | Hash-Based Search | Remove duplicates | 🏆 + 🔎 Combo | O(n) | O(n) | #26 |
+
+---
 
 ## Week 3-4: Level 2 Patterns
 
-| Day | Problem | Pattern | LeetCode |
-|-----|---------|---------|----------|
-| 15 | Max sum of K consecutive | 🪟 Sliding Window | — |
-| 16 | Longest substring no repeat | 🪟 Sliding Window | #3 |
-| 17 | Binary search sorted array | 🔪 Binary Search | #704 |
-| 18 | First occurrence in sorted | 🔪 Binary Search | #34 |
-| 19 | Valid parentheses | 🏗️ Stack | #20 |
-| 20 | Daily temperatures | 🏗️ Stack | #739 |
-| 21 | Max depth binary tree | 🌳 Tree DFS | #104 |
-| 22 | Invert binary tree | 🌳 Tree DFS | #226 |
-| 23 | Level order traversal | 🌊 BFS | #102 |
-| 24 | Number of islands | 🌊 BFS | #200 |
-| 25 | Min subarray sum ≥ target | 🪟 Sliding Window | #209 |
-| 26 | Rotated sorted search | 🔪 Binary Search | #33 |
-| 27 | Evaluate RPN | 🏗️ Stack | #150 |
-| 28 | Path sum tree | 🌳 Tree DFS | #112 |
+| Day | Prepare A | Prepare C | Solve | Pattern | Time | Space | LeetCode |
+|-----|-----------|-----------|-------|---------|------|-------|----------|
+| 15 | Arrays | Sliding Window | Max sum of K consecutive | 🪟 Sliding Window | O(n) | O(1) | — |
+| 16 | Strings + Set | Sliding Window | Longest substring no repeat | 🪟 + 🔎 Combo | O(n) | O(k) | #3 |
+| 17 | Arrays | Binary Search | Binary search sorted array | 🔪 Binary Search | O(log n) | O(1) | #704 |
+| 18 | **READ Stack + Queue** | Stack-based Matching | — PREP DAY — | — | — | — | — |
+| 19 | Stack | Stack-based Matching | Valid parentheses | 🏗️ Stack | O(n) | O(n) | #20 |
+| 20 | **READ Tree** | Tree Traversal DFS | Daily temperatures | 🏗️ Stack | O(n) | O(n) | #739 |
+| 21 | Tree | Tree Traversal DFS | Max depth binary tree | 🌳 Tree DFS | O(n) | O(h) | #104 |
+| 22 | **READ Graph** | BFS Algorithm | Invert binary tree | 🌳 Tree DFS | O(n) | O(h) | #226 |
+| 23 | Graph + Queue | BFS Algorithm | Level order traversal | 🌊 BFS | O(n) | O(w) | #102 |
+| 24 | Graph | BFS Algorithm | Number of islands | 🌊 BFS | O(m×n) | O(m×n) | #200 |
+| 25 | Arrays | Binary Search | First occurrence in sorted | 🔪 Binary Search | O(log n) | O(1) | #34 |
+| 26 | Arrays | Sliding Window | Min subarray sum ≥ target | 🪟 Sliding Window | O(n) | O(1) | #209 |
+| 27 | Arrays | Binary Search | Rotated sorted search | 🔪 Binary Search | O(log n) | O(1) | #33 |
+| 28 | Tree | Tree Traversal DFS | Path sum tree | 🌳 Tree DFS | O(n) | O(h) | #112 |
+
+---
 
 ## Week 5: Level 3 Patterns
 
-| Day | Problem | Pattern | LeetCode |
-|-----|---------|---------|----------|
-| 29 | Climbing Stairs | 🧩 DP | #70 |
-| 30 | House Robber | 🧩 DP | #198 |
-| 31 | Coin Change | 🧩 DP | #322 |
-| 32 | All subsets | 🔙 Backtracking | #78 |
-| 33 | All permutations | 🔙 Backtracking | #46 |
-| 34 | Jump Game | 🏃 Greedy | #55 |
-| 35 | Buy/Sell Stock | 🏃 Greedy | #121 |
+| Day | Prepare A | Prepare C | Solve | Pattern | Time | Space | LeetCode |
+|-----|-----------|-----------|-------|---------|------|-------|----------|
+| 29 | Arrays | Memoization + Tabulation | Climbing Stairs | 🧩 DP | O(n) | O(1) | #70 |
+| 30 | Arrays | Memoization + Tabulation | House Robber | 🧩 DP | O(n) | O(1) | #198 |
+| 31 | Arrays | Memoization + Tabulation | Coin Change | 🧩 DP | O(n×amt) | O(amt) | #322 |
+| 32 | Arrays | Recursive Backtracking | All subsets | 🔙 Backtracking | O(2^n) | O(n) | #78 |
+| 33 | Arrays | Recursive Backtracking | All permutations | 🔙 Backtracking | O(n!) | O(n) | #46 |
+| 34 | Arrays | Greedy Choice | Jump Game | 🏃 Greedy | O(n) | O(1) | #55 |
+| 35 | Arrays | Greedy Choice | Buy/Sell Stock | 🏃 Greedy | O(n) | O(1) | #121 |
+| 36 | Stack | Stack-based Matching | Evaluate RPN | 🏗️ Stack | O(n) | O(n) | #150 |
+| 37 | Arrays | Recursive Backtracking | Combination Sum | 🔙 Backtracking | O(2^n) | O(n) | #39 |
+| 38 | Arrays | Greedy Choice | Non-overlapping Intervals | 🏃 Greedy | O(n log n) | O(1) | #435 |
 
-**Day 36+:** Random problems. Identify pattern yourself. Solve under 15 minutes.
+**Day 39+:** Random problems. Identify pattern yourself. Solve under 15 minutes.
+
+---
+
+## Day Structure — Full Example (Day 1)
+
+```
+PREPARE A → Section A: Arrays
+PREPARE C → Section C: Linear Search
+
+SOLVE  → Sum of array → 🪣 Bucket → no LeetCode
+TIME   → O(n)
+SPACE  → O(1)
+
+PHASE 1 → DECOMPOSE
+  Input     → array of numbers, can be empty
+  Output    → one number (the sum)
+  Rules     → add all numbers together
+  Goal      → "I take an array and return the sum of all numbers"
+  Edge cases → [], [5], [-1,2,-3], [0,0,0]
+
+PHASE 2 → IDENTIFY
+  Return one value → 🪣 Bucket
+  Algorithm        → Linear Scan (Section C → Linear Search)
+
+PHASE 3 → PSEUDO-CODE
+  STORE result = 0
+  REPEAT for each number
+    ADD number to result
+  GIVE BACK result
+
+PHASE 4 → TRACE TABLE
+  Input: [3, 1, 4]
+  | Step  | i | arr[i] | result |
+  | Start | — | —      | 0      |
+  | i=0   | 0 | 3      | 3      |
+  | i=1   | 1 | 1      | 4      |
+  | i=2   | 2 | 4      | 8      |
+  | End   | — | —      | 8 ✓    |
+
+PHASE 5 → CODE
+  function sumArray(arr) {
+    if (arr.length === 0) return 0;     // edge case
+    let result = 0;                      // STORE result = 0
+    for (let i = 0; i < arr.length; i++) { // REPEAT
+      result += arr[i];                  // ADD to result
+    }
+    return result;                       // GIVE BACK
+  }
+
+PHASE 6 → EDGE CASES
+  sumArray([])          → 0
+  sumArray([5])         → 5
+  sumArray([-1, 2, -3]) → -2
+  sumArray([0, 0, 0])   → 0
+```
 
 [↑ Back to Table of Contents](#table-of-contents)
 
@@ -3157,14 +2911,18 @@ Every advanced pattern is built from Level 1:
 # Section J: Golden Rules
 
 ```
-1. "If you can't explain it in English, you can't code it."
-2. "Brute force FIRST. Optimize SECOND."
-3. "The trace table never lies."
-4. "Every problem is one of 22 patterns wearing a costume."
-5. "60% thinking, 40% typing."
-6. "Edge cases are where bugs hide."
-7. "Name variables for humans, not compilers."
-8. "15 minutes daily beats 5 hours weekly."
+1.  "If you can't explain it in English, you can't code it."
+2.  "Brute force FIRST. Optimize SECOND."
+3.  "The trace table never lies."
+4.  "Every problem is one of 22 patterns wearing a costume."
+5.  "60% thinking, 40% typing."
+6.  "Edge cases are where bugs hide."
+7.  "Name variables for humans, not compilers."
+8.  "15 minutes daily beats 5 hours weekly."
+9.  "Write the KEEP condition, not the SKIP condition.
+     Define what belongs — everything else takes care of itself."
+10. "Learn the data structure ONE DAY before you need it.
+     Not all upfront. Use it immediately or you forget it."
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
@@ -3177,57 +2935,22 @@ Every advanced pattern is built from Level 1:
 
 ## The blueprint is a MAP, not a reading assignment.
 
-Most people open a document like this and try to read it from top to bottom.
-
-**That is the wrong way.**
-
-Reading everything first is overwhelming. Your brain cannot hold all of it at once. You will read for hours, remember almost nothing, and feel lost before you even write one line of code.
-
----
-
-## The right way is this:
-
 ```
 You open it DAILY.
-You find today's day number.
-You read ONLY that one pattern.
+You find today's day number in Section I.
+You read ONLY that one day.
 You solve ONLY that one problem.
 You close it and stop.
 ```
-
-That is it. Nothing more.
 
 ---
 
 ## Think of it like a GPS, not a textbook.
 
-When you drive somewhere new, you do not read every road on the map before you leave.
-You just follow the next turn.
-The GPS says "turn left here." You turn left. That is all you need right now.
-
-This blueprint works the same way:
-
 ```
-Day 1  → "Read Detective pattern. Solve this one problem."
-Day 2  → "Read Bucket pattern. Solve this one problem."
-Day 3  → "Read Filter pattern. Solve this one problem."
-```
-
-You do not need to know what is on Day 20 when you are on Day 1.
-Just follow the next turn.
-
----
-
-## Why reading everything first feels overwhelming:
-
-```
-❌ Reading all sections at once  = too much, nothing sticks
-❌ Trying to learn all 14 patterns before solving = confusion
-❌ Reading C, D, E, F, G, H all on Day 1 = brain overload
-
-✅ Read ONE pattern  = clear
-✅ Solve ONE problem = practice
-✅ Repeat tomorrow   = progress
+Day 1  → PREPARE A + C → SOLVE with 6 phases → DONE
+Day 2  → PREPARE A + C → SOLVE with 6 phases → DONE
+...
 ```
 
 ---
@@ -3235,24 +2958,40 @@ Just follow the next turn.
 ## The only sections you ever need to open:
 
 ```
-TODAY (before Day 1)  → Section B only (read the 6 Phases)
+BEFORE DAY 1   → Section B only (read 6 Phases once)
 
-Day 1  → Section D, Pattern 1 only
-Day 2  → Section D, Pattern 2 only
-Day 3  → Section D, Pattern 3 only
-...follow Section I roadmap day by day
+EVERY DAY      → Section I → find today's day
+                 → follow PREPARE A, PREPARE C, SOLVE
 
-When stuck on pattern identification → Section D Pattern Picker
-When stuck on an algorithm          → Section C
-When checking speed of your code    → Section F
-When problem uses 2 patterns        → Section E
+WHEN READING A PATTERN:
+  → check ALGORITHM line inside the pattern
+  → open that exact algorithm in Section C
+  → read it BEFORE solving
+
+WHEN STUCK on pattern identification → Section D Pattern Picker
+WHEN CHECKING complexity             → Section F
+WHEN PROBLEM uses 2 patterns         → Section E
+WHEN YOU FEEL LOST                   → Section H Key Insights
+WHEN NEED A DATA STRUCTURE REMINDER  → Section A
 ```
-
-Every other section exists only for reference.
-Open it when you need it. Ignore it when you do not.
 
 ---
 
+## Complex patterns take more than one day
+
+```
+This is normal. Not a failure.
+
+Memory pattern  → 3 days   Sliding Window → 2 days
+Stack           → 2 days   Tree DFS       → 2 days
+BFS             → 2 days   DP             → 3 days
+Backtracking    → 2 days   Greedy         → 2 days
+
+One problem per day. Not one pattern per day.
+25 minutes. Done. Close it.
+```
+
+[↑ Back to Table of Contents](#table-of-contents)
 
 ---
 
@@ -3262,61 +3001,80 @@ Open it when you need it. Ignore it when you do not.
 
 ## Note 1: The Positive Framing Rule (Discovered Day 1)
 
-Q: In this blueprint, is this thinking missing —
+Write the condition for what you WANT, not what you don't want.
 
-In problem solving we need to think in the right way. For example in remove
-the duplicate from the array we need to think there is no duplicate, if found
-then only the negative thing executes.
+```
+Remove duplicates
+  Wrong: "if it IS a duplicate → skip"
+  Right: "if it is NOT seen before → keep"
 
-Similarly moving all the zeros to back of the array — here also need to think
-in the positive: check if value is not zero, place it at the first index.
-If zero then only not.
+Move zeros to back
+  Wrong: "if it IS zero → don't place"
+  Right: "if it is NOT zero → place it"
 
-This thinking in positive applies to every problem, not just arrays.
+Applies everywhere:
+  Validating a form  → think "what makes it valid"
+  Filtering users    → think "who should I keep"
+  Tree traversal     → think "when should I go deeper"
+
+EXCEPTION: Detective pattern deliberately uses the BAD condition.
+  That is intentional — find ONE bad thing → stop immediately.
+```
 
 ---
 
-Yes, this is missing from the blueprint.
+## Note 2: Memory Pattern Takes Multiple Days (Discovered Day 5)
 
-What you're describing is a real mental rule. It doesn't have a name in the
-document, but it should.
+```
+Detective   → one template → one idea → one day
+Filter      → one template → one idea → one day
+Transformer → one template → one idea → one day
 
-The idea is this:
+Memory      → two tools (Set and Map)
+            → two cases
+            → three templates
+            → three days. That is completely normal.
 
-Write the condition for what you WANT, not what you don't want.
+Do not rush it. Close the blueprint. One problem per day.
+```
 
-Your two examples show it perfectly:
+---
 
-Remove duplicates
-  - Wrong framing: "if it IS a duplicate → skip"
-  - Right framing:  "if it is NOT seen before → keep"
+## Note 3: Pattern to Algorithm Connection (Discovered Before Day 1)
 
-Move zeros to back
-  - Wrong framing: "if it IS zero → don't place"
-  - Right framing:  "if it is NOT zero → place it"
+```
+Every pattern has an algorithm inside it.
+You do not pick them separately.
 
-The code works either way technically, but the second way forces you to think
-clearly about what belongs rather than what doesn't. This makes your logic
-cleaner and your bugs fewer.
+Pattern 2 → 🪣 Bucket → Linear Scan + Kadane's lives inside
+Pattern 5 → 🔎 Memory → Hash-Based Search lives inside
+Pattern 8 → 🔪 Binary Search → Binary Search Algorithm lives inside
 
-And you're right that this applies everywhere, not just arrays:
+When you identify the pattern:
+  → check the ALGORITHM line inside Section D
+  → open Section C → read that algorithm
+  → then solve the problem
+```
 
-  - Validating a form  → think "what makes it valid"     not "what makes it invalid"
-  - Filtering users    → think "who should I keep"        not "who should I remove"
-  - Tree traversal     → think "when should I go deeper"  not "when should I stop"
+---
 
-Where it's missing in the blueprint:
+## Note 4: Data Structures Are Not All Built Into JavaScript
 
-It should sit in Section J (Golden Rules) as Rule #9:
-"Write the KEEP condition, not the SKIP condition. Define what belongs,
-then everything else takes care of itself."
+```
+JavaScript has BUILT IN:
+  Arrays, Strings, Set, Map
 
-It also belongs as a note inside Phase 1 (Decompose) — when you write your
-goal sentence, force yourself to phrase it positively:
-"I keep items that..." not "I remove items that..."
+You must BUILD yourself:
+  Stack → array with push/pop
+  Queue → array with push/shift
+  Tree  → class with val, left, right
+  Graph → array of arrays or Map
 
-Good observation. The blueprint teaches the mechanics but misses this
-thinking habit entirely.
+Learn each ONE DAY before you need it in the roadmap.
+Not all at once before Day 1.
+```
+
+---
 
 ## One sentence to remember:
 
