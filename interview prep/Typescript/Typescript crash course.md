@@ -367,7 +367,7 @@ function fail(msg: string): never { throw new Error(msg); }
 
 ### Function Overloads
 
-Define multiple signatures for the same function — useful when return type depends on input type.
+We use overloads because when we use union types in return, TypeScript doesn't know exactly which type comes out — it just sees string | number. By defining overloads, we tell TypeScript "if this type goes in, this exact type comes out" — so TypeScript knows precisely what you're working with.
 
 ```typescript
 // Overload signatures (no implementation)
