@@ -20,7 +20,44 @@
   - [Data Structure Picker](#data-structure-picker)
 - [Section B: The 6 Phases](#section-b-the-6-phases)
 - [Section C: Algorithms](#section-c-algorithms)
+  - [Pattern to Algorithm Map](#pattern-to-algorithm-map)
+  - [Two Pointer Approaches](#two-pointer-approaches)
+  - [Sorting Algorithms](#sorting-algorithms)
+  - [Searching Algorithms — Linear, Binary, Hash](#searching-algorithms)
+  - [Traversal Algorithms](#traversal-algorithms)
+  - [Kadane's Algorithm](#kadanes-algorithm)
+  - [Floyd's Cycle Detection](#floyds-cycle-detection)
+  - [Fast Slow Pointer](#fast-slow-pointer)
+  - [Dijkstra's Algorithm](#dijkstras-algorithm)
+  - [Topological Sort](#topological-sort)
+  - [Union-Find](#union-find)
+  - [Prefix Sum](#prefix-sum)
+  - [Monotonic Stack](#monotonic-stack)
+  - [Dutch National Flag](#dutch-national-flag)
+  - [Counting Sort](#counting-sort)
+  - [Heap Operations](#heap-operations)
+  - [KMP String Search](#kmp-string-search)
+  - [Complete Algorithm Map](#complete-algorithm-map)
 - [Section D: All Patterns (4 Levels)](#section-d-all-patterns)
+  - [Section D — Quick Navigation (all 14 patterns)](#section-d--quick-navigation)
+  - [Level 1 — Foundation](#level-1--foundation-solves-80-of-problems)
+    - [Pattern 1: 🔍 Detective](#pattern-1--detective-boolean-validation)
+    - [Pattern 2: 🪣 Bucket](#pattern-2--bucket-accumulation)
+    - [Pattern 3: 🏆 Filter](#pattern-3--filter-predicate-selection)
+    - [Pattern 4: 🔄 Transformer](#pattern-4--transformer-data-projection)
+    - [Pattern 5: 🔎 Memory](#pattern-5--memory-lookup--existence)
+    - [Pattern 6: 📊 Pointer Walker](#pattern-6--pointer-walker-two-pointers)
+  - [Level 2 — Intermediate](#level-2--intermediate-solves-15-more)
+    - [Pattern 7: 🪟 Sliding Window](#pattern-7--sliding-window)
+    - [Pattern 8: 🔪 Binary Search](#pattern-8--binary-search)
+    - [Pattern 9: 🏗️ Stack Pattern](#pattern-9--stack-pattern)
+    - [Pattern 10: 🌳 Tree DFS](#pattern-10--tree-dfs)
+    - [Pattern 11: 🌊 BFS](#pattern-11--bfs)
+  - [Level 3 — Advanced](#level-3--advanced-solves-4-more)
+    - [Pattern 12: 🧩 Dynamic Programming](#pattern-12--dynamic-programming)
+    - [Pattern 13: 🔙 Backtracking](#pattern-13--backtracking)
+    - [Pattern 14: 🏃 Greedy](#pattern-14--greedy)
+  - [Level 4 — Specialist](#level-4--specialist-solves-remaining-1)
 - [Section E: Pattern Combos](#section-e-pattern-combos)
 - [Section F: Big-O Cheat Sheet](#section-f-big-o-cheat-sheet)
 - [Section G: How Patterns Connect](#section-g-how-patterns-connect)
@@ -1336,7 +1373,9 @@ STOP early             →  return false (inside loop)
 | Which algorithm does my pattern use? | [Pattern to Algorithm Map](#pattern-to-algorithm-map) |
 | All two pointer approaches | [Two Pointer Approaches](#two-pointer-approaches) |
 | Sort an array | [Sorting Algorithms](#sorting-algorithms) |
-| Search — linear, binary, hash | [Searching Algorithms](#searching-algorithms) |
+| Search — linear scan O(n) | [Linear Search](#linear-search) |
+| Search — sorted array O(log n) | [Binary Search](#binary-search) |
+| Search — fast O(1) lookup via Set/Map (🔎 Memory pattern) | [Hash-Based Search](#hash-based-search) |
 | Walk through array/tree/graph | [Traversal Algorithms](#traversal-algorithms) |
 | Max subarray sum | [Kadane's Algorithm](#kadanes-algorithm) |
 | Detect cycle / find middle | [Floyd's and Fast Slow Pointer](#floyds-cycle-detection) |
@@ -2568,6 +2607,53 @@ Level 4 (8 patterns)  → Solves 1%   → Days 39-48
 
 ---
 
+## Section D — Quick Navigation
+
+| Pattern | Name | Use When | Level |
+|---|---|---|---|
+| Pattern 1 | [🔍 Detective](#pattern-1--detective-boolean-validation) | Return true/false | 1 |
+| Pattern 2 | [🪣 Bucket](#pattern-2--bucket-accumulation) | Return one value (sum, max) | 1 |
+| Pattern 3 | [🏆 Filter](#pattern-3--filter-predicate-selection) | Return shorter list | 1 |
+| Pattern 4 | [🔄 Transformer](#pattern-4--transformer-data-projection) | Return same-size changed list | 1 |
+| Pattern 5 | [🔎 Memory](#pattern-5--memory-lookup--existence) | "Have I seen this?" / pairs | 1 |
+| Pattern 6 | [📊 Pointer Walker](#pattern-6--pointer-walker-two-pointers) | Compare elements / in-place | 1 |
+| Pattern 7 | [🪟 Sliding Window](#pattern-7--sliding-window) | Best/longest contiguous range | 2 |
+| Pattern 8 | [🔪 Binary Search](#pattern-8--binary-search) | Find in sorted data | 2 |
+| Pattern 9 | [🏗️ Stack Pattern](#pattern-9--stack-pattern) | Matching pairs / LIFO | 2 |
+| Pattern 10 | [🌳 Tree DFS](#pattern-10--tree-dfs) | Explore tree deeply | 2 |
+| Pattern 11 | [🌊 BFS](#pattern-11--bfs) | Level by level / shortest path | 2 |
+| Pattern 12 | [🧩 Dynamic Programming](#pattern-12--dynamic-programming) | Overlapping sub-problems | 3 |
+| Pattern 13 | [🔙 Backtracking](#pattern-13--backtracking) | Generate all combinations | 3 |
+| Pattern 14 | [🏃 Greedy](#pattern-14--greedy) | Local best = global best | 3 |
+| Level 4 | [⛰️ Heap, Trie, Union-Find...](#level-4--specialist-solves-remaining-1) | Specialist problems | 4 |
+
+---
+
+## Pattern Picker — Quick Version
+
+```
+"What do I RETURN?"
+
+  true / false?              → 🔍 Pattern 1: Detective
+  one number / string?       → 🪣 Pattern 2: Bucket
+  shorter list?              → 🏆 Pattern 3: Filter
+  same-size changed list?    → 🔄 Pattern 4: Transformer
+  "seen before?" / pairs?    → 🔎 Pattern 5: Memory
+  compare elements?          → 📊 Pattern 6: Pointer Walker
+  best contiguous range?     → 🪟 Pattern 7: Sliding Window
+  find in sorted data?       → 🔪 Pattern 8: Binary Search
+  matching pairs / LIFO?     → 🏗️ Pattern 9: Stack
+  explore tree deeply?       → 🌳 Pattern 10: Tree DFS
+  level by level / shortest? → 🌊 Pattern 11: BFS
+  overlapping sub-problems?  → 🧩 Pattern 12: DP
+  generate all combos?       → 🔙 Pattern 13: Backtracking
+  local best = global best?  → 🏃 Pattern 14: Greedy
+```
+
+[↑ Back to Table of Contents](#table-of-contents)
+
+---
+
 ## Level 1 — Foundation (Solves 80% of problems)
 
 ---
@@ -2579,8 +2665,8 @@ USE WHEN:  You need to return true or false about a collection.
 KEYWORDS:  "Is it...?", "Are all...?", "Does every...?", "Is valid?"
 LOGIC:     Find ONE bad thing → return false immediately.
            Survive the entire loop → return true.
-ALGORITHM: → Section C → Linear Search
-TOOLS:     → Section A: Arrays or Strings
+ALGORITHM: → [Section C → Linear Search](#linear-search)
+TOOLS:     → [Section A: Arrays](#1-arrays) or [Strings](#2-strings)
 
 NOTE: Detective is the ONE exception to the positive framing rule.
       It deliberately looks for the BAD condition.
@@ -2649,8 +2735,8 @@ KEYWORDS:  "Sum of...", "Total...", "Count...", "Maximum...",
 LOGIC:     Start with empty bucket.
            Pour each item into the bucket using some operation.
            Return the bucket.
-ALGORITHM: → Section C → Linear Search + Kadane's Algorithm
-TOOLS:     → Section A: Arrays or Strings
+ALGORITHM: → [Section C → Linear Search](#linear-search) + [Kadane's Algorithm](#kadanes-algorithm)
+TOOLS:     → [Section A: Arrays](#1-arrays) or [Strings](#2-strings)
 
   Normal Bucket  → Linear Scan → touches ALL items equally
   Kadane's Bucket → Kadane's   → finds BEST contiguous subarray
@@ -2739,8 +2825,8 @@ USE WHEN:  You need a SHORTER list — only the items that pass a test.
 KEYWORDS:  "Get all...", "Find all...", "Remove...", "Keep only..."
 LOGIC:     Start with empty winners list.
            Test each item. Pass the test → push to winners. Fail → skip.
-ALGORITHM: → Section C → Linear Search
-TOOLS:     → Section A: Arrays or Strings
+ALGORITHM: → [Section C → Linear Search](#linear-search)
+TOOLS:     → [Section A: Arrays](#1-arrays) or [Strings](#2-strings)
 
 DON'T USE WHEN:
   ✗ Need EVERY item changed (use 🔄 Transformer)
@@ -2799,8 +2885,8 @@ KEYWORDS:  "Double each...", "Convert...", "Format...", "Extract...",
 LOGIC:     Start with empty result list.
            Transform each item.
            Push the transformed version into result.
-ALGORITHM: → Section C → Linear Search
-TOOLS:     → Section A: Arrays or Strings
+ALGORITHM: → [Section C → Linear Search](#linear-search)
+TOOLS:     → [Section A: Arrays](#1-arrays) or [Strings](#2-strings)
 
 DON'T USE WHEN:
   ✗ Some items should be removed (use 🏆 Filter)
@@ -2856,9 +2942,9 @@ USE WHEN:
 
 KEYWORDS:  "Duplicates", "Two Sum", "Frequency", "First unique",
            "Anagram", "Seen before"
-ALGORITHM: → Section C → Hash-Based Search
-TOOLS:     → Section A: Set
-           → Section A: Map
+ALGORITHM: → [Section C → Hash-Based Search](#hash-based-search)
+TOOLS:     → [Section A: Set](#3-set)
+           → [Section A: Map](#4-map-hash-map)
 LOGIC:     Set/Map = instant memory.
            Check the memory BEFORE processing each item.
 
@@ -3033,12 +3119,12 @@ USE WHEN:  Compare elements with each other, sorted array problems,
 KEYWORDS:  "Palindrome", "Sorted array pair", "In-place removal",
            "Merge sorted", "Move elements", "Find middle"
 LOGIC:     Two index variables (or node pointers) moving through data.
-ALGORITHM: → Section C → Two Pointer (all 4 approaches)
-                        → Floyd's Cycle Detection
-                        → Fast Slow Pointer
-                        → Dutch National Flag
-TOOLS:     → Section A: Arrays or Strings
-           → Section C: Sorting Algorithms
+ALGORITHM: → [Section C → Two Pointer Approaches](#two-pointer-approaches)
+                        → [Floyd's Cycle Detection](#floyds-cycle-detection)
+                        → [Fast Slow Pointer](#fast-slow-pointer)
+                        → [Dutch National Flag](#dutch-national-flag)
+TOOLS:     → [Section A: Arrays](#1-arrays) or [Strings](#2-strings)
+           → [Section C: Sorting Algorithms](#sorting-algorithms)
                JS Built-in Sort  ← use this 80% of the time
                Merge Sort        ← implement when interviewer asks
                Quick Sort        ← implement when interviewer asks
@@ -3185,10 +3271,10 @@ KEYWORDS:  "Consecutive", "Subarray of size K", "Longest substring",
 LOGIC:     Maintain a window of elements.
            Slide it: add new element at right, drop old element at left.
            Track the best window seen.
-ALGORITHM: → Section C → Sliding Window Technique
-TOOLS:     → Section A: Arrays or Strings
-           → Section A: Set (for variable window — track unique chars)
-           → Section A: Map (for variable window — track char counts)
+ALGORITHM: → [Section C → Sliding Window Technique](#two-pointer-approaches)
+TOOLS:     → [Section A: Arrays](#1-arrays) or [Strings](#2-strings)
+           → [Section A: Set](#3-set) (for variable window — track unique chars)
+           → [Section A: Map](#4-map-hash-map) (for variable window — track char counts)
 BUILT ON:  📊 Pointer Walker + 🪣 Bucket
 
 DON'T USE WHEN:
@@ -3255,9 +3341,9 @@ KEYWORDS:  "Sorted array", "Find position", "First/last occurrence",
            "Search in rotated"
 LOGIC:     Check middle. Target smaller → search left half.
            Target bigger → search right half. Repeat.
-ALGORITHM: → Section C → Binary Search Algorithm
-TOOLS:     → Section A: Arrays
-           → Section C: Sorting Algorithms
+ALGORITHM: → [Section C → Binary Search Algorithm](#binary-search)
+TOOLS:     → [Section A: Arrays](#1-arrays)
+           → [Section C: Sorting Algorithms](#sorting-algorithms)
                JS Built-in Sort ← data must be sorted first
 BUILT ON:  🔍 Detective (elimination logic)
 
@@ -3302,8 +3388,8 @@ KEYWORDS:  "Valid parentheses", "Next greater", "Evaluate expression",
            "Largest rectangle"
 LOGIC:     Push items onto stack. Pop when condition is met.
            What is currently on top determines next action.
-ALGORITHM: → Section C → Stack-based Matching + Monotonic Stack
-TOOLS:     → Section A: Stack
+ALGORITHM: → [Section C → Stack-based Matching](#pattern-9--stack-pattern) + [Monotonic Stack](#monotonic-stack)
+TOOLS:     → [Section A: Stack](#5-stack)
 
 DON'T USE WHEN:
   ✗ Processing order does not matter
@@ -3385,8 +3471,8 @@ KEYWORDS:  "Max depth", "Path sum", "Invert tree", "Validate BST",
            "Diameter", "Lowest common ancestor"
 LOGIC:     Base case (null) → Ask left subtree → Ask right subtree
            → Combine their answers.
-ALGORITHM: → Section C → Tree Traversal DFS
-TOOLS:     → Section A: Tree
+ALGORITHM: → [Section C → Tree Traversal DFS](#traversal-algorithms)
+TOOLS:     → [Section A: Tree](#8-tree-binary-tree)
 
 DON'T USE WHEN:
   ✗ Need level-by-level processing (use 🌊 BFS)
@@ -3449,9 +3535,10 @@ KEYWORDS:  "Level order", "Shortest path", "Nearest neighbor",
 LOGIC:     Use a queue. Add root/start.
            Process all nodes at current level, add their children.
            Repeat for next level.
-ALGORITHM: → Section C → BFS Algorithm + Dijkstra's + Topological Sort
-TOOLS:     → Section A: Queue
-           → Section A: Graph
+ALGORITHM: → [Section C → BFS Algorithm](#traversal-algorithms) + [Dijkstra's](#dijkstras-algorithm)
+                        + [Topological Sort](#topological-sort)
+TOOLS:     → [Section A: Queue](#6-queue)
+           → [Section A: Graph](#9-graph)
 
 DON'T USE WHEN:
   ✗ Need to explore all paths to leaves (use 🌳 DFS)
@@ -3540,8 +3627,8 @@ KEYWORDS:  "How many ways?", "Minimum cost to reach", "Can I reach?",
 LOGIC:     Store answers to smaller problems.
            Use stored answers to build up to the big answer.
            Never solve the same sub-problem twice.
-ALGORITHM: → Section C → Memoization + Tabulation
-TOOLS:     → Section A: Arrays
+ALGORITHM: → [Section C → Memoization + Tabulation](#complete-algorithm-map)
+TOOLS:     → [Section A: Arrays](#1-arrays)
 BUILT ON:  🪣 Bucket + 🔎 Memory + Recursion
 
 3-Step Recipe — always follow this order:
@@ -3624,8 +3711,8 @@ KEYWORDS:  "All subsets", "All permutations", "N-Queens", "Sudoku",
 LOGIC:     CHOOSE an option → EXPLORE that path fully →
            UN-CHOOSE (undo) → try next option.
            Always in this exact order.
-ALGORITHM: → Section C → Recursive Backtracking
-TOOLS:     → Section A: Arrays or Strings
+ALGORITHM: → [Section C → Recursive Backtracking](#complete-algorithm-map)
+TOOLS:     → [Section A: Arrays](#1-arrays) or [Strings](#2-strings)
 BUILT ON:  🌳 DFS + trial-and-error
 
 WHY UN-CHOOSE MATTERS:
@@ -3691,9 +3778,9 @@ KEYWORDS:  "Maximum events attended", "Minimum stops", "Jump game",
 LOGIC:     Sort the data (almost always).
            Pick the best available option right now.
            Never go back. Never reconsider.
-ALGORITHM: → Section C → Greedy Choice
-TOOLS:     → Section A: Arrays
-           → Section C: Sorting Algorithms
+ALGORITHM: → [Section C → Greedy Choice](#complete-algorithm-map)
+TOOLS:     → [Section A: Arrays](#1-arrays)
+           → [Section C: Sorting Algorithms](#sorting-algorithms)
                JS Built-in Sort  ← use this 80% of the time
                Merge Sort        ← implement when interviewer asks
                Quick Sort        ← implement when interviewer asks
