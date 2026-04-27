@@ -1,6 +1,59 @@
 # React + TypeScript Practice Guide — Part 1
 ## Level 1: Foundation (80% of Interview Questions)
 
+
+---
+
+## How This Guide Is Structured
+
+---
+
+### Pattern Header
+
+Every pattern starts with this:
+
+- **What you will build** — 3 real features this pattern covers
+- **Interview asks this as** — exact phrases interviewers use
+- **TypeScript concepts** — specific TS skills used here
+- **Most common mistake** — the one thing that fails interviews
+
+---
+
+### Scenario Structure
+
+Every scenario contains these sections in order:
+
+- 🏢 **Situation** — real company, real problem, 2-3 lines
+- **Types** — all TypeScript interfaces defined before the code
+- **Starter code** — broken or incomplete realistic code
+- **Your tasks** — 3-4 specific things to fix or build
+- 💡 **Hint** — thinking direction only, no answer *(click to open)*
+- ✅ **Full Solution** — code + interviewer checks + TypeScript lesson *(click to open)*
+
+---
+
+### The 4 Scenario Types
+
+Every pattern has exactly 4 scenarios, each testing a different skill:
+
+**Scenario 1 — Build it properly**
+Given basic untyped code → make it production-ready
+
+**Scenario 2 — Find and fix the bug**
+Given code that looks right but behaves wrong → find and fix it
+
+**Scenario 3 — Add the missing feature**
+Given working but incomplete code → add what is missing
+
+**Scenario 4 — Handle the edge case**
+Given code that works normally → make it survive the unusual condition
+
+---
+
+> ⚠️ Attempt every scenario yourself before opening the solution.
+> One scenario done properly beats five scenarios skimmed.
+
+---
 ---
 
 # Table of Contents
