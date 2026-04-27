@@ -1027,10 +1027,36 @@ GIVE BACK              →  return result
 ---
 
 # Section C: Algorithms
-
 > **Patterns tell you WHAT shape the problem is.**
 > **Algorithms tell you HOW to execute the solution.**
 > **When you pick a pattern, the algorithm comes FREE inside the template.**
+
+---
+
+## Section C — Quick Navigation
+
+```
+PATTERN TO ALGORITHM MAP     → find which algorithm your pattern uses
+SORTING ALGORITHMS           → Built-in, Bubble, Selection, Insertion, Merge, Quick
+SEARCHING ALGORITHMS         → Linear Search, Binary Search, Hash-Based Search
+TRAVERSAL ALGORITHMS         → Array, Tree DFS, BFS, Graph DFS + BFS
+CLASSIC NAMED ALGORITHMS     → Kadane's, Floyd's, Dijkstra's, Topological, Union-Find
+COMPLETE ALGORITHM MAP       → full table of all algorithms
+```
+
+| What I Need | Go To |
+|---|---|
+| Which algorithm does my pattern use? | [Pattern to Algorithm Map](#pattern-to-algorithm-map) |
+| Sort an array | [Sorting Algorithms](#sorting-algorithms) |
+| Search in sorted array | [Binary Search](#binary-search) |
+| Fast lookup with Set/Map | [Hash-Based Search](#hash-based-search) |
+| Walk through array/tree/graph | [Traversal Algorithms](#traversal-algorithms) |
+| Max subarray sum | [Kadane's Algorithm](#kadanes-algorithm) |
+| Detect cycle in linked list | [Floyd's Cycle Detection](#floyds-cycle-detection) |
+| Shortest path weighted graph | [Dijkstra's Algorithm](#dijkstras-algorithm) |
+| Order tasks with dependencies | [Topological Sort](#topological-sort) |
+| Track connected groups | [Union-Find](#union-find) |
+| See all algorithms in one place | [Complete Algorithm Map](#complete-algorithm-map) |
 
 ---
 
@@ -1052,24 +1078,28 @@ GIVE BACK              →  return result
 └─────────────────────────────────────────────────────────────┘
 ```
 
-```
-PATTERN TO ALGORITHM MAP:
+---
 
-  Pattern 1  → 🔍 Detective      → Linear Search
-  Pattern 2  → 🪣 Bucket         → Linear Search + Kadane's Algorithm
-  Pattern 3  → 🏆 Filter         → Linear Search
-  Pattern 4  → 🔄 Transformer    → Linear Search
-  Pattern 5  → 🔎 Memory         → Hash-Based Search
-  Pattern 6  → 📊 Pointer Walker → Two Pointer + Floyd's Cycle Detection
-  Pattern 7  → 🪟 Sliding Window → Sliding Window Technique
-  Pattern 8  → 🔪 Binary Search  → Binary Search Algorithm
-  Pattern 9  → 🏗️ Stack          → Stack-based Matching
-  Pattern 10 → 🌳 Tree DFS       → Tree Traversal DFS
-  Pattern 11 → 🌊 BFS            → BFS Algorithm + Dijkstra's
-  Pattern 12 → 🧩 DP             → Memoization + Tabulation
-  Pattern 13 → 🔙 Backtracking   → Recursive Backtracking
-  Pattern 14 → 🏃 Greedy         → Greedy Choice
+## Pattern to Algorithm Map
+
 ```
+Pattern 1  → 🔍 Detective      → Linear Search
+Pattern 2  → 🪣 Bucket         → Linear Search + Kadane's Algorithm
+Pattern 3  → 🏆 Filter         → Linear Search
+Pattern 4  → 🔄 Transformer    → Linear Search
+Pattern 5  → 🔎 Memory         → Hash-Based Search
+Pattern 6  → 📊 Pointer Walker → Two Pointer + Floyd's Cycle Detection
+Pattern 7  → 🪟 Sliding Window → Sliding Window Technique
+Pattern 8  → 🔪 Binary Search  → Binary Search Algorithm
+Pattern 9  → 🏗️ Stack          → Stack-based Matching
+Pattern 10 → 🌳 Tree DFS       → Tree Traversal DFS
+Pattern 11 → 🌊 BFS            → BFS Algorithm + Dijkstra's
+Pattern 12 → 🧩 DP             → Memoization + Tabulation
+Pattern 13 → 🔙 Backtracking   → Recursive Backtracking
+Pattern 14 → 🏃 Greedy         → Greedy Choice
+```
+
+[↑ Back to Section C Navigation](#section-c--quick-navigation)
 
 ---
 
@@ -1080,10 +1110,10 @@ PATTERN TO ALGORITHM MAP:
 ### Built-in Sort
 
 ```javascript
-[10, 2, 30].sort();              // WRONG — alphabetical!
-[10, 2, 30].sort((a, b) => a - b); // [2, 10, 30] ascending
-[10, 2, 30].sort((a, b) => b - a); // [30, 10, 2] descending
-["banana", "apple"].sort();         // ["apple", "banana"]
+[10, 2, 30].sort();                   // WRONG — alphabetical!
+[10, 2, 30].sort((a, b) => a - b);   // [2, 10, 30] ascending
+[10, 2, 30].sort((a, b) => b - a);   // [30, 10, 2] descending
+["banana", "apple"].sort();           // ["apple", "banana"]
 const people = [{name:"Bob",age:25},{name:"Ana",age:30}];
 people.sort((a, b) => a.age - b.age); // sort by age
 ```
@@ -1242,6 +1272,8 @@ WHEN TO USE WHAT:
   Learning only                     → Bubble Sort
 ```
 
+[↑ Back to Section C Navigation](#section-c--quick-navigation)
+
 ---
 
 ## Searching Algorithms
@@ -1297,6 +1329,15 @@ const set = new Set(arr);
 set.has(target); // O(1) instant!
 ```
 
+```
+SEARCHING COMPARISON:
+  Linear Search  → O(n)     → works on anything
+  Binary Search  → O(log n) → requires sorted data
+  Hash Search    → O(1)     → requires building Set/Map first
+```
+
+[↑ Back to Section C Navigation](#section-c--quick-navigation)
+
 ---
 
 ## Traversal Algorithms
@@ -1312,6 +1353,7 @@ for (const item of arr) { /* no index needed */ }
 ### Tree DFS
 
 ```javascript
+// Inorder: Left → Root → Right (sorted in BST)
 function inorder(node) {
   if (!node) return;
   inorder(node.left);
@@ -1319,6 +1361,7 @@ function inorder(node) {
   inorder(node.right);
 }
 
+// Preorder: Root → Left → Right (copy tree)
 function preorder(node) {
   if (!node) return;
   console.log(node.val);
@@ -1326,6 +1369,7 @@ function preorder(node) {
   preorder(node.right);
 }
 
+// Postorder: Left → Right → Root (delete tree)
 function postorder(node) {
   if (!node) return;
   postorder(node.left);
@@ -1377,11 +1421,19 @@ function bfsGraph(graph, start) {
 }
 ```
 
+```
+DFS vs BFS:
+  DFS → goes deep, uses recursion, "explore all paths"
+  BFS → goes wide, uses queue, "shortest path / level by level"
+```
+
+[↑ Back to Section C Navigation](#section-c--quick-navigation)
+
 ---
 
 ## Classic Named Algorithms
 
-### Kadane's Algorithm (Maximum Subarray Sum)
+### Kadane's Algorithm
 
 ```
 WHAT: Find the contiguous subarray with the largest sum.
@@ -1403,17 +1455,21 @@ function maxSubarraySum(arr) {
 
 ```
 Trace: [-2, 1, -3, 4, -1, 2, 1, -5, 4]
-  i=1: current=max(1,-1)=1,  best=1
+  i=1: current=max(1,-1)=1,   best=1
   i=2: current=max(-3,-2)=-2, best=1
-  i=3: current=max(4,2)=4,   best=4
-  i=4: current=max(-1,3)=3,  best=4
-  i=5: current=max(2,5)=5,   best=5
-  i=6: current=max(1,6)=6,   best=6
-  i=7: current=max(-5,1)=1,  best=6
-  i=8: current=max(4,5)=5,   best=6
+  i=3: current=max(4,2)=4,    best=4
+  i=4: current=max(-1,3)=3,   best=4
+  i=5: current=max(2,5)=5,    best=5
+  i=6: current=max(1,6)=6,    best=6
+  i=7: current=max(-5,1)=1,   best=6
+  i=8: current=max(4,5)=5,    best=6
   Return: 6 ✓ — subarray [4,-1,2,1]
 LeetCode: #53
 ```
+
+[↑ Back to Section C Navigation](#section-c--quick-navigation)
+
+---
 
 ### Floyd's Cycle Detection
 
@@ -1441,6 +1497,10 @@ VISUAL:
   Cycle: 1→2→3→4→(back to 2) → slow and fast meet → true
 LeetCode: #141, #142
 ```
+
+[↑ Back to Section C Navigation](#section-c--quick-navigation)
+
+---
 
 ### Dijkstra's Algorithm
 
@@ -1492,6 +1552,10 @@ VISUAL:
 LeetCode: #743, #1631
 ```
 
+[↑ Back to Section C Navigation](#section-c--quick-navigation)
+
+---
+
 ### Topological Sort
 
 ```
@@ -1531,6 +1595,10 @@ function topologicalSort(numNodes, edges) {
 ```
 LeetCode: #207, #210
 ```
+
+[↑ Back to Section C Navigation](#section-c--quick-navigation)
+
+---
 
 ### Union-Find
 
@@ -1577,7 +1645,11 @@ class UnionFind {
 LeetCode: #547, #684, #323
 ```
 
-### Complete Algorithm Map
+[↑ Back to Section C Navigation](#section-c--quick-navigation)
+
+---
+
+## Complete Algorithm Map
 
 ```
 ┌──────────────────────┬────────────────────────────┬──────────────┐
@@ -1607,6 +1679,8 @@ LeetCode: #547, #684, #323
 │ Greedy Choice        │ Best local = best global    │ 🏃           │
 └──────────────────────┴────────────────────────────┴──────────────┘
 ```
+
+[↑ Back to Section C Navigation](#section-c--quick-navigation)
 
 [↑ Back to Table of Contents](#table-of-contents)
 
