@@ -2661,18 +2661,33 @@ Level 4 (8 patterns)  → Solves 1%   → Days 39-48
 ### Pattern 1: 🔍 Detective (Boolean Validation)
 
 ```
-USE WHEN:  You need to return true or false about a collection.
-KEYWORDS:  "Is it...?", "Are all...?", "Does every...?", "Is valid?"
-LOGIC:     Find ONE bad thing → return false immediately.
-           Survive the entire loop → return true.
-ALGORITHM: → [Section C → Linear Search](#linear-search)
-TOOLS:     → [Section A: Arrays](#1-arrays) or [Strings](#2-strings)
+USE WHEN:
+  You need to return true or false about a collection.
+```
 
-NOTE: Detective is the ONE exception to the positive framing rule.
-      It deliberately looks for the BAD condition.
-      The moment you find ONE bad thing → stop. Return false.
-      This is called "early exit" and it is intentional.
+```
+KEYWORDS:
+  "Is it...?", "Are all...?", "Does every...?", "Is valid?"
+```
 
+**ALGORITHM:** → [Section C → Linear Search](#linear-search)
+
+**TOOLS:**
+→ [Section A: Arrays](#1-arrays) or [Section A: Strings](#2-strings)
+
+```
+LOGIC:
+  Find ONE bad thing → return false immediately.
+  Survive the entire loop → return true.
+
+NOTE:
+  Detective is the ONE exception to the positive framing rule.
+  It deliberately looks for the BAD condition.
+  The moment you find ONE bad thing → stop. Return false.
+  This is called "early exit" and it is intentional.
+```
+
+```
 DON'T USE WHEN:
   ✗ Need to COUNT bad things (use 🪣 Bucket)
   ✗ Need to COLLECT bad items (use 🏆 Filter)
@@ -2728,19 +2743,33 @@ LeetCode: #1550 Three Consecutive Odds, #896 Monotonic Array
 ### Pattern 2: 🪣 Bucket (Accumulation)
 
 ```
-USE WHEN:  You need ONE value calculated from the entire list.
-           (sum, max, min, count, product, longest, shortest)
-KEYWORDS:  "Sum of...", "Total...", "Count...", "Maximum...",
-           "Minimum...", "Longest...", "Product of..."
-LOGIC:     Start with empty bucket.
-           Pour each item into the bucket using some operation.
-           Return the bucket.
-ALGORITHM: → [Section C → Linear Search](#linear-search) + [Kadane's Algorithm](#kadanes-algorithm)
-TOOLS:     → [Section A: Arrays](#1-arrays) or [Strings](#2-strings)
+USE WHEN:
+  You need ONE value calculated from the entire list.
+  (sum, max, min, count, product, longest, shortest)
+```
 
-  Normal Bucket  → Linear Scan → touches ALL items equally
-  Kadane's Bucket → Kadane's   → finds BEST contiguous subarray
+```
+KEYWORDS:
+  "Sum of...", "Total...", "Count...", "Maximum...",
+  "Minimum...", "Longest...", "Product of..."
+```
 
+**ALGORITHM:** → [Section C → Linear Search](#linear-search) + [Kadane's Algorithm](#kadanes-algorithm)
+
+**TOOLS:**
+→ [Section A: Arrays](#1-arrays) or [Section A: Strings](#2-strings)
+
+```
+LOGIC:
+  Start with empty bucket.
+  Pour each item into the bucket using some operation.
+  Return the bucket.
+
+  Normal Bucket   → Linear Scan → touches ALL items equally
+  Kadane's Bucket → Kadane's    → finds BEST contiguous subarray
+```
+
+```
 DON'T USE WHEN:
   ✗ Need a list of results (use 🏆 Filter or 🔄 Transformer)
   ✗ Need true/false (use 🔍 Detective)
@@ -2821,13 +2850,27 @@ LeetCode: #53 Max Subarray, #136 Single Number
 ### Pattern 3: 🏆 Filter (Predicate Selection)
 
 ```
-USE WHEN:  You need a SHORTER list — only the items that pass a test.
-KEYWORDS:  "Get all...", "Find all...", "Remove...", "Keep only..."
-LOGIC:     Start with empty winners list.
-           Test each item. Pass the test → push to winners. Fail → skip.
-ALGORITHM: → [Section C → Linear Search](#linear-search)
-TOOLS:     → [Section A: Arrays](#1-arrays) or [Strings](#2-strings)
+USE WHEN:
+  You need a SHORTER list — only the items that pass a test.
+```
 
+```
+KEYWORDS:
+  "Get all...", "Find all...", "Remove...", "Keep only..."
+```
+
+**ALGORITHM:** → [Section C → Linear Search](#linear-search)
+
+**TOOLS:**
+→ [Section A: Arrays](#1-arrays) or [Section A: Strings](#2-strings)
+
+```
+LOGIC:
+  Start with empty winners list.
+  Test each item. Pass the test → push to winners. Fail → skip.
+```
+
+```
 DON'T USE WHEN:
   ✗ Need EVERY item changed (use 🔄 Transformer)
   ✗ Need one value (use 🪣 Bucket)
@@ -2879,15 +2922,30 @@ LeetCode: used in #217, #349
 ### Pattern 4: 🔄 Transformer (Data Projection)
 
 ```
-USE WHEN:  You need a SAME-SIZE list where every item is changed.
-KEYWORDS:  "Double each...", "Convert...", "Format...", "Extract...",
-           "Calculate for each..."
-LOGIC:     Start with empty result list.
-           Transform each item.
-           Push the transformed version into result.
-ALGORITHM: → [Section C → Linear Search](#linear-search)
-TOOLS:     → [Section A: Arrays](#1-arrays) or [Strings](#2-strings)
+USE WHEN:
+  You need a SAME-SIZE list where every item is changed.
+```
 
+```
+KEYWORDS:
+  "Double each...", "Convert...", "Format...", "Extract...",
+  "Calculate for each..."
+```
+
+**ALGORITHM:** → [Section C → Linear Search](#linear-search)
+
+**TOOLS:**
+→ [Section A: Arrays](#1-arrays) or [Section A: Strings](#2-strings)
+
+```
+LOGIC:
+  Start with empty result list.
+  Transform each item.
+  Push the transformed version into result.
+  Result is always SAME LENGTH as input.
+```
+
+```
 DON'T USE WHEN:
   ✗ Some items should be removed (use 🏆 Filter)
   ✗ Need one value (use 🪣 Bucket)
@@ -2939,20 +2997,34 @@ USE WHEN:
 
   CASE 2 → "Find a pair/relationship"
             Two different values that connect     → MAP (store index)
+```
 
-KEYWORDS:  "Duplicates", "Two Sum", "Frequency", "First unique",
-           "Anagram", "Seen before"
-ALGORITHM: → [Section C → Hash-Based Search](#hash-based-search)
-TOOLS:     → [Section A: Set](#3-set)
-           → [Section A: Map](#4-map-hash-map)
-LOGIC:     Set/Map = instant memory.
-           Check the memory BEFORE processing each item.
+```
+KEYWORDS:
+  "Duplicates", "Two Sum", "Frequency", "First unique",
+  "Anagram", "Seen before"
+```
 
+**ALGORITHM:** → [Section C → Hash-Based Search](#hash-based-search)
+
+**TOOLS:**
+→ [Section A: Set](#3-set)
+→ [Section A: Map](#4-map-hash-map)
+
+```
+LOGIC:
+  Set/Map = instant memory.
+  Check the memory BEFORE processing each item.
+```
+
+```
 HOW TO IDENTIFY WHICH CASE:
   "Does something exist or repeat?"    → Case 1 Basic    → SET
   "How many times does it appear?"     → Case 1 Extended → MAP count
   "Find two values that connect?"      → Case 2          → MAP index
+```
 
+```
 DON'T USE WHEN:
   ✗ Data is already sorted (use 📊 Pointer Walker — more efficient)
   ✗ Just filtering by simple math (use 🏆 Filter)
@@ -3114,30 +3186,51 @@ LeetCode: #217, #242, #387, #1, #49, #128, #347
 ### Pattern 6: 📊 Pointer Walker (Two Pointers)
 
 ```
-USE WHEN:  Compare elements with each other, sorted array problems,
-           in-place modifications, linked list problems.
-KEYWORDS:  "Palindrome", "Sorted array pair", "In-place removal",
-           "Merge sorted", "Move elements", "Find middle"
-LOGIC:     Two index variables (or node pointers) moving through data.
-ALGORITHM: → [Section C → Two Pointer Approaches](#two-pointer-approaches)
-                        → [Floyd's Cycle Detection](#floyds-cycle-detection)
-                        → [Fast Slow Pointer](#fast-slow-pointer)
-                        → [Dutch National Flag](#dutch-national-flag)
-TOOLS:     → [Section A: Arrays](#1-arrays) or [Strings](#2-strings)
-           → [Section C: Sorting Algorithms](#sorting-algorithms)
-               JS Built-in Sort  ← use this 80% of the time
-               Merge Sort        ← implement when interviewer asks
-               Quick Sort        ← implement when interviewer asks
-               Insertion Sort    ← use for nearly sorted data
-               Bubble Sort       ← learning only
-               Selection Sort    ← learning only
+USE WHEN:
+  Compare elements with each other, sorted array problems,
+  in-place modifications, linked list problems.
+```
 
+```
+KEYWORDS:
+  "Palindrome", "Sorted array pair", "In-place removal",
+  "Merge sorted", "Move elements", "Find middle"
+```
+
+**ALGORITHM:**
+→ [Section C → Two Pointer Approaches](#two-pointer-approaches)
+→ [Floyd's Cycle Detection](#floyds-cycle-detection)
+→ [Fast Slow Pointer](#fast-slow-pointer)
+→ [Dutch National Flag](#dutch-national-flag)
+
+**TOOLS:**
+→ [Section A: Arrays](#1-arrays) or [Section A: Strings](#2-strings)
+→ [Section C: Sorting Algorithms](#sorting-algorithms)
+
+```
+SORTING REFERENCE:
+  JS Built-in Sort  ← use this 80% of the time
+  Merge Sort        ← implement when interviewer asks
+  Quick Sort        ← implement when interviewer asks
+  Insertion Sort    ← use for nearly sorted data
+  Bubble Sort       ← learning only
+  Selection Sort    ← learning only
+```
+
+```
+LOGIC:
+  Two index variables (or node pointers) moving through data.
+```
+
+```
 WHICH APPROACH TO USE:
   Palindrome, two sum sorted, container water → Approach 1: Opposite Ends
   Move zeroes, remove duplicates in-place     → Approach 2: Same Direction R/W
   Find middle, detect cycle (Linked List)     → Approach 3: Fast and Slow
   3Sum, 4Sum, multi-number sum                → Approach 4: Sorted Array
+```
 
+```
 DON'T USE WHEN:
   ✗ Data unsorted and need pair lookup (use 🔎 Memory — O(n) vs O(n log n))
   ✗ Not comparing elements with EACH OTHER
@@ -3265,18 +3358,33 @@ LeetCode: #125, #26, #167, #283, #88, #15, #11, #42, #75
 ### Pattern 7: 🪟 Sliding Window
 
 ```
-USE WHEN:  Find the best/longest/shortest CONTIGUOUS subarray or substring.
-KEYWORDS:  "Consecutive", "Subarray of size K", "Longest substring",
-           "Shortest subarray with condition"
-LOGIC:     Maintain a window of elements.
-           Slide it: add new element at right, drop old element at left.
-           Track the best window seen.
-ALGORITHM: → [Section C → Sliding Window Technique](#two-pointer-approaches)
-TOOLS:     → [Section A: Arrays](#1-arrays) or [Strings](#2-strings)
-           → [Section A: Set](#3-set) (for variable window — track unique chars)
-           → [Section A: Map](#4-map-hash-map) (for variable window — track char counts)
-BUILT ON:  📊 Pointer Walker + 🪣 Bucket
+USE WHEN:
+  Find the best/longest/shortest CONTIGUOUS subarray or substring.
+```
 
+```
+KEYWORDS:
+  "Consecutive", "Subarray of size K", "Longest substring",
+  "Shortest subarray with condition"
+```
+
+**ALGORITHM:** → [Section C → Sliding Window Technique](#two-pointer-approaches)
+
+**TOOLS:**
+→ [Section A: Arrays](#1-arrays) or [Section A: Strings](#2-strings)
+→ [Section A: Set](#3-set) (for variable window — track unique chars)
+→ [Section A: Map](#4-map-hash-map) (for variable window — track char counts)
+
+```
+LOGIC:
+  Maintain a window of elements.
+  Slide it: add new element at right, drop old element at left.
+  Track the best window seen.
+
+BUILT ON:  📊 Pointer Walker + 🪣 Bucket
+```
+
+```
 DON'T USE WHEN:
   ✗ Elements do not need to be contiguous
   ✗ You need a pair not a range
@@ -3336,17 +3444,31 @@ LeetCode: #3, #209, #438, #567, #76, #239
 ### Pattern 8: 🔪 Binary Search
 
 ```
-USE WHEN:  Find a target in SORTED data by eliminating half each step.
-KEYWORDS:  "Sorted array", "Find position", "First/last occurrence",
-           "Search in rotated"
-LOGIC:     Check middle. Target smaller → search left half.
-           Target bigger → search right half. Repeat.
-ALGORITHM: → [Section C → Binary Search Algorithm](#binary-search)
-TOOLS:     → [Section A: Arrays](#1-arrays)
-           → [Section C: Sorting Algorithms](#sorting-algorithms)
-               JS Built-in Sort ← data must be sorted first
-BUILT ON:  🔍 Detective (elimination logic)
+USE WHEN:
+  Find a target in SORTED data by eliminating half each step.
+```
 
+```
+KEYWORDS:
+  "Sorted array", "Find position", "First/last occurrence",
+  "Search in rotated"
+```
+
+**ALGORITHM:** → [Section C → Binary Search Algorithm](#binary-search)
+
+**TOOLS:**
+→ [Section A: Arrays](#1-arrays)
+→ [Section C: Sorting Algorithms](#sorting-algorithms) ← data must be sorted first
+
+```
+LOGIC:
+  Check middle. Target smaller → search left half.
+  Target bigger → search right half. Repeat.
+
+BUILT ON:  🔍 Detective (elimination logic)
+```
+
+```
 DON'T USE WHEN:
   ✗ Data is NOT sorted and cannot be sorted
 ```
@@ -3382,15 +3504,31 @@ LeetCode: #704, #34, #33, #69, #162, #74
 ### Pattern 9: 🏗️ Stack Pattern
 
 ```
-USE WHEN:  Matching pairs, undo history, Last-In-First-Out processing,
-           "next greater element" type problems.
-KEYWORDS:  "Valid parentheses", "Next greater", "Evaluate expression",
-           "Largest rectangle"
-LOGIC:     Push items onto stack. Pop when condition is met.
-           What is currently on top determines next action.
-ALGORITHM: → [Section C → Stack-based Matching](#pattern-9--stack-pattern) + [Monotonic Stack](#monotonic-stack)
-TOOLS:     → [Section A: Stack](#5-stack)
+USE WHEN:
+  Matching pairs, undo history, Last-In-First-Out processing,
+  "next greater element" type problems.
+```
 
+```
+KEYWORDS:
+  "Valid parentheses", "Next greater", "Evaluate expression",
+  "Largest rectangle"
+```
+
+**ALGORITHM:**
+→ [Section C → Stack-based Matching](#pattern-9--stack-pattern)
+→ [Section C → Monotonic Stack](#monotonic-stack)
+
+**TOOLS:**
+→ [Section A: Stack](#5-stack)
+
+```
+LOGIC:
+  Push items onto stack. Pop when condition is met.
+  What is currently on top determines next action.
+```
+
+```
 DON'T USE WHEN:
   ✗ Processing order does not matter
   ✗ You need FIFO → use Queue / BFS
@@ -3466,14 +3604,28 @@ LeetCode: #20, #150, #739, #155, #84, #496
 ### Pattern 10: 🌳 Tree DFS
 
 ```
-USE WHEN:  Explore every node in a tree by going deep first.
-KEYWORDS:  "Max depth", "Path sum", "Invert tree", "Validate BST",
-           "Diameter", "Lowest common ancestor"
-LOGIC:     Base case (null) → Ask left subtree → Ask right subtree
-           → Combine their answers.
-ALGORITHM: → [Section C → Tree Traversal DFS](#traversal-algorithms)
-TOOLS:     → [Section A: Tree](#8-tree-binary-tree)
+USE WHEN:
+  Explore every node in a tree by going deep first.
+```
 
+```
+KEYWORDS:
+  "Max depth", "Path sum", "Invert tree", "Validate BST",
+  "Diameter", "Lowest common ancestor"
+```
+
+**ALGORITHM:** → [Section C → Tree Traversal DFS](#traversal-algorithms)
+
+**TOOLS:**
+→ [Section A: Tree](#8-tree-binary-tree)
+
+```
+LOGIC:
+  Base case (null) → Ask left subtree → Ask right subtree
+  → Combine their answers.
+```
+
+```
 DON'T USE WHEN:
   ✗ Need level-by-level processing (use 🌊 BFS)
   ✗ Need shortest path (use 🌊 BFS)
@@ -3528,18 +3680,34 @@ LeetCode: #104, #226, #112, #98, #100, #543, #236, #124
 ### Pattern 11: 🌊 BFS
 
 ```
-USE WHEN:  Process a tree or graph level by level,
-           or find the SHORTEST path.
-KEYWORDS:  "Level order", "Shortest path", "Nearest neighbor",
-           "Minimum steps", "Layer by layer"
-LOGIC:     Use a queue. Add root/start.
-           Process all nodes at current level, add their children.
-           Repeat for next level.
-ALGORITHM: → [Section C → BFS Algorithm](#traversal-algorithms) + [Dijkstra's](#dijkstras-algorithm)
-                        + [Topological Sort](#topological-sort)
-TOOLS:     → [Section A: Queue](#6-queue)
-           → [Section A: Graph](#9-graph)
+USE WHEN:
+  Process a tree or graph level by level,
+  or find the SHORTEST path.
+```
 
+```
+KEYWORDS:
+  "Level order", "Shortest path", "Nearest neighbor",
+  "Minimum steps", "Layer by layer"
+```
+
+**ALGORITHM:**
+→ [Section C → BFS Algorithm](#traversal-algorithms)
+→ [Section C → Dijkstra's](#dijkstras-algorithm)
+→ [Section C → Topological Sort](#topological-sort)
+
+**TOOLS:**
+→ [Section A: Queue](#6-queue)
+→ [Section A: Graph](#9-graph)
+
+```
+LOGIC:
+  Use a queue. Add root/start.
+  Process all nodes at current level, add their children.
+  Repeat for next level.
+```
+
+```
 DON'T USE WHEN:
   ✗ Need to explore all paths to leaves (use 🌳 DFS)
   ✗ Tree height problems (use 🌳 DFS)
@@ -3619,27 +3787,43 @@ LeetCode: #102, #200, #994, #542, #127, #207, #133
 ### Pattern 12: 🧩 Dynamic Programming
 
 ```
-USE WHEN:  Problem has overlapping sub-problems AND optimal substructure.
-           Overlapping = same smaller problem solved multiple times.
-           Optimal = best overall answer built from best sub-answers.
-KEYWORDS:  "How many ways?", "Minimum cost to reach", "Can I reach?",
-           "Longest increasing", "Maximum profit"
-LOGIC:     Store answers to smaller problems.
-           Use stored answers to build up to the big answer.
-           Never solve the same sub-problem twice.
-ALGORITHM: → [Section C → Memoization + Tabulation](#complete-algorithm-map)
-TOOLS:     → [Section A: Arrays](#1-arrays)
-BUILT ON:  🪣 Bucket + 🔎 Memory + Recursion
+USE WHEN:
+  Problem has overlapping sub-problems AND optimal substructure.
+  Overlapping = same smaller problem solved multiple times.
+  Optimal = best overall answer built from best sub-answers.
+```
 
-3-Step Recipe — always follow this order:
+```
+KEYWORDS:
+  "How many ways?", "Minimum cost to reach", "Can I reach?",
+  "Longest increasing", "Maximum profit"
+```
+
+**ALGORITHM:** → [Section C → Memoization + Tabulation](#complete-algorithm-map)
+
+**TOOLS:**
+→ [Section A: Arrays](#1-arrays)
+
+```
+LOGIC:
+  Store answers to smaller problems.
+  Use stored answers to build up to the big answer.
+  Never solve the same sub-problem twice.
+
+BUILT ON:  🪣 Bucket + 🔎 Memory + Recursion
+```
+
+```
+3-STEP RECIPE — always follow this order:
   1. DEFINE:  "What does dp[i] mean in plain English?"
               Example: "dp[i] = number of ways to climb i stairs"
   2. RELATE:  "How does dp[i] connect to smaller values?"
               Example: "dp[i] = dp[i-1] + dp[i-2]"
-              (1 step from i-1, or 2 steps from i-2)
   3. BASE:    "What are the smallest known values?"
               Example: "dp[0] = 1, dp[1] = 1"
+```
 
+```
 DON'T USE WHEN:
   ✗ Sub-problems don't overlap (use Divide & Conquer)
   ✗ Greedy local choice is provably always optimal (use 🏃 Greedy)
@@ -3705,14 +3889,27 @@ LeetCode: #70, #198, #322, #300, #139, #152, #1143, #416
 ### Pattern 13: 🔙 Backtracking
 
 ```
-USE WHEN:  Generate ALL valid combinations, permutations, or configurations.
-KEYWORDS:  "All subsets", "All permutations", "N-Queens", "Sudoku",
-           "Word search", "Generate all..."
-LOGIC:     CHOOSE an option → EXPLORE that path fully →
-           UN-CHOOSE (undo) → try next option.
-           Always in this exact order.
-ALGORITHM: → [Section C → Recursive Backtracking](#complete-algorithm-map)
-TOOLS:     → [Section A: Arrays](#1-arrays) or [Strings](#2-strings)
+USE WHEN:
+  Generate ALL valid combinations, permutations, or configurations.
+```
+
+```
+KEYWORDS:
+  "All subsets", "All permutations", "N-Queens", "Sudoku",
+  "Word search", "Generate all..."
+```
+
+**ALGORITHM:** → [Section C → Recursive Backtracking](#complete-algorithm-map)
+
+**TOOLS:**
+→ [Section A: Arrays](#1-arrays) or [Section A: Strings](#2-strings)
+
+```
+LOGIC:
+  CHOOSE an option → EXPLORE that path fully →
+  UN-CHOOSE (undo) → try next option.
+  Always in this exact order.
+
 BUILT ON:  🌳 DFS + trial-and-error
 
 WHY UN-CHOOSE MATTERS:
@@ -3720,6 +3917,12 @@ WHY UN-CHOOSE MATTERS:
   with leftover state from the previous path.
   This corrupts all subsequent results.
   UN-CHOOSE restores the state before trying next option.
+```
+
+```
+DON'T USE WHEN:
+  ✗ You only need ONE solution (use DFS instead)
+  ✗ Problem has optimal substructure (use DP instead)
 ```
 
 ```javascript
@@ -3772,22 +3975,42 @@ LeetCode: #78, #46, #39, #79, #51, #131, #17
 ### Pattern 14: 🏃 Greedy
 
 ```
-USE WHEN:  The best LOCAL choice at each step leads to the best GLOBAL result.
-KEYWORDS:  "Maximum events attended", "Minimum stops", "Jump game",
-           "Schedule tasks", "Minimum intervals"
-LOGIC:     Sort the data (almost always).
-           Pick the best available option right now.
-           Never go back. Never reconsider.
-ALGORITHM: → [Section C → Greedy Choice](#complete-algorithm-map)
-TOOLS:     → [Section A: Arrays](#1-arrays)
-           → [Section C: Sorting Algorithms](#sorting-algorithms)
-               JS Built-in Sort  ← use this 80% of the time
-               Merge Sort        ← implement when interviewer asks
-               Quick Sort        ← implement when interviewer asks
-               Insertion Sort    ← use for nearly sorted data
-               Bubble Sort       ← learning only
-               Selection Sort    ← learning only
+USE WHEN:
+  The best LOCAL choice at each step leads to the best GLOBAL result.
+```
 
+```
+KEYWORDS:
+  "Maximum events attended", "Minimum stops", "Jump game",
+  "Schedule tasks", "Minimum intervals"
+```
+
+**ALGORITHM:** → [Section C → Greedy Choice](#complete-algorithm-map)
+
+**TOOLS:**
+→ [Section A: Arrays](#1-arrays)
+→ [Section C: Sorting Algorithms](#sorting-algorithms)
+
+```
+SORTING REFERENCE:
+  JS Built-in Sort  ← use this 80% of the time
+  Merge Sort        ← implement when interviewer asks
+  Quick Sort        ← implement when interviewer asks
+  Insertion Sort    ← use for nearly sorted data
+  Bubble Sort       ← learning only
+  Selection Sort    ← learning only
+```
+
+```
+LOGIC:
+  Sort the data (almost always).
+  Pick the best available option right now.
+  Never go back. Never reconsider.
+
+BUILT ON:  🪣 Bucket + sorting
+```
+
+```
 WHY GREEDY WORKS (when it works):
   Some problems have a special property:
   The locally optimal choice at every step
@@ -3805,7 +4028,9 @@ WHY GREEDY FAILS (when it fails):
 
 RULE: If unsure → use DP. DP is always correct.
       Only use Greedy when you can PROVE local = global.
+```
 
+```
 DON'T USE WHEN:
   ✗ Local best ≠ global best (use 🧩 DP)
 ```
