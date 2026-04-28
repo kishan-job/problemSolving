@@ -92,6 +92,8 @@ add("5", 10);  // ❌ Error: Argument of type 'string' is not assignable to 'num
 
 ### Setup — tsc, ts-node, tsconfig
 
+Before writing TypeScript you need the compiler (`tsc`) to convert it to JavaScript. `ts-node` lets you skip the compile step and run TypeScript directly. `tsconfig.json` is the config file that tells TypeScript how to compile your project.
+
 ```bash
 # Install TypeScript globally
 npm install -g typescript
@@ -133,6 +135,10 @@ tsc --init
 ---
 
 ### Basic Types
+
+These are the building blocks — every value in TypeScript has a type. You annotate with `: type` after the variable name. TypeScript uses these to catch mistakes before your code runs.
+
+> **Key rule:** `any` turns off type checking — avoid it. Use `unknown` instead when the type is truly unknown — it forces you to check before using.
 
 ```typescript
 // Primitives
@@ -187,7 +193,9 @@ let named: [name: string, age: number] = ["Alice", 30];  // named tuple
 
 ### Type Inference
 
-TypeScript figures out the type automatically — you don't always need to annotate.
+You don't always need to write the type — TypeScript is smart enough to figure it out from the value you assign. This is called inference. Only annotate when TypeScript can't figure it out on its own.
+
+> **Key rule:** Always annotate function parameters — TypeScript cannot infer those. Everything else, let TypeScript infer when possible.
 
 ```typescript
 // Inferred as string
@@ -224,6 +232,10 @@ function greet(name: string) {   // ← must annotate
 ---
 
 ### Type Aliases & Interfaces + Differences
+
+Both `type` and `interface` let you name and reuse a type shape. They look similar but have key differences — knowing when to use which saves confusion later.
+
+> **Rule of thumb:** Use `interface` for objects & classes. Use `type` for unions, primitives, and complex compositions.
 
 ```typescript
 // --- TYPE ALIAS ---
@@ -271,13 +283,15 @@ type Result = "success" | "error" | "pending";  // ✅
 interface Result = "success" | "error";          // ❌ not possible
 ```
 
-> **Rule of thumb:** Use `interface` for objects & classes. Use `type` for unions, primitives, and complex compositions.
-
 [⬆ Back to Table of Contents](#table-of-contents)
 
 ---
 
 ### Union & Intersection Types
+
+Union (`|`) means a value can be **one of** these types. Intersection (`&`) means a value must have **all of** these types combined. These are how you compose types together.
+
+> **Union `|`** — either this OR that. **Intersection `&`** — this AND that combined.
 
 ```typescript
 // --- UNION (|) — one of these types ---
@@ -319,6 +333,10 @@ type EmployeeWithAge = Employee & HasAge;
 ## Block 2 — ⚙️ Functions & Objects (30 min)
 
 ### Function Types
+
+Every function in TypeScript can have typed parameters and a typed return value. This is how TypeScript knows what goes in and what comes out — and catches mistakes at the call site.
+
+> **Key rule:** Always annotate parameters. Return type is optional — TypeScript infers it — but annotating it makes your intent clear and catches bugs early.
 
 ```typescript
 // Basic function
@@ -367,7 +385,9 @@ function fail(msg: string): never { throw new Error(msg); }
 
 ### Function Overloads
 
-We use overloads because when we use union types in return, TypeScript doesn't know exactly which type comes out — it just sees string | number. By defining overloads, we tell TypeScript "if this type goes in, this exact type comes out" — so TypeScript knows precisely what you're working with.
+We use overloads because when we use union types in return, TypeScript doesn't know exactly which type comes out — it just sees `string | number`. By defining overloads, we tell TypeScript "if this type goes in, this exact type comes out" — so TypeScript knows precisely what you're working with.
+
+> **Key rule:** Write overload signatures first (the promises), then the implementation last. The implementation must handle all cases — it is never called directly by TypeScript for type checking.
 
 ```typescript
 // Overload signatures (no implementation)
@@ -401,6 +421,10 @@ function parse(input: string | number): string | number {
 ---
 
 ### Object Types
+
+Objects in TypeScript can have typed properties, optional properties, readonly properties, and dynamic keys. You can define the shape inline or use an interface — both work the same way.
+
+> **Key rule:** Use `readonly` for values that should never change after creation. Use `?` for optional properties. Use index signatures `[key: string]` when you don't know all the key names ahead of time.
 
 ```typescript
 // Inline object type
@@ -452,6 +476,8 @@ interface Person {
 
 ### Destructuring with Types
 
+Destructuring is a JavaScript feature — TypeScript just adds types to it. You annotate the destructured shape, not each variable individually. Works for objects, arrays, function parameters, and nested structures.
+
 ```typescript
 // Object destructuring
 const { name, age }: { name: string; age: number } = user;
@@ -486,6 +512,10 @@ function getCity({ address: { city } }: Person): string {
 ---
 
 ### keyof, typeof, Indexed Access T[K]
+
+These three operators let you extract type information from existing types and values — instead of repeating yourself. They are especially powerful when combined with generics.
+
+> **`keyof`** — get all keys of a type as a union. **`typeof`** — get the type of a value. **`T[K]`** — get the type of a specific property.
 
 ```typescript
 // --- keyof — get union of keys of a type ---
@@ -540,6 +570,10 @@ type Role = Company["employees"][number]["role"];  // string
 
 ### Class Basics
 
+Classes in TypeScript work the same as JavaScript classes but with typed properties, typed constructor parameters, and typed methods. Properties must be declared at the top before the constructor.
+
+> **Key rule:** All properties must be declared before the constructor. TypeScript gives you getters, setters, and static members — all with types.
+
 ```typescript
 class Person {
   // Properties must be declared
@@ -585,6 +619,10 @@ Person.create("Bob", 25);   // static factory
 ---
 
 ### Access Modifiers
+
+Access modifiers control where a property or method can be accessed from. This is how you protect internal data and expose only what's needed. TypeScript also has a shorthand to declare and assign in the constructor at the same time.
+
+> **`public`** — everywhere (default). **`private`** — only this class. **`protected`** — this class + subclasses. **`readonly`** — set once, never change.
 
 ```typescript
 class BankAccount {
@@ -638,6 +676,10 @@ acc.getBalance(); // ✅ method is public
 
 ### Inheritance — extends, super
 
+Inheritance lets one class reuse and extend another. The child class gets everything from the parent and can add new things or override existing ones. `super` is used to call the parent's constructor or methods.
+
+> **Key rule:** Always call `super()` as the first line in a child constructor — before using `this`. Without it TypeScript throws an error.
+
 ```typescript
 class Animal {
   constructor(public name: string) {}
@@ -681,7 +723,9 @@ dog instanceof Animal;  // true
 
 ### Abstract Classes
 
-Abstract classes cannot be instantiated — they exist to be extended.
+An abstract class is a base class that cannot be created directly — it exists only to be extended. It can have abstract methods (no body — subclass must implement) and concrete methods (with body — shared by all subclasses).
+
+> **Key rule:** You cannot do `new AbstractClass()` — it will error. Abstract methods have no body — every subclass is forced to implement them.
 
 ```typescript
 abstract class Shape {
@@ -729,6 +773,10 @@ c.describe();  // "A red shape with area 78.54"
 ---
 
 ### Implementing Interfaces
+
+A class can implement one or more interfaces — this is a contract that says "this class promises to have all these methods and properties." It's different from extending — implementing is a promise, extending is inheritance.
+
+> **Key rule:** A class can implement multiple interfaces but can only extend one class. If a class says `implements X` but is missing a method from `X` — TypeScript errors immediately.
 
 ```typescript
 interface Printable {
@@ -787,6 +835,10 @@ abstract class Base implements Loggable {
 
 ### Generic Functions
 
+Without generics, you'd write the same function multiple times for different types — or use `any` and lose type safety. Generics solve this by using a placeholder `T` that gets filled in with the actual type when the function is called.
+
+> **Key rule:** `T` is just a placeholder name — it could be `A`, `Item`, `Whatever`. TypeScript fills it in automatically from what you pass — you rarely need to write `<string>` explicitly.
+
 ```typescript
 // Without generics — loses type info
 function identity(arg: any): any { return arg; }
@@ -825,6 +877,10 @@ map(["a", "b"], s => s.length);     // number[]
 ---
 
 ### Generic Interfaces & Type Aliases
+
+Generics aren't just for functions — interfaces and type aliases can have placeholders too. This lets you define a reusable shape that works with any type. `Array<T>`, `Promise<T>`, `FC<Props>` in React — all of these are pre-built generic interfaces.
+
+> **Key rule:** When you use a generic interface like `Box<string>`, you are filling in the placeholder. The interface was defined once with `T` — you just pass your type in.
 
 ```typescript
 // Generic interface
@@ -879,6 +935,8 @@ type Tree<T> = {
 
 ### Generic Classes
 
+A generic class works just like a generic function — the placeholder `T` is defined on the class and flows through all its methods and properties. This lets you write one class that works safely with any type.
+
 ```typescript
 class Stack<T> {
   private items: T[] = [];
@@ -932,6 +990,10 @@ store.get("age");  // number | undefined
 
 ### Constraints — extends, keyof
 
+By default a generic `T` can be anything. Constraints let you restrict what `T` can be — so you can safely use properties or methods on it. Without constraints TypeScript won't let you access anything on `T` because it could be anything.
+
+> **Key rule:** `T extends X` means "T must have at least the shape of X." It doesn't mean inheritance — it means T must satisfy the constraint.
+
 ```typescript
 // extends constraint — T must have this shape
 function getLength<T extends { length: number }>(arg: T): number {
@@ -973,6 +1035,8 @@ type Test = OnlyStrings<string | number | boolean>;  // string
 
 ### Default Generic Types
 
+Just like function parameters can have default values, generic type parameters can too. This means you don't always have to pass a type — TypeScript uses the default if you don't specify one.
+
 ```typescript
 // Default type parameter
 interface Response<T = string> {
@@ -1002,7 +1066,9 @@ interface Table<
 
 ### Built-in Generics
 
-These are pre-defined by TypeScript — you just pass your type as `T`.
+TypeScript ships with many pre-defined generic types — you don't write them, you just use them by passing your type in. These are defined in TypeScript's lib files (`lib.es5.d.ts`, `lib.es2015.d.ts` etc.) and available everywhere automatically.
+
+> **Key rule:** `Array<string>`, `Promise<User>`, `Map<string, number>` — all pre-built. You're just filling in `T` — same concept as your own generic interfaces.
 
 ```typescript
 // Array<T>
@@ -1043,7 +1109,9 @@ frozen.push(4);  // ❌ Error: readonly
 
 ### Type Narrowing
 
-TypeScript narrows the type inside conditional blocks.
+When you have a union type like `string | number`, TypeScript doesn't know which one it is at that point. Narrowing means checking the type inside a conditional block — TypeScript then knows the exact type inside that block and allows the right methods.
+
+> **Key rule:** TypeScript automatically narrows inside `if` blocks based on `typeof`, `instanceof`, `in`, and equality checks. You don't need to do anything special — just check and TypeScript figures it out.
 
 ```typescript
 // typeof narrowing
@@ -1097,7 +1165,9 @@ function compare(a: string | number, b: string | boolean) {
 
 ### Discriminated Unions
 
-Use a shared **literal property** to distinguish union members — TypeScript narrows automatically.
+A discriminated union is a union where every member has a shared literal property (the discriminant). TypeScript uses that property to narrow automatically in switch/if statements. This is the cleanest pattern for handling different shapes of data.
+
+> **Key rule:** Every member of the union must have the same property name with a different literal value — like `kind: "circle"` vs `kind: "square"`. TypeScript uses this to know exactly which type you're in.
 
 ```typescript
 type Shape =
@@ -1151,6 +1221,10 @@ function handle<T>(result: ApiResult<T>) {
 
 ### Custom Type Guards — is keyword
 
+Sometimes TypeScript can't narrow automatically — for example when checking an `unknown` value or a complex object shape. Custom type guards let you write your own narrowing function using the `value is Type` return type.
+
+> **Key rule:** The `is` keyword in the return type is what makes it a type guard — it tells TypeScript "if this function returns true, the value is this type." The function itself just does a regular runtime check.
+
 ```typescript
 // Type predicate — "value is Type"
 function isString(value: unknown): value is string {
@@ -1191,6 +1265,10 @@ const strings: string[] = items.filter(isNonNull);  // ✅ string[]
 
 ### Assertion Functions
 
+Assertion functions are like type guards but they throw an error instead of returning false. After calling an assertion function, TypeScript narrows the type for the rest of the function — because if the assertion failed, execution would have stopped.
+
+> **Key rule:** Use `asserts condition` to narrow a boolean check. Use `asserts val is Type` to narrow a specific type. TypeScript trusts these — so make sure the function actually throws when the condition fails.
+
 ```typescript
 // Assert and narrow — throws if condition fails
 function assert(condition: unknown, msg: string): asserts condition {
@@ -1222,7 +1300,9 @@ value.toUpperCase();  // ✅ narrowed to string
 
 ### Mapped Types
 
-Transform every property in a type programmatically.
+Mapped types let you create a new type by transforming every property of an existing type. Instead of copying a type and changing each property manually, you write a single rule that applies to all properties at once.
+
+> **Key rule:** Syntax is `{ [K in keyof T]: NewType }` — loop over every key K in T, and define a new type for each. This is how `Partial`, `Readonly`, `Required` are built internally.
 
 ```typescript
 // Syntax: { [K in keyof T]: NewType }
@@ -1273,6 +1353,10 @@ type UserGetters = Getters<User>;
 
 ### Conditional Types + infer
 
+Conditional types are like ternary operators but for types — `T extends X ? A : B`. The `infer` keyword lets you extract and capture a type from inside another type while checking the condition. This is how advanced utility types like `ReturnType` and `Awaited` are built.
+
+> **Key rule:** `infer U` captures a type variable from inside the condition — you can then use `U` in the true branch. Without `infer` you can check types. With `infer` you can also extract them.
+
 ```typescript
 // Basic conditional type — like a ternary for types
 type IsString<T> = T extends string ? true : false;
@@ -1308,6 +1392,10 @@ type K = ToArray<string | number>;  // string[] | number[]
 ---
 
 ### Template Literal Types
+
+Template literal types work like JavaScript template strings but at the type level. You can combine string literal types to generate new union types automatically — useful for event names, CSS properties, API routes, and more.
+
+> **Key rule:** Just like `` `Hello ${name}` `` in JS, `` `on${Capitalize<T>}` `` in types generates all combinations. When T is a union, TypeScript generates the full cross-product automatically.
 
 ```typescript
 // Combine string literal types
@@ -1351,6 +1439,10 @@ type M = GetRouteParam<"/posts/:id/comments">; // "id"
 
 ### Partial, Required, Readonly, Pick, Omit, Record
 
+Utility types are pre-built generic types that transform an existing type into a new one. Instead of writing a modified version of a type by hand, you use these to create variations. They are all defined in TypeScript's built-in lib files.
+
+> **Most used in real projects:** `Partial` for update operations, `Pick`/`Omit` for API shapes, `Record` for key-value maps.
+
 ```typescript
 interface Todo {
   id: number;
@@ -1393,6 +1485,8 @@ const scores: ScoreBoard = { Alice: 95, Bob: 87, Charlie: 92 };
 
 ### Exclude, Extract, NonNullable
 
+These utility types work on **unions** — not objects. `Exclude` removes types from a union. `Extract` keeps only matching types. `NonNullable` removes `null` and `undefined`. Use them to clean up or filter union types.
+
 ```typescript
 type T = "a" | "b" | "c" | "d";
 
@@ -1423,6 +1517,10 @@ function compact<T>(arr: (T | null | undefined)[]): T[] {
 ---
 
 ### ReturnType, Parameters, InstanceType, Awaited
+
+These utility types extract type information from functions and classes — without you having to write the types manually. Most useful when working with third-party functions where you don't control the type definitions.
+
+> **Key rule:** All of these use `typeof` with the actual value — `ReturnType<typeof myFn>`, not `ReturnType<myFn>`.
 
 ```typescript
 // ReturnType<T> — extract return type of a function
@@ -1463,6 +1561,10 @@ type D = UnwrapAsync<typeof fetchUsers>;  // User[]
 
 ### Module System
 
+TypeScript uses ES module syntax — `import` and `export`. Every file is its own module. You can export types, interfaces, functions, classes, and constants. Type-only imports (`import type`) are stripped at compile time and have zero runtime cost.
+
+> **Key rule:** Use `import type` for types you only need at compile time — it makes your intent clear and avoids accidental runtime imports.
+
 ```typescript
 // --- NAMED EXPORTS ---
 export interface Config { debug: boolean; port: number; }
@@ -1501,6 +1603,10 @@ async function loadModule() {
 ---
 
 ### tsconfig Must-Know Options
+
+`tsconfig.json` controls how TypeScript compiles your code. You don't need to know every option — but these are the ones you'll actually encounter and change in real projects.
+
+> **Key rule:** Always enable `"strict": true` — it turns on all safety checks including `strictNullChecks` and `noImplicitAny`. Without it TypeScript is much less useful.
 
 ```json
 {
@@ -1552,6 +1658,8 @@ async function loadModule() {
 
 ### Common Patterns
 
+These are patterns you'll use constantly in real TypeScript projects. They're shortcuts and operators that make working with types more practical day-to-day.
+
 ```typescript
 // --- NON-NULL ASSERTION (!) ---
 // Tell TS: "trust me, this is not null"
@@ -1598,6 +1706,10 @@ const updated: User = { ...existing, name: "New Name" };
 ---
 
 ### Error Handling with Types
+
+In strict mode TypeScript types caught errors as `unknown` — not `Error` — so you must narrow before accessing `.message`. A common real-world pattern is the Result type — returning success/error as a value instead of throwing.
+
+> **Key rule:** In `catch (err)`, `err` is `unknown` in strict mode. Always check `instanceof Error` before accessing `.message` or `.stack`.
 
 ```typescript
 // Basic typed error handling
@@ -1666,7 +1778,9 @@ function handleError(err: AppError) {
 
 ### Declaration Merging
 
-TypeScript merges multiple declarations of the same name automatically.
+TypeScript allows you to declare the same name multiple times — and it merges them into one. This is most useful for extending third-party types (like adding a property to Express's `Request`) without modifying the original source.
+
+> **Key rule:** Only `interface` supports declaration merging — `type` does not. This is one of the main reasons to use `interface` for object shapes in library code.
 
 ```typescript
 // --- INTERFACE MERGING ---
@@ -1706,6 +1820,10 @@ declare module "express" {
 ---
 
 ### Enums vs Literal Unions
+
+Enums group related constants under one name. But in modern TypeScript, literal union types do the same job with less overhead and better type narrowing. Knowing when to use each saves you from common gotchas.
+
+> **Key rule:** Prefer literal unions over enums in most cases — they have no runtime cost, work better with narrowing, and are easier to extend. Use enums only for bitwise flags or when a library expects them.
 
 ```typescript
 // --- ENUMS ---
