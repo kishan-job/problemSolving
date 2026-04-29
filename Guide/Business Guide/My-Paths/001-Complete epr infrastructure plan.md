@@ -2,6 +2,21 @@
 ## React Developer × Compliance Crisis = India's Missing Verification Layer
 ## ₹70K/month → Certificate Infrastructure Worth ₹1,000-5,000Cr
 
+```
+1. The Goal: To make the recycler Efficient.
+
+2. The Customer & The Money:
+You need 500 recyclers paying ₹10k to reach your goal. Selling to 500 different people is a 24/7 sales job.
+
+3. The Role of the Government (CPCB)
+The Government is just a "side problem" that requires a report every quarter.
+
+4. The Product: "Notebook" vs. "Bank"
+Plan was like building Tally or Zoho for scrap. It’s an accounting and management tool.
+
+
+```
+
 ---
 
 # Table of Contents
