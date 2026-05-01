@@ -4707,7 +4707,7 @@ WHAT TO DO ON A PREP DAY:
 
 ---
 
-## Complex Patterns and Algorithms Take Multiple Days
+## Complex Patterns Take Multiple Days
 
 ```
 This is normal. Not a failure.
@@ -4727,77 +4727,77 @@ One problem per day. Not one pattern per day.
 
 ## Days 1-14: Level 1 Patterns
 
-| Day | Prepare A | Prepare C | Solve | Pattern | Time | Space | LeetCode |
-|-----|-----------|-----------|-------|---------|------|-------|----------|
-| 1 | Arrays | Linear Search | Sum of array | 🪣 Bucket | O(n) | O(1) | — |
-| 2 | Arrays | Linear Search | Is array sorted? | 🔍 Detective | O(n) | O(1) | #896 |
-| 3 | Arrays | Linear Search | Get all even numbers | 🏆 Filter | O(n) | O(n) | — |
-| 4 | Arrays | Linear Search | Double every number | 🔄 Transformer | O(n) | O(n) | — |
-| 5 | Set + Map | Hash-Based Search | Has duplicates? | 🔎 Memory Case 1 Basic | O(n) | O(n) | #217 |
-| 6 | Map | Hash-Based Search | Character frequency | 🔎 Memory Case 1 Ext | O(n) | O(n) | #387 |
-| 7 | Map | Hash-Based Search | Two Sum | 🔎 Memory Case 2 | O(n) | O(n) | #1 |
-| 8 | Arrays | JS Built-in Sort | Sort array of numbers | Sorting Tool | O(n log n) | O(n) | — |
-| 9 | Strings | Two Pointer Approaches | Is palindrome? | 📊 Pointer Walker | O(n) | O(1) | #125 |
-| 10 | Arrays | Linear Search | Find maximum | 🪣 Bucket | O(n) | O(1) | — |
-| 11 | Arrays | Linear Search | All numbers positive? | 🔍 Detective | O(n) | O(1) | — |
-| 12 | Arrays | Linear Search | Remove falsy values | 🏆 Filter | O(n) | O(n) | — |
-| 13 | Arrays | Linear Search | Celsius → Fahrenheit | 🔄 Transformer | O(n) | O(n) | — |
-| 14 | Arrays | Two Pointer Approaches | Reverse array in-place | 📊 Pointer Walker | O(n) | O(1) | #344 |
+| Day | Pattern | Day Focus | Prepare A | Prepare C | Solve | Time | Space | LeetCode |
+|-----|---------|-----------|-----------|-----------|-------|------|-------|----------|
+| 1 | 🪣 Pattern 2: Bucket | Brand new pattern today. Learning to accumulate one value from the whole array. Template: start with 0, add each item, return result. | Arrays | Linear Search | Sum of array | O(n) | O(1) | — |
+| 2 | 🔍 Pattern 1: Detective | Brand new pattern today. Learning to find ONE bad thing and stop immediately. Early exit saves time. Template: find bad → return false, survive → return true. | Arrays | Linear Search | Is array sorted? | O(n) | O(1) | #896 |
+| 3 | 🏆 Pattern 3: Filter | Brand new pattern today. Learning to collect only items that pass a test. Template: empty winners list, test each item, push if passes. | Arrays | Linear Search | Get all even numbers | O(n) | O(n) | — |
+| 4 | 🔄 Pattern 4: Transformer | Brand new pattern today. Learning to change every item. Result is always same length as input. Template: empty result list, push changed version of each item. | Arrays | Linear Search | Double every number | O(n) | O(n) | — |
+| 5 | 🔎 Pattern 5: Memory Case 1 Basic | Brand new pattern today. Learning SET for instant yes/no lookup. This is Case 1 Basic — does something exist or repeat? SET replaces slow array search. | Set + Map | Hash-Based Search | Has duplicates? | O(n) | O(n) | #217 |
+| 6 | 🔎 Pattern 5: Memory Case 1 Extended | Same Memory pattern. Now learning MAP for counting. Case 1 Extended — how many times does each item appear? MAP stores value → count. | Map | Hash-Based Search | Character frequency | O(n) | O(n) | #387 |
+| 7 | 🔎 Pattern 5: Memory Case 2 | Same Memory pattern. Now learning the complement trick. Case 2 — find a PAIR of values that satisfy a formula. MAP stores value → index not count. Check before store. | Map | Hash-Based Search | Two Sum | O(n) | O(n) | #1 |
+| 8 | 📊 Pattern 6: Pointer Walker | Not solving a pattern today — TOOL day. Learning JS Built-in Sort. This tool is required before solving Pattern 6 problems. Tomorrow you use it. | Arrays | JS Built-in Sort | Sort array of numbers | O(n log n) | O(n) | — |
+| 9 | 📊 Pattern 6: Pointer Walker | Brand new pattern today. Learning Opposite Ends approach. Two pointers start at both ends and move toward each other. Applying to palindrome check. | Strings | Two Pointer Approaches | Is palindrome? | O(n) | O(1) | #125 |
+| 10 | 🪣 Pattern 2: Bucket | Bucket — 2nd problem. Template is the same as Day 1. Different accumulation today — finding maximum instead of sum. Starting value is -Infinity not 0. | Arrays | Linear Search | Find maximum | O(n) | O(1) | — |
+| 11 | 🔍 Pattern 1: Detective | Detective — 2nd problem. Template is the same as Day 2. Different bad condition today — check if any number is not positive. Early exit still applies. | Arrays | Linear Search | All numbers positive? | O(n) | O(1) | — |
+| 12 | 🏆 Pattern 3: Filter | Filter — 2nd problem. Template is the same as Day 3. Different test today — keep only truthy values. Positive framing: keep if NOT falsy. | Arrays | Linear Search | Remove falsy values | O(n) | O(n) | — |
+| 13 | 🔄 Pattern 4: Transformer | Transformer — 2nd problem. Template is the same as Day 4. Different formula today — apply temperature conversion to every item. | Arrays | Linear Search | Celsius to Fahrenheit | O(n) | O(n) | — |
+| 14 | 📊 Pattern 6: Pointer Walker | Pointer Walker — 2nd problem. Yesterday was Opposite Ends. Today learning Same Direction Read/Write approach. Write pointer stays behind, read pointer scans ahead. | Arrays | Two Pointer Approaches | Reverse array in-place | O(n) | O(1) | #344 |
 
 ---
 
 ## Days 15-28: Level 2 Patterns
 
-| Day | Prepare A | Prepare C | Solve | Pattern | Time | Space | LeetCode |
-|-----|-----------|-----------|-------|---------|------|-------|----------|
-| 15 | Arrays + Set | Hash-Based Search | Remove duplicates (combo) | 🏆 + 🔎 | O(n) | O(n) | #26 |
-| 16 | Arrays | Sliding Window | Max sum K consecutive | 🪟 Sliding Window | O(n) | O(1) | — |
-| 17 | Strings + Set | Sliding Window | Longest substr no repeat | 🪟 + 🔎 | O(n) | O(k) | #3 |
-| 18 | Arrays | Binary Search | Binary search sorted | 🔪 Binary Search | O(log n) | O(1) | #704 |
-| 19 | **READ Stack+Queue** | Stack-based Matching | — PREP DAY — | — | — | — | — |
-| 20 | Stack | Stack-based Matching | Valid parentheses | 🏗️ Stack | O(n) | O(n) | #20 |
-| 21 | **READ Tree** | Tree Traversal DFS | Daily temperatures | 🏗️ Stack | O(n) | O(n) | #739 |
-| 22 | Tree | Tree Traversal DFS | Max depth binary tree | 🌳 Tree DFS | O(n) | O(h) | #104 |
-| 23 | **READ Graph** | BFS Algorithm | Invert binary tree | 🌳 Tree DFS | O(n) | O(h) | #226 |
-| 24 | Graph + Queue | BFS Algorithm | Level order traversal | 🌊 BFS | O(n) | O(w) | #102 |
-| 25 | Graph | BFS Algorithm | Number of islands | 🌊 BFS | O(m×n) | O(m×n) | #200 |
-| 26 | Arrays | Binary Search | First occurrence in sorted | 🔪 Binary Search | O(log n) | O(1) | #34 |
-| 27 | Arrays | Sliding Window | Min subarray sum ≥ target | 🪟 Sliding Window | O(n) | O(1) | #209 |
-| 28 | Tree | Tree Traversal DFS | Path sum | 🌳 Tree DFS | O(n) | O(h) | #112 |
+| Day | Pattern | Day Focus | Prepare A | Prepare C | Solve | Time | Space | LeetCode |
+|-----|---------|-----------|-----------|-----------|-------|------|-------|----------|
+| 15 | 🔎 Pattern 5: Memory + 🏆 Pattern 3: Filter | Reinforcing Week 1. Combining two patterns for the first time. Memory tracks what was seen. Filter decides what to keep. Together they remove duplicates while keeping order. | Arrays + Set | Hash-Based Search | Remove duplicates keeping order | O(n) | O(n) | #26 |
+| 16 | 🔎 Pattern 5: Memory + 🔍 Pattern 1: Detective | Reinforcing Week 1. Second combo problem. Memory gives instant lookup. Detective gives early exit. Together they check for duplicate existence fast. | Arrays + Set | Hash-Based Search | Contains duplicate | O(n) | O(n) | #217 |
+| 17 | 🪟 Pattern 7: Sliding Window | Brand new pattern today. Learning fixed window — window size k never changes. Add new item on right, remove old item on left. Track the best window seen. Built on Pointer Walker + Bucket. | Arrays | Sliding Window | Max sum subarray size K | O(n) | O(1) | — |
+| 18 | 🪟 Pattern 7: Sliding Window | Sliding Window — 2nd problem. Yesterday was fixed window. Today learning variable window — size grows and shrinks based on condition. Window shrinks when a repeat enters. | Strings + Set | Sliding Window | Longest substring no repeat | O(n) | O(k) | #3 |
+| 19 | 🔪 Pattern 8: Binary Search | Brand new pattern today. Learning to eliminate half the array each step. Data must be sorted first. Check middle — go left or right. Built on Detective elimination logic. | Arrays | Binary Search | Binary search sorted array | O(log n) | O(1) | #704 |
+| 20 | 🔪 Pattern 8: Binary Search | Binary Search — 2nd problem. Yesterday found exact target. Today finding first occurrence. Template is same — condition changes to keep searching after finding. | Arrays | Binary Search | First occurrence in sorted array | O(log n) | O(1) | #34 |
+| 21 | 🏗️ Pattern 9: Stack | PREP DAY — no problem solving today. Read Section A: Stack and Queue. Understand push, pop, LIFO order. Tomorrow you use Stack for Pattern 9. | **READ Stack + Queue** | Stack-based Matching | — PREP DAY — | — | — | — |
+| 22 | 🏗️ Pattern 9: Stack | Brand new pattern today. Learning Stack-based Matching. Push open brackets. Pop and check when closing bracket arrives. Stack remembers what came before. | Stack | Stack-based Matching | Valid parentheses | O(n) | O(n) | #20 |
+| 23 | 🏗️ Pattern 9: Stack | Stack — 2nd problem. Yesterday was matching pairs. Today learning Monotonic Stack variation. Stack stays decreasing. Pop when current breaks the order. | Stack | Monotonic Stack | Daily temperatures | O(n) | O(n) | #739 |
+| 24 | 🌳 Pattern 10: Tree DFS | PREP DAY — no problem solving today. Read Section A: Tree. Understand nodes, left, right, null. Tomorrow you use Tree DFS for Pattern 10. | **READ Tree** | Tree Traversal DFS | — PREP DAY — | — | — | — |
+| 25 | 🌳 Pattern 10: Tree DFS | Brand new pattern today. Learning Tree DFS skeleton. Base case null → return. Ask left → ask right → combine. Same skeleton works for almost every tree problem. | Tree | Tree Traversal DFS | Max depth binary tree | O(n) | O(h) | #104 |
+| 26 | 🌳 Pattern 10: Tree DFS | Tree DFS — 2nd problem. Yesterday returned a number (depth). Today returning true/false (path sum exists). Same skeleton — only the combine step changes. | Tree | Tree Traversal DFS | Path sum | O(n) | O(h) | #112 |
+| 27 | 🌊 Pattern 11: BFS | PREP DAY — no problem solving today. Read Section A: Graph. Understand nodes, edges, adjacency list. Tomorrow you use BFS for Pattern 11. | **READ Graph** | BFS Algorithm | — PREP DAY — | — | — | — |
+| 28 | 🌊 Pattern 11: BFS | Brand new pattern today. Learning BFS — process level by level using a queue. Add root, process all at current level, add their children. Finds shortest path. | Graph + Queue | BFS Algorithm | Level order traversal | O(n) | O(w) | #102 |
 
 ---
 
 ## Days 29-38: Level 3 Patterns
 
-| Day | Prepare A | Prepare C | Solve | Pattern | Time | Space | LeetCode |
-|-----|-----------|-----------|-------|---------|------|-------|----------|
-| 29 | Arrays | Memoization + Tabulation | Climbing Stairs | 🧩 DP | O(n) | O(1) | #70 |
-| 30 | Arrays | Memoization + Tabulation | House Robber | 🧩 DP | O(n) | O(1) | #198 |
-| 31 | Arrays | Memoization + Tabulation | Coin Change | 🧩 DP | O(n×amt) | O(amt) | #322 |
-| 32 | Arrays | Recursive Backtracking | All subsets | 🔙 Backtracking | O(2^n) | O(n) | #78 |
-| 33 | Arrays | Recursive Backtracking | All permutations | 🔙 Backtracking | O(n!) | O(n) | #46 |
-| 34 | Arrays | Greedy Choice | Jump Game | 🏃 Greedy | O(n) | O(1) | #55 |
-| 35 | Arrays | Greedy Choice | Buy/Sell Stock | 🏃 Greedy | O(n) | O(1) | #121 |
-| 36 | Stack | Stack-based Matching | Evaluate RPN | 🏗️ Stack | O(n) | O(n) | #150 |
-| 37 | Arrays | Recursive Backtracking | Combination Sum | 🔙 Backtracking | O(2^n) | O(n) | #39 |
-| 38 | Arrays | Greedy Choice | Non-overlapping Intervals | 🏃 Greedy | O(n log n) | O(1) | #435 |
+| Day | Pattern | Day Focus | Prepare A | Prepare C | Solve | Time | Space | LeetCode |
+|-----|---------|-----------|-----------|-----------|-------|------|-------|----------|
+| 29 | 🧩 Pattern 12: DP | Brand new pattern today. Learning the 3-step recipe — Define, Relate, Base. dp[i] = number of ways to reach step i. Built on Memory + Bucket + Recursion. | Arrays | Memoization + Tabulation | Climbing Stairs | O(n) | O(1) | #70 |
+| 30 | 🧩 Pattern 12: DP | DP — 2nd problem. Yesterday was additive formula. Today learning skip or take decision at each step. Same 3-step recipe applies. | Arrays | Memoization + Tabulation | House Robber | O(n) | O(1) | #198 |
+| 31 | 🧩 Pattern 12: DP | DP — 3rd problem. More complex formula today. 2D decision — coin value and amount. Inner loop tries every coin at each amount. | Arrays | Memoization + Tabulation | Coin Change | O(n×amt) | O(amt) | #322 |
+| 32 | 🔙 Pattern 13: Backtracking | Brand new pattern today. Learning Choose → Explore → Un-choose. Always in this exact order. Un-choose restores state so next path starts clean. | Arrays | Recursive Backtracking | All subsets | O(2^n) | O(n) | #78 |
+| 33 | 🔙 Pattern 13: Backtracking | Backtracking — 2nd problem. Yesterday generated subsets — order did not matter. Today generating permutations — order matters. Every element can be picked at each position. | Arrays | Recursive Backtracking | All permutations | O(n!) | O(n) | #46 |
+| 34 | 🏃 Pattern 14: Greedy | Brand new pattern today. Learning local best = global best. At each step pick the best option available. Never go back. Sort first almost always. | Arrays | Greedy Choice | Jump Game | O(n) | O(1) | #55 |
+| 35 | 🏃 Pattern 14: Greedy | Greedy — 2nd problem. Yesterday maximized reachable index. Today maximizing profit. One pass — track minimum price seen, calculate max profit at each step. | Arrays | Greedy Choice | Buy and Sell Stock | O(n) | O(1) | #121 |
+| 36 | 🏗️ Pattern 9: Stack | Stack — 3rd problem. Applying Stack to expression evaluation. Numbers go on stack. Operators pop two numbers, compute, push result back. | Stack | Stack-based Matching | Evaluate RPN | O(n) | O(n) | #150 |
+| 37 | 🔙 Pattern 13: Backtracking | Backtracking — 3rd problem. Harder version today. Same number can be reused. Pass same index i not i+1 to allow reuse. Choose → Explore → Un-choose still applies. | Arrays | Recursive Backtracking | Combination Sum | O(2^n) | O(n) | #39 |
+| 38 | 🏃 Pattern 14: Greedy | Greedy — 3rd problem. Interval scheduling today. Sort by end time. Always pick interval that ends earliest — leaves most room for future intervals. | Arrays | Greedy Choice | Non-overlapping Intervals | O(n log n) | O(1) | #435 |
 
 ---
 
 ## Days 39-48: New Algorithms (Level 4)
 
-| Day | Prepare A | Prepare C | Solve | Algorithm | Time | Space | LeetCode |
-|-----|-----------|-----------|-------|-----------|------|-------|----------|
-| 39 | Arrays | Prefix Sum | Range sum query | Prefix Sum Day 1 | O(n)+O(1) | O(n) | #303 |
-| 40 | Arrays | Prefix Sum | Subarray sum equals K | Prefix Sum Day 2 | O(n) | O(n) | #560 |
-| 41 | Arrays | Monotonic Stack | Next greater element | Monotonic Stack Day 1 | O(n) | O(n) | #496 |
-| 42 | **READ Linked List** | Monotonic Stack | Daily temperatures | Monotonic Stack Day 2 | O(n) | O(n) | #739 |
-| 43 | Linked List | Fast Slow Pointer | Find middle of list | Fast Slow Pointer Day 1 | O(n) | O(1) | #876 |
-| 44 | Linked List | Fast Slow Pointer | Linked list cycle II | Fast Slow Pointer Day 2 | O(n) | O(1) | #142 |
-| 45 | Arrays | Dutch National Flag | Sort colors | Dutch National Flag | O(n) | O(1) | #75 |
-| 46 | **READ Heap + Deque** | Heap Operations | — PREP DAY — | — | — | — | — |
-| 47 | Heap | Heap Operations | Kth largest element | ⛰️ Heap Day 1 | O(n log k) | O(k) | #215 |
-| 48 | Heap | Heap Operations | Top K frequent elements | ⛰️ Heap Day 2 | O(n log k) | O(n) | #347 |
+| Day | Pattern | Day Focus | Prepare A | Prepare C | Solve | Time | Space | LeetCode |
+|-----|---------|-----------|-----------|-----------|-------|------|-------|----------|
+| 39 | Level 4 — Prefix Sum | Brand new algorithm today. Build running totals once in O(n). Then answer any range sum in O(1). prefix[j+1] - prefix[i] gives sum of any range instantly. | Arrays | Prefix Sum | Range sum query | O(n)+O(1) | O(n) | #303 |
+| 40 | Level 4 — Prefix Sum | Prefix Sum — 2nd problem. Harder variation today. Combine Prefix Sum with Memory Case 2. Check if complement of current sum was seen before. | Arrays | Prefix Sum | Subarray sum equals K | O(n) | O(n) | #560 |
+| 41 | Level 4 — Monotonic Stack | Brand new algorithm today. Stack stays always decreasing. When current element breaks the order — pop and record answer. Used for next greater element problems. | Arrays | Monotonic Stack | Next greater element | O(n) | O(n) | #496 |
+| 42 | Level 4 — Monotonic Stack | Monotonic Stack — 2nd problem. Same algorithm as Day 41. Different problem framing — find how many days until warmer temperature. Also read Linked List today for Day 43. | **READ Linked List** | Monotonic Stack | Daily temperatures | O(n) | O(n) | #739 |
+| 43 | 📊 Pattern 6: Pointer Walker — Fast Slow | New approach inside Pointer Walker today. Fast pointer moves 2 steps, slow moves 1 step. When fast reaches end, slow is at middle. Works on Linked Lists only. | Linked List | Fast Slow Pointer | Find middle of list | O(n) | O(1) | #876 |
+| 44 | 📊 Pattern 6: Pointer Walker — Fast Slow | Fast Slow — 2nd problem. Yesterday found the middle. Today detecting cycle entry point. When fast and slow meet — reset slow to head, both move 1 step until they meet again. | Linked List | Fast Slow Pointer | Linked list cycle II | O(n) | O(1) | #142 |
+| 45 | 📊 Pattern 6: Pointer Walker — Dutch Flag | New approach inside Pointer Walker today. Three pointers — low, mid, high. Sort array with exactly 3 distinct values in one pass. Mid not incremented when swapping with high. | Arrays | Dutch National Flag | Sort colors | O(n) | O(1) | #75 |
+| 46 | Level 4 — Heap | PREP DAY — no problem solving today. Read Section A: Heap and Deque. Understand min heap, insert bubbles up, extract bubbles down. Tomorrow you use Heap. | **READ Heap + Deque** | Heap Operations | — PREP DAY — | — | — | — |
+| 47 | Level 4 — Heap | Brand new data structure today. MinHeap keeps smallest at top always. Insert O(log n). Peek O(1). Keep heap size at k — smallest of top k = kth largest. | Heap | Heap Operations | Kth largest element | O(n log k) | O(k) | #215 |
+| 48 | Level 4 — Heap | Heap — 2nd problem. Yesterday found kth largest number. Today finding top k frequent elements. Build frequency map first, then use heap of size k on frequencies. | Heap | Heap Operations | Top K frequent elements | O(n log k) | O(n) | #347 |
 
 ---
 
@@ -4814,13 +4814,13 @@ They are not needed for solving daily problems.
 JS Built-in Sort handles everything before Day 49.
 ```
 
-| Day | Prepare C | Solve | Algorithm | Time | Space |
-|-----|-----------|-------|-----------|------|-------|
-| 49 | Bubble Sort | Implement from scratch | Bubble Sort | O(n²) | O(1) |
-| 50 | Selection Sort | Implement from scratch | Selection Sort | O(n²) | O(1) |
-| 51 | Insertion Sort | Implement from scratch | Insertion Sort | O(n²) worst O(n) best | O(1) |
-| 52 | Merge Sort | Implement from scratch | Merge Sort | O(n log n) | O(n) |
-| 53 | Quick Sort | Implement from scratch | Quick Sort | O(n log n) avg | O(log n) |
+| Day | Pattern | Day Focus | Prepare C | Solve | Time | Space |
+|-----|---------|-----------|-----------|-------|------|-------|
+| 49 | Interview Prep: Sorting | Learning only — never use in real problems. Compare adjacent elements, swap if wrong order. Each pass bubbles largest to its place. | Bubble Sort | Implement from scratch | O(n²) | O(1) |
+| 50 | Interview Prep: Sorting | Learning only — never use in real problems. Find minimum in unsorted part, place it at front. Repeat for remaining unsorted section. | Selection Sort | Implement from scratch | O(n²) | O(1) |
+| 51 | Interview Prep: Sorting | Use for nearly sorted data — best case O(n). Take each element, insert into correct position in sorted left portion. Like sorting cards in your hand. | Insertion Sort | Implement from scratch | O(n²) worst O(n) best | O(1) |
+| 52 | Interview Prep: Sorting | Implement when interviewer asks. Divide array in half, sort each half, merge back in sorted order. Guaranteed O(n log n) always. Stable sort. | Merge Sort | Implement from scratch | O(n log n) | O(n) |
+| 53 | Interview Prep: Sorting | Implement when interviewer asks. Pick pivot, put smaller left, larger right, recurse. Fastest in practice on average. Worst case O(n²) on bad pivot. | Quick Sort | Implement from scratch | O(n log n) avg | O(log n) |
 
 ---
 
@@ -4835,8 +4835,8 @@ HOW TO PICK PROBLEMS:
 HOW TO SOLVE:
   Do NOT look at hints.
   Apply all 6 phases. Phase 4 trace table is mandatory.
-  Give yourself 15 minutes maximum.
-  If stuck after 15 minutes → look at the pattern hint only.
+  Give yourself 25 minutes maximum.
+  If stuck after 25 minutes → look at the pattern hint only.
   If still stuck → read solution, understand it, solve it yourself.
 
 WHEN YOU FEEL STUCK:
@@ -4853,12 +4853,15 @@ GOAL: Identify the pattern in under 2 minutes.
 ## Day Structure — Full Example (Day 1)
 
 ```
-PREPARE A → Section A: Arrays
-PREPARE C → Section C: Linear Search
-
-SOLVE  → Sum of array → 🪣 Bucket → no LeetCode number
-TIME   → O(n)
-SPACE  → O(1)
+PATTERN    → 🪣 Pattern 2: Bucket
+DAY FOCUS  → Brand new pattern today. Learning to accumulate one
+             value from the whole array. Template: start with 0,
+             add each item, return result.
+PREPARE A  → Section A: Arrays
+PREPARE C  → Section C: Linear Search
+SOLVE      → Sum of array
+TIME       → O(n)
+SPACE      → O(1)
 
 PHASE 1 → DECOMPOSE
   Input     → array of numbers, can be empty
@@ -4868,7 +4871,7 @@ PHASE 1 → DECOMPOSE
   Edge cases → [], [5], [-1,2,-3], [0,0,0]
 
 PHASE 2 → IDENTIFY
-  Return one value → 🪣 Bucket
+  Return one value → 🪣 Pattern 2: Bucket
   Algorithm        → Linear Scan (Section C → Linear Search)
   Tools            → Section A: Arrays
 
@@ -4890,15 +4893,11 @@ PHASE 4 → TRACE TABLE
 
 PHASE 5 → CODE
   function sumArray(arr) {
-    if (arr.length === 0) return 0;  // edge case
-    // STORE result = 0
+    if (arr.length === 0) return 0;
     let result = 0;
-    // REPEAT for each number
     for (let i = 0; i < arr.length; i++) {
-      // ADD to result
       result += arr[i];
     }
-    // GIVE BACK result
     return result;
   }
 
@@ -4909,7 +4908,7 @@ PHASE 6 → EDGE CASES + BIG-O
   sumArray([0, 0, 0])   → 0 ✓
 
   TIME  → O(n) — one loop through n items
-  SPACE → O(1) — only one variable (result), no new arrays
+  SPACE → O(1) — only one variable, no new arrays
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
