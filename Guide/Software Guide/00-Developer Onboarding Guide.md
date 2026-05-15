@@ -202,6 +202,18 @@ PART 14 — Key Rules
    → Always do list
    → Ask before assuming
 
+PART 13B — Additional Technical Topics
+   → Docker setup
+   → Feature flags
+   → Database/Backend knowledge
+   → Dependency management
+   → Browser compatibility
+   → Internationalization (i18n)
+   → Error handling patterns
+   → Mock vs real data
+   → Tech debt and TODOs
+   → Code review (giving reviews)
+
 PART 15 — Glossary
    → Repo types
    → Architecture types
@@ -242,6 +254,7 @@ PART 15 — Glossary
 - [Part 12B — Deployment Process](#part-12b--deployment-process)
 - [Part 12C — Incident and Bug Process](#part-12c--incident-and-bug-process)
 - [Part 13 — First Month Goals](#part-13--first-month-goals)
+- [Part 13B — Additional Technical Topics](#part-13b--additional-technical-topics)
 - [Part 14 — Key Rules](#part-14--key-rules)
 - [Part 15 — Glossary](#part-15--glossary)
 
@@ -2669,6 +2682,381 @@ If you introduce a bug:
 
 ---
 
+## Part 13B — Additional Technical Topics
+
+[⬆ Back to Top](#-navigation)
+
+### 1. Docker
+
+```
+Check if Docker is used:
+□ Dockerfile exists in root?
+□ docker-compose.yml exists?
+□ "docker" mentioned in README?
+
+If Docker used:
+□ Install Docker Desktop
+□ Common commands:
+
+docker-compose up        → Start all services
+docker-compose down      → Stop all services
+docker-compose up --build → Rebuild and start
+docker ps                → See running containers
+docker logs container-name → See logs
+
+Ask tech lead:
+□ Do I need Docker for local dev?
+□ What services run in Docker?
+   (database? redis? mock APIs?)
+□ Is Docker needed or optional locally?
+```
+
+---
+
+### 2. Feature Flags
+
+```
+What are feature flags:
+→ Switches to turn features ON/OFF
+→ Without redeploying code!
+→ Enable for specific users
+→ Enable for specific environments
+→ Very common in enterprise!
+
+Check if used:
+□ Search "featureFlag" in codebase
+□ Search "LaunchDarkly" in package.json
+□ Search "Split" in package.json
+□ Search "Unleash" in package.json
+□ Search "isEnabled" in codebase
+□ Check .env.example for FF variables
+
+Common tools:
+□ LaunchDarkly    → most popular enterprise
+□ Split.io        → A/B testing + flags
+□ Unleash         → open source option
+□ Custom          → simple boolean in config
+
+What to ask tech lead:
+□ Do we use feature flags?
+□ How do I enable a flag locally?
+□ What flags control my feature?
+□ How do I create a new flag?
+```
+
+---
+
+### 3. Database and Backend Knowledge
+
+```
+As frontend developer you don't need deep DB knowledge
+BUT you need to understand:
+
+□ What database does this project use?
+   → PostgreSQL? MySQL? MongoDB? DynamoDB?
+
+□ Who owns the backend?
+   → Same team? Different team?
+   → Who to contact for API changes?
+
+□ Is there a BFF (Backend For Frontend)?
+   → Next.js API routes acting as BFF?
+   → Separate BFF service?
+
+□ How does data flow to your UI?
+   → External API → Next.js API route → Your component
+   → Direct API → Your component (avoid!)
+
+□ What is the data refresh strategy?
+   → Real-time (WebSockets)?
+   → Polling (every X seconds)?
+   → On demand (user action)?
+
+Ask tech lead:
+□ Who owns the APIs I consume?
+□ Who do I contact if API has a bug?
+□ Is there API versioning?
+□ How are breaking API changes handled?
+```
+
+---
+
+### 4. Dependency Management
+
+```
+Adding new packages:
+□ Check if package already exists!
+   → Search package name in package.json first!
+□ Ask tech lead before adding new package
+   → Some companies restrict new dependencies!
+□ Check package license compatibility
+   → MIT, Apache = usually fine
+   → GPL = check with legal team!
+□ Check package health:
+   → Last updated recently?
+   → Many weekly downloads?
+   → Active maintenance?
+
+Commands:
+npm install package-name       → add to dependencies
+npm install -D package-name    → add to devDependencies
+npm uninstall package-name     → remove package
+npm outdated                   → see outdated packages
+npm update                     → update packages
+
+Updating packages:
+□ Don't update all packages at once!
+□ Update one at a time
+□ Run tests after each update
+□ Check changelog for breaking changes!
+
+Ask tech lead:
+□ Do I need approval to add packages?
+□ Is there an approved package list?
+□ How are package updates handled?
+□ Who manages security vulnerabilities?
+```
+
+---
+
+### 5. Browser Compatibility
+
+```
+Ask tech lead:
+□ Which browsers must we support?
+□ What is minimum browser version?
+
+Common support matrix:
+□ Chrome (last 2 versions)
+□ Firefox (last 2 versions)
+□ Safari (last 2 versions)
+□ Edge (last 2 versions)
+□ Mobile Safari (iOS 14+)
+□ Chrome Android (last 2 versions)
+□ IE 11? (hopefully not! very old!)
+
+How to test:
+□ Test manually in each browser
+□ Use BrowserStack for cross-browser
+□ Check CSS compatibility:
+   → caniuse.com → search CSS property
+   → See which browsers support it!
+
+Common browser issues:
+□ Safari: CSS gap in flexbox (older versions)
+□ Safari: date parsing differences
+□ Firefox: scrollbar width differences
+□ IE11: no support for modern CSS/JS
+
+Check in package.json:
+□ "browserslist" field
+   → Defines supported browsers
+   → Used by Babel/PostCSS automatically!
+```
+
+---
+
+### 6. Internationalization (i18n)
+
+```
+Check if i18n is used:
+□ Search "i18n" in package.json
+□ Search "i18next" in package.json
+□ Search "react-intl" in package.json
+□ Search "t(" in codebase (translation function!)
+□ locales/ or translations/ folder exists?
+□ en.json or messages.json files?
+
+If i18n exists:
+□ NEVER hardcode text strings directly!
+   WRONG: <button>Submit</button>
+   RIGHT: <button>{t('common.submit')}</button>
+
+□ Always add new strings to translation files
+□ Ask: what is the key naming convention?
+□ Ask: which languages are supported?
+□ Ask: how are new translations added?
+
+Common patterns:
+// Using i18next:
+const { t } = useTranslation();
+return <p>{t('billing.viewCharges')}</p>
+
+// Translation file (en.json):
+{
+  "billing": {
+    "viewCharges": "View Current Charges"
+  }
+}
+
+Ask tech lead:
+□ Do we use i18n?
+□ What languages are supported?
+□ What is the key naming convention?
+□ How do I add new text strings?
+```
+
+---
+
+### 7. Error Handling Patterns
+
+```
+Find existing error handling:
+□ Search "ErrorBoundary" in codebase
+□ Search "catch(error" in codebase
+□ Search "toast" or "notification" in codebase
+□ Check how API errors are shown to user
+
+Types of error handling:
+□ Global error boundary (catch React errors)
+□ API error handling (show error message)
+□ Form validation errors
+□ Network error handling (offline)
+□ 404/401/403 page handling
+
+Common patterns to look for:
+// Toast notifications:
+toast.error('Something went wrong');
+
+// Error boundary:
+<ErrorBoundary fallback={<ErrorPage />}>
+  <YourComponent />
+</ErrorBoundary>
+
+// API error in component:
+if (isError) return <ErrorState message={error.message} />;
+
+Rule:
+→ Never show raw error messages to users!
+→ Always show user-friendly messages!
+→ Always log errors to monitoring (Sentry)
+→ Follow EXISTING error handling pattern!
+```
+
+---
+
+### 8. Mock Data vs Real Data
+
+```
+Why mock data is used:
+→ Backend API not ready yet
+→ Avoid hitting real API in development
+→ Avoid using real user data in tests
+→ Work offline without VPN
+
+How to identify:
+□ Search "mock" in codebase
+□ mocks/ folder exists?
+□ __mocks__/ folder exists?
+□ MSW (Mock Service Worker) installed?
+□ .env.local has USE_MOCK=true?
+
+Common approaches:
+// MSW (intercepts API calls):
+handlers.ts → defines mock responses
+browser.ts  → sets up in browser
+
+// Static JSON files:
+data/mockCharges.json → imported in dev
+
+// Feature flag:
+if (process.env.NEXT_PUBLIC_USE_MOCK === 'true') {
+  return mockData;
+}
+
+Ask tech lead:
+□ Is there a mock setup for local dev?
+□ How do I switch between mock and real?
+□ Is there a feature flag to toggle?
+□ Which APIs have mocks available?
+```
+
+---
+
+### 9. Tech Debt and TODO Comments
+
+```
+Find existing tech debt:
+□ Search "TODO" in codebase
+□ Search "FIXME" in codebase
+□ Search "HACK" in codebase
+□ Search "TEMP" in codebase
+
+What they mean:
+TODO:  → Something to do later
+FIXME: → Known bug or issue
+HACK:  → Temporary workaround
+NOTE:  → Important note to remember
+
+How to handle:
+□ Read all TODOs in your feature area
+□ Understand WHY they exist
+□ Ask before removing or fixing them!
+□ Don't add new TODOs without context:
+   BAD:  // TODO: fix this
+   GOOD: // TODO(M20B-1): fix animation after Figma update
+
+Raising tech debt tickets:
+□ Found significant tech debt?
+→ Raise a Jira tech debt ticket
+→ Label as "tech-debt"
+→ Discuss with tech lead
+→ Don't fix silently without ticket!
+
+Ask tech lead:
+□ How do we handle tech debt here?
+□ Is there a tech debt backlog?
+□ Do we allocate sprint capacity for it?
+```
+
+---
+
+### 10. Code Review — How to Review Others
+
+```
+When asked to review someone's PR:
+
+What to check:
+□ Does code work as described?
+□ Does it follow existing patterns?
+□ Are there obvious bugs?
+□ Is there missing error handling?
+□ Are there security issues?
+□ Is code readable and clear?
+□ Are tests included?
+□ Are there unnecessary console.logs?
+□ Does it follow naming conventions?
+
+How to give feedback:
+□ Be constructive, not critical
+□ Explain WHY you suggest change
+□ Use "suggestion:" for optional changes
+□ Use "nit:" for very minor things
+□ Use "blocker:" for must-fix issues
+
+Examples:
+GOOD: "suggestion: we could extract this
+       logic into a custom hook to match
+       our pattern in useBilling.ts"
+
+BAD:  "this is wrong"
+
+GOOD: "nit: missing semicolon"
+
+GOOD: "blocker: this API key should be in
+       env variable not hardcoded"
+
+As new joiner:
+□ First few weeks → just read PRs
+□ Week 3+ → start giving small reviews
+□ Always learn from senior dev reviews
+□ Ask if unsure before requesting changes
+```
+
+[⬆ Back to Top](#-navigation)
+
+---
+
 ## Part 14 — Key Rules
 
 [⬆ Back to Top](#-navigation)
@@ -2857,6 +3245,29 @@ Ask about:
 | **Post-mortem** | Analysis after incident |
 | **SLA** | Service Level Agreement (response time) |
 | **On-call** | Developer on duty for production issues |
+
+### Additional Terms
+
+| Term | Meaning |
+|---|---|
+| **Feature Flag** | Switch to enable/disable features without deploying |
+| **LaunchDarkly** | Popular feature flag management tool |
+| **Docker** | Container platform for running apps consistently |
+| **docker-compose** | Tool to run multiple Docker containers together |
+| **BFF** | Backend For Frontend — server layer owned by frontend team |
+| **i18n** | Internationalization — supporting multiple languages |
+| **i18next** | Popular i18n library for React |
+| **MSW** | Mock Service Worker — intercepts API calls for testing |
+| **Tech Debt** | Code shortcuts that need future improvement |
+| **TODO** | Code comment marking something to fix later |
+| **FIXME** | Code comment marking known bug |
+| **browserslist** | Config defining which browsers to support |
+| **caniuse.com** | Website to check browser support for CSS/JS |
+| **Error Boundary** | React component catching errors in child components |
+| **Sentry** | Error monitoring and tracking tool |
+| **npm audit** | Command to check for security vulnerabilities |
+| **Cherry-pick** | Apply specific commit to another branch |
+| **nvm** | Node Version Manager — switch Node versions per project |
 
 [⬆ Back to Top](#-navigation)
 
