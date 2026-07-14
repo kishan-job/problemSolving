@@ -23,6 +23,45 @@ The React team has **officially deprecated Create React App**. Their new guidanc
 
 ---
 
+## Server Components Timeline — Next.js Led, React Followed
+
+Server Components existed in Next.js **~2 years before React officially released them.** Here's how that happened:
+
+### Phase 1: Next.js 13 introduces App Router with RSC (October 2022)
+- Next.js 13 shipped the **App Router** with Server Components support
+- At this point, React Server Components were still **experimental/canary** — not officially released
+- Next.js was building on React's **canary channel** (unstable pre-release builds)
+- Meta and Vercel worked together — the React team specifically designed a "canary for frameworks" channel so Next.js could use unfinished features in production while giving feedback to shape the final API
+
+### Phase 2: Next.js 14 refines RSC (October 2023)
+- Server Actions, streaming, and partial rendering improvements
+- Still using React canary — no stable React release yet with RSC
+
+### Phase 3: React 19 stable release (December 5, 2024)
+- React officially stabilized Server Components as part of React 19
+- React 19 includes all of the React Server Components features included from the Canary channel 
+- What Next.js had been shipping unofficially for 2 years finally became the standard
+
+### Phase 4: Next.js updates to stable React 19 (Next.js 15.1, December 2024)
+- Next.js 15 originally shipped with React 19 RC (October 2024)
+- Next.js 15.1 (December 2024) upgraded to **stable React 19** in both App Router and Pages Router
+- No breaking changes for existing App Router users — the "canary" APIs Next.js relied on were already what React 19 stabilized
+
+### Phase 5: Next.js 16 stabilizes PPR (October 2025)
+- Partial Prerendering graduated from experimental to stable via Cache Components (`cacheComponents: true`)
+- Continued the pattern of Next.js pushing features to stable while React itself has already stabilized the underlying primitives
+
+### Why this ordering happened
+- React defines the **spec/mechanism** (how Server Components behave, boundaries, serialization)
+- Next.js provides the **implementation** (server runtime, bundler config, router, RSC payload transport)
+- React can't ship RSC as a usable feature without a framework implementing all the machinery around it
+- So Next.js had to build the machinery first, using React's experimental primitives, before React could declare them stable
+
+### One-line summary of the timeline
+**Next.js 13 (Oct 2022) → shipped RSC using React canary → refined through Next.js 14/15 → React 19 stable released Dec 2024 finalizing the spec → Next.js 15.1 upgraded to stable React 19 → Next.js 16 (Oct 2025) stabilized PPR.**
+
+---
+
 ## Old Developer vs New Developer — Practical Differences
 
 | | Old React developer (pre-2024) | New React developer (2024+) |
@@ -74,3 +113,5 @@ React fundamentals still apply — these are the additions:
 **After React 19 (late 2024+):** React = Next.js (or Vite) + Server Components + framework-native routing/data fetching, with a real server/client split.
 
 **CRA is officially deprecated. "Just React by itself" is no longer the recommended starting point for new apps.**
+
+**Server Components timeline:** Next.js shipped them 2 years before React officially released them (Next.js 13 in Oct 2022 → React 19 stable in Dec 2024) — Next.js built the machinery on React's canary channel, React finalized the spec, then Next.js upgraded to stable React 19.
