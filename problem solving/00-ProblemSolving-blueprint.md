@@ -2795,110 +2795,352 @@ LeetCode: #1550 Three Consecutive Odds, #896 Monotonic Array
 
 ### Pattern 2: 🪣 Bucket (Accumulation)
 
-```
-USE WHEN:
-  You need ONE value calculated from the entire list.
-  (sum, max, min, count, product, longest, shortest)
-```
+#### What Does Bucket Solve?
 
 ```
-KEYWORDS:
-  "Sum of...", "Total...", "Count...", "Maximum...",
-  "Minimum...", "Longest...", "Product of..."
+Need ONE answer from MANY items.
 ```
 
-**ALGORITHM:** → [Section C → Linear Search](#linear-search) + [Kadane's Algorithm](#kadanes-algorithm)
+Examples:
 
-**TOOLS:**
-→ [Section A: Arrays](#1-arrays) or [Section A: Strings](#2-strings)
+- Sum of numbers
+- Count of items
+- Maximum value
+- Minimum value
+- Product of values
+- Longest string
+- Best contiguous segment
 
-```
-LOGIC:
-  Start with empty bucket.
-  Pour each item into the bucket using some operation.
-  Return the bucket.
+---
 
-  Normal Bucket   → Linear Scan → touches ALL items equally
-  Kadane's Bucket → Kadane's    → finds BEST contiguous subarray
-```
-
-```
-STARTING VALUES — pick the right one:
-  Sum     → result = 0         (adding to 0 gives first item)
-  Count   → result = 0
-  Maximum → result = -Infinity (any real number will be bigger)
-  Minimum → result = Infinity  (any real number will be smaller)
-  Product → result = 1         (multiplying by 1 gives first item)
-  Longest → result = 0
-
-WHY -Infinity for max?
-  If you start with 0 and all numbers are negative,
-  you would incorrectly return 0.
-  -Infinity ensures the first real number always replaces it.
-```
+#### Keywords
 
 ```
-DON'T USE WHEN:
-  ✗ Need a list of results (use 🏆 Filter or 🔄 Transformer)
-  ✗ Need true/false (use 🔍 Detective)
+"Sum"
+"Total"
+"Count"
+"Maximum"
+"Minimum"
+"Longest"
+"Shortest"
+"Product"
+"Best"
+"Maximum Subarray"
+"Maximum Streak"
 ```
+
+---
+
+#### How To Identify Which Case
+
+```
+Do all elements contribute
+to the answer?
+
+YES
+→ Normal Bucket
+
+NO
+
+Need the BEST contiguous segment?
+
+YES
+→ Kadane Bucket
+```
+
+---
+
+#### Don't Use When
+
+```
+Need true/false?
+  → 🔍 Detective
+
+Need a subset of items?
+  → 🏆 Filter
+
+Need to transform every item?
+  → 🔄 Transformer
+
+Need to remember previous values?
+  → 🔎 Memory
+```
+
+---
+
+## Case 1: Normal Bucket
+
+### Use When
+
+```
+Every element contributes
+to the final answer.
+```
+
+Examples:
+
+- Sum of array
+- Count evens
+- Find maximum
+- Find minimum
+- Product of array
+- Longest string
+
+### Mental Model
+
+```
+Start with a result.
+
+Walk through the collection.
+
+Keep updating the result.
+
+Return the final result.
+```
+
+### Starting Value Guide
+
+```
+Sum       → 0
+Count     → 0
+Maximum   → -Infinity
+Minimum   → Infinity
+Product   → 1
+Longest   → 0
+```
+
+### Template
 
 ```javascript
 function bucket(arr) {
-  let result = /* starting value */;
-  for (let i = 0; i < arr.length; i++) {
-    result = /* combine result with arr[i] */;
+  let result = START_VALUE;
+
+  for (const item of arr) {
+    result = combine(result, item);
   }
+
   return result;
 }
 ```
 
-**Example — "Find the maximum"**
+### Example: Find Maximum
 
 ```javascript
 function findMax(arr) {
   let biggest = -Infinity;
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] > biggest) biggest = arr[i];
+
+  for (const num of arr) {
+    if (num > biggest) {
+      biggest = num;
+    }
   }
+
   return biggest;
 }
 ```
 
+### Why Start With -Infinity?
+
 ```
-Trace: [3, 7, 2]
-  Start: biggest = -Infinity
-  i=0: 3 > -Infinity → biggest = 3
-  i=1: 7 > 3         → biggest = 7
-  i=2: 2 > 7? NO
-  Return: 7 ✓
+Array:
+
+[-5, -2, -8]
+
+Starting with 0:
+
+Maximum becomes 0
+
+Wrong.
+
+Starting with -Infinity:
+
+First real number wins.
+
+Correct.
 ```
 
-**Kadane's Example — "Maximum Subarray Sum"**
+### Trace
+
+```
+Array:
+
+[3, 7, 2]
+
+Start:
+biggest = -Infinity
+
+3 → biggest = 3
+
+7 → biggest = 7
+
+2 → no change
+
+Return 7
+```
+
+### Practice
+
+```
+□ Sum of Array
+□ Average of Array
+□ Find Maximum
+□ Find Minimum
+□ Count Evens
+□ Product of Array
+□ Longest String
+```
+
+---
+
+## Case 2: Kadane Bucket
+
+### Use When
+
+```
+Need the BEST contiguous segment.
+```
+
+Examples:
+
+- Maximum Subarray Sum
+- Maximum Product Subarray
+- Best Profit Streak
+- Maximum Scoring Substring
+
+### Keywords
+
+```
+Subarray
+Substring
+Contiguous
+Consecutive
+Continuous
+Segment
+Streak
+```
+
+### Mental Model
+
+```
+current = best segment ending here
+
+best = best segment seen so far
+```
+
+### The Core Question
+
+At every position ask:
+
+```
+Should I:
+
+1. Continue the old segment?
+
+OR
+
+2. Start a new segment?
+```
+
+Choose the better option.
+
+### Template
 
 ```javascript
 function maxSubarraySum(arr) {
-  let currentSum = arr[0];
-  let bestSum = arr[0];
+  let current = arr[0];
+  let best = arr[0];
+
   for (let i = 1; i < arr.length; i++) {
-    currentSum = Math.max(arr[i], currentSum + arr[i]);
-    bestSum = Math.max(bestSum, currentSum);
+    current = Math.max(
+      arr[i],
+      current + arr[i]
+    );
+
+    best = Math.max(
+      best,
+      current
+    );
   }
-  return bestSum;
+
+  return best;
 }
-// [-2,1,-3,4,-1,2,1,-5,4] → 6 ✓
 ```
 
+### Why Kadane Works
+
 ```
-Practice:
-□ Sum of array    □ Find average    □ Find max/min
-□ Count evens     □ Longest string  □ Product of all
-LeetCode: #53 Max Subarray, #136 Single Number
+current = -2
+
+next = 4
+
+Continue:
+
+-2 + 4 = 2
+
+Start New:
+
+4
+
+Choose:
+
+4
+```
+
+The previous segment becomes a burden.
+
+Discard it.
+
+Start fresh.
+
+### Trace
+
+```
+Array:
+
+[-2,1,-3,4,-1,2,1,-5,4]
+
+Best Segment:
+
+[4,-1,2,1]
+
+Sum:
+
+6
+```
+
+### Practice
+
+```
+□ Maximum Subarray Sum
+□ Maximum Product Subarray
+□ Maximum Circular Subarray
+□ Best Profit Streak
+□ Maximum Scoring Substring
+```
+
+LeetCode:
+
+```
+#53   Maximum Subarray
+#152  Maximum Product Subarray
+#918  Maximum Circular Subarray
+```
+
+---
+
+### Bucket Summary
+
+```
+Need ONE final answer?
+
+├─ Every element contributes
+│   → Normal Bucket
+│
+└─ Need best contiguous segment
+    → Kadane Bucket
 ```
 
 [↑ Back to Table of Contents](#table-of-contents)
-
----
 
 ### Pattern 3: 🏆 Filter (Predicate Selection)
 
